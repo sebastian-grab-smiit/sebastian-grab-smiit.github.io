@@ -1,0 +1,10 @@
+.current-swiper {
+    width: 100%;
+    max-width: 800px;
+    margin: 2rem auto;
+}
+.cp-card {
+    background: #1b1e24;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+}

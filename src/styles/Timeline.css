@@ -1,0 +1,13 @@
+.timeline-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 1rem 2rem;
+}
+
+.timeline-event {
+    min-width: 200px;
+    background: #1b1e24;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}

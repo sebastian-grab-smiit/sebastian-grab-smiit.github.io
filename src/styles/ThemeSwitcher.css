@@ -1,0 +1,15 @@
+.theme-switch {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(27,30,36,0.8);
+    color: rgba(255,255,255,1);
+    border: 1px solid var(--subtext);
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 1000;
+}
+.theme-switch:hover {
+    background: rgba(27,30,36,1);
+}

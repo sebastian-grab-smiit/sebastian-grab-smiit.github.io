@@ -1,0 +1,10 @@
+.App {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.loading {
+  color: var(--subtext);
+  font-size: 1.2rem;
+}
