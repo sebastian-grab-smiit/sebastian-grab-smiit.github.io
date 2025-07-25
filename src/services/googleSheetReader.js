@@ -54,8 +54,7 @@ export async function fetchCertificates() {
         language:           r[0],
         certificateName:    r[1],
         date:               new Date(r[2]),
-        validationLink:     r[3],
-        logoUrl:            r[4],
+        logoUrl:            r[3],
     }));
 }
 
@@ -119,8 +118,7 @@ export async function fetchProjects() {
         logoUrl:        r[5],
         start:          new Date(r[6]),
         end:            new Date(r[7]),
-        job:            r[8],
-        technologies:   r[9],
-        sections:       r[10],
+        technologies:   r[8],
+        sections:       r[9],
     }));
 }

@@ -91,6 +91,15 @@ export default function Home({
     return lang === 'EN' ? 'Present' : 'heute';
   };
 
+  function rangeFmt(start, end) {
+    if (!(end instanceof Date) || isNaN(end)) {
+      return `${fmt(start)} – ${lang === 'EN' ? 'Present' : 'heute'}`;
+    }
+    const sameMonth = start.getFullYear() === end.getFullYear() &&
+                      start.getMonth()    === end.getMonth();
+    return sameMonth ? fmt(start) : `${fmt(start)} – ${fmt(end)}`;
+  }
+
   return (
     <div className="home">
 
@@ -147,6 +156,9 @@ export default function Home({
         <div className="certs-grid">
           {certs.map((c, i) => (
             <div key={i} className="cert-card">
+              {c.logoUrl && (
+                <img src={c.logoUrl} alt={c.certificateName} className="cert-logo" />
+              )}
               <div className="cc-name">{c.certificateName}</div>
               <div className="cc-date">{fmt(c.date)}</div>
             </div>
@@ -174,9 +186,10 @@ export default function Home({
         <div className="acad-grid">
           {acad.map((a) => (
             <div key={a.university + a.start} className="acad-card">
-              <div className="ac-date">
-                {fmt(a.start)} – {fmt(a.end)}
-              </div>
+              {a.logoUrl && (
+                <img src={a.logoUrl} alt={a.university} className="acad-logo" />
+              )}
+              <div className="ac-date">{rangeFmt(a.start, a.end)}</div>
               <strong className="ac-degree">
                 {a.degree}, {a.university}
               </strong>
@@ -235,10 +248,13 @@ export default function Home({
             <div key={r.id} className="resume-card">
               <div className="rc-header">
                 <span className="rc-date">
-                  {fmt(r.start)} – {fmt(r.end)}
+                  {rangeFmt(r.start, r.end)}
                 </span>
               </div>
               <div className="rc-body">
+                {r.logoUrl && (
+                  <img src={r.logoUrl} alt={r.company} className="rc-logo" />
+                )}
                 <strong>{r.role}</strong>
                 <p>{r.company}</p>
                 <p className="rc-desc">{r.description}</p>
@@ -265,13 +281,22 @@ export default function Home({
             >
               <div className="rc-header">
                 <span className="rc-date">
-                  {fmt(p.start)} – {fmt(p.end)}
+                  {rangeFmt(p.start, p.end)}
                 </span>
               </div>
               <div className="rc-body">
+                {p.logoUrl && (
+                  <img src={p.logoUrl} alt={p.customer} className="rc-logo" />
+                )}
                 <strong>{p.role}</strong>
                 <p className="rc-cust">
-                  {p.customer}
+                  {p.linkUrl ? (
+                    <a href={p.linkUrl} target="_blank" rel="noopener noreferrer">
+                      {p.customer}
+                    </a>
+                  ) : (
+                    p.customer
+                  )}
                 </p>
                 <p className="rc-desc">{p.description}</p>
                 <p className="rc-tech">
