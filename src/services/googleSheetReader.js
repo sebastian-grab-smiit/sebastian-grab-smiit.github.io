@@ -54,6 +54,8 @@ export async function fetchCertificates() {
         language:           r[0],
         certificateName:    r[1],
         date:               new Date(r[2]),
+        validationLink:     r[3],
+        logoUrl:            r[4],
     }));
 }
 
@@ -74,9 +76,10 @@ export async function fetchAcademics() {
         start:          new Date(r[1]),
         end:            new Date(r[2]),
         university:     r[3],
-        degree:         r[4],
-        description:    r[5],
-        grade:          parseFloat(r[6]),
+        logoUrl:        r[4],
+        degree:         r[5],
+        description:    r[6],
+        grade:          parseFloat(r[7]),
     }));
 }
 
@@ -96,10 +99,12 @@ export async function fetchResume() {
         start:          new Date(r[1]),
         end:            new Date(r[2]),
         company:        r[3],
-        rolle:          r[4],
-        description:    r[5],
-        technologies:   r[6],
-        sections:       r[7],
+        address:        r[4],
+        logoUrl:        r[5],
+        role:           r[6],
+        description:    r[7],
+        technologies:   r[8],
+        sections:       r[9],
     }));
 }
 
@@ -111,10 +116,11 @@ export async function fetchProjects() {
         description:    r[2],
         customer:       r[3],
         address:        r[4],
-        start:          new Date(r[5]),
-        end:            new Date(r[6]),
-        job:            r[7],
-        technologies:   r[8],
-        sections:       r[9],
+        logoUrl:        r[5],
+        start:          new Date(r[6]),
+        end:            new Date(r[7]),
+        job:            r[8],
+        technologies:   r[9],
+        sections:       r[10],
     }));
 }

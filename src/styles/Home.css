@@ -422,6 +422,7 @@ body[data-theme="light"] .pill {
   color: var(--text);
 }
 body[data-theme="light"] .pill.active {
+  background: rgba(0, 122, 255, 0.3);
   box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
 }
 

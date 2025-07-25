@@ -195,7 +195,7 @@ export default function Home({
       <section className="filter-section">
         <div className="filter-group">
           <span className="filter-label">
-            {lang === 'EN' ? 'Filter by Tech' : 'Filter nach Technologie'}
+            {lang === 'EN' ? 'Filter by Technology' : 'Filter nach Technologie'}
           </span>
           <div className="filter-pills">
             {uniqueTechs.map((t) => (
@@ -239,7 +239,7 @@ export default function Home({
                 </span>
               </div>
               <div className="rc-body">
-                <strong>{r.rolle}</strong>
+                <strong>{r.role}</strong>
                 <p>{r.company}</p>
                 <p className="rc-desc">{r.description}</p>
                 <p className="rc-tech">
