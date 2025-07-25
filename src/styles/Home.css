@@ -417,6 +417,13 @@
   border: 1px solid var(--header-border);
 }
 
+.rc-desc,
+.pc-desc {
+  /* allow "\n" in the text to produce real line breaks */
+  white-space: pre-line;
+  margin: 1.25rem;
+}
+
 
 /* ─── Light Mode Overrides ─── */
 body[data-theme="light"] {
@@ -472,7 +479,7 @@ body[data-theme="light"] .pill {
   color: var(--text);
 }
 body[data-theme="light"] .pill.active {
-  background: rgba(0, 122, 255, 0.3);
+  background: rgba(0, 122, 255, 0.4  );
   box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
 }
 

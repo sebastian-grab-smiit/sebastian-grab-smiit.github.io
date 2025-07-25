@@ -18,8 +18,8 @@ export default function Home({
   const certs     = certificates.filter((c) => c.language === lang);
   const langs     = languages.filter((l) => l.language === lang);
   const acad      = academics.filter((a) => a.language === lang);
-  const cvs       = resume.filter((r)   => r.language === lang);
-  const projs     = projects.filter((p) => p.language === lang);
+  const cvs       = resume.filter((r)   => r.language === lang).sort((a, b) => b.start.getTime() - a.start.getTime());
+  const projs     = projects.filter((p) => p.language === lang).sort((a, b) => b.start.getTime() - a.start.getTime());
   const skl       = skills.filter((p) => p.language === lang); // .sort((a, b) => b.level - a.level);
 
   // ───── Filters ─────
@@ -98,6 +98,13 @@ export default function Home({
     const sameMonth = start.getFullYear() === end.getFullYear() &&
                       start.getMonth()    === end.getMonth();
     return sameMonth ? fmt(start) : `${fmt(start)} – ${fmt(end)}`;
+  }
+
+  function withLineBreaks(text) {
+    if (typeof text !== 'string') return text;
+    return text
+      .replace(/ *• */g, '\n• ')
+      .replace(/^\n/, '');
   }
 
   return (
@@ -298,7 +305,7 @@ export default function Home({
                     p.customer
                   )}
                 </p>
-                <p className="rc-desc">{p.description}</p>
+                <p className="rc-desc">{withLineBreaks(p.description)}</p>
                 <p className="rc-tech">
                   <em>{p.technologies}</em>
                 </p>

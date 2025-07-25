@@ -17,6 +17,7 @@ function clean(cell) {
         .trim();
     }
 
+
 if (!SHEET_ID) {
     throw new Error("Missing env var REACT_APP_GOOGLE_SHEET_ID");
 }
