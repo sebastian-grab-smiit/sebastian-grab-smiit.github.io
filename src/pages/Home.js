@@ -11,7 +11,17 @@ export default function Home({
   projects,
 }) {
   // language state
-  const [lang, setLang] = useState('EN');
+  const params = new URLSearchParams(window.location.search);
+  const initial = params.get('lang') === 'DE' ? 'DE' : 'EN';
+
+  const [lang, setLang] = useState(initial);
+
+  function toggleLang(newLang) {
+    setLang(newLang);
+    const params = new URLSearchParams(window.location.search);
+    params.set('lang', newLang);
+    window.history.replaceState(null, '', '?' + params.toString());
+  }
 
   // filter for selected language
   const person    = personal.find((p) => p.language === lang);
@@ -24,7 +34,7 @@ export default function Home({
 
   // ───── Filters ─────
   // extract unique techs & sections from both resume & projects
-  const allItems = [...cvs, ...projs];
+  const allItems = [...projs];
   const uniqueTechs = Array.from(
     new Set(
       allItems.flatMap((it) =>
@@ -76,7 +86,6 @@ export default function Home({
     return techMatch || secMatch;
   };
 
-  const filteredResume = cvs.filter(itemMatches);
   const filteredProjects = projs.filter(itemMatches);
 
   // date formatting
@@ -116,7 +125,7 @@ export default function Home({
           <button
             key={l}
             className={lang === l ? 'active' : ''}
-            onClick={() => setLang(l)}
+            onClick={() => toggleLang(l)}
           >
             {l}
           </button>
@@ -211,13 +220,59 @@ export default function Home({
         </div>
       </section>
 
+      {/* SKILLS */}
+      <section className="skills-section">
+        <h2>{lang === 'EN' ? 'Skills' : 'Kenntnisse'}</h2>
+        <div className="skills-grid">
+          {skl.map((s, i) => (
+            <div key={i} className="skill-pill">
+              <div className="skill-pill-header">
+                <span className="skill-name">{s.name}</span>
+                <span className="skill-percent">{s.level}%</span>
+              </div>
+              <div className="skill-bar">
+                <div
+                  className="skill-fill"
+                  style={{ width: `${s.level}%` }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* RESUME */}
+      <section className="resume-section">
+        <h2>{lang === 'EN' ? 'Professional Experience' : 'Berufserfahrung'}</h2>
+        <div className="resume-grid">
+          {cvs.map((r) => (
+            <div key={r.id} className="resume-card">
+              <div className="rc-header">
+                <span className="rc-date">
+                  {rangeFmt(r.start, r.end)}
+                </span>
+              </div>
+              <div className="rc-body">
+                {r.logoUrl && (
+                  <img src={r.logoUrl} alt={r.company} className="rc-logo" />
+                )}
+                <strong>{r.role}</strong>
+                <p>{r.company}</p>
+                <p className="rc-desc">{r.description}</p>
+                <p className="rc-tasks">{withLineBreaks(r.tasks)}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ── FILTER BARS ── */}
       <section className="filter-section">
         <div className="filter-group">
           <span className="filter-label">
             {lang === 'EN' ? 'Filter by Technology' : 'Filter nach Technologie'}
           </span>
-          <div className="filter-pills">
+          <div className="filter-pills tech-filters">
             {uniqueTechs.map((t) => (
               <button
                 key={t}
@@ -233,7 +288,7 @@ export default function Home({
           <span className="filter-label">
             {lang === 'EN' ? 'Filter by Section' : 'Filter nach Bereich'}
           </span>
-          <div className="filter-pills">
+          <div className="filter-pills section-filters">
             {uniqueSections.map((s) => (
               <button
                 key={s}
@@ -246,37 +301,6 @@ export default function Home({
           </div>
         </div>
         </section>
-
-      {/* RESUME */}
-      <section className="resume-section">
-        <h2>{lang === 'EN' ? 'Professional Experience' : 'Berufserfahrung'}</h2>
-        <div className="resume-grid">
-          {filteredResume.map((r) => (
-            <div key={r.id} className="resume-card">
-              <div className="rc-header">
-                <span className="rc-date">
-                  {rangeFmt(r.start, r.end)}
-                </span>
-              </div>
-              <div className="rc-body">
-                {r.logoUrl && (
-                  <img src={r.logoUrl} alt={r.company} className="rc-logo" />
-                )}
-                <strong>{r.role}</strong>
-                <p>{r.company}</p>
-                <p className="rc-desc">{r.description}</p>
-                <p className="rc-tasks">{withLineBreaks(r.tasks)}</p>
-                <p className="rc-tech">
-                  <em>{r.technologies}</em>
-                </p>
-                <p className="rc-sections">
-                  <small>{r.sections}</small>
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* PROJECTS */}
       <section className="projects-section">
@@ -307,33 +331,36 @@ export default function Home({
                   )}
                 </p>
                 <p className="rc-desc-projects">{withLineBreaks(p.description)}</p>
-                <p className="rc-tech">
+                {/* <p className="rc-tech">
                   <em>{p.technologies}</em>
                 </p>
                 <p className="rc-sections">
-                  <small>{p.sections}</small>
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SKILLS */}
-      <section className="skills-section">
-        <h2>{lang === 'EN' ? 'Skills' : 'Kenntnisse'}</h2>
-        <div className="skills-grid">
-          {skl.map((s, i) => (
-            <div key={i} className="skill-pill">
-              <div className="skill-pill-header">
-                <span className="skill-name">{s.name}</span>
-                <span className="skill-percent">{s.level}%</span>
-              </div>
-              <div className="skill-bar">
-                <div
-                  className="skill-fill"
-                  style={{ width: `${s.level}%` }}
-                />
+                  <em>{p.sections}</em>
+                </p> */}
+                <div className="rc-tags">
+                  {p.technologies
+                    .split(';')
+                    .map((t) => t.trim())
+                    .filter(Boolean)
+                    .map((t) => (
+                      <span key={t} className="tag tech-tag">
+                        {t}
+                      </span>
+                    ))
+                  }
+                </div>
+                <div className="rc-tags">
+                  {p.sections
+                    .split(';')
+                    .map((s) => s.trim())
+                    .filter(Boolean)
+                    .map((s) => (
+                      <span key={s} className="tag section-tag">
+                        {s}
+                      </span>
+                    ))
+                  }
+                </div>
               </div>
             </div>
           ))}

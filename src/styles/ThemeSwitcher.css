@@ -13,3 +13,19 @@
 .theme-switch:hover {
     background: rgba(27,30,36,1);
 }
+
+body[data-theme="light"] .theme-switch {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(245,245,245,1);
+    color: rgba(27,30,36,1);
+    border: 1px solid var(--header-border);
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 1000;
+}
+body[data-theme="light"] .theme-switch:hover {
+    background: rgba(27,30,36,0.2);
+}

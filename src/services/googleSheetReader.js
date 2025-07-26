@@ -104,8 +104,6 @@ export async function fetchResume() {
         role:           r[6],
         description:    r[7],
         tasks:          r[8],
-        technologies:   r[9],
-        sections:       r[10],
     }));
 }
 

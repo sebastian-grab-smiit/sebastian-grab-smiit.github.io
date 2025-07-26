@@ -358,11 +358,19 @@
   transition: all 0.2s;
 }
 
-.pill.active {
+/* .pill.active {
   background: var(--accent-1);
   border-color: var(--accent-1);
   color: var(--bg);
   box-shadow: 0 2px 8px rgba(0, 255, 209, 0.3);
+} */
+
+.tech-filters .pill.active {
+  box-shadow: 0 2px 8px var(--accent-1);
+}
+
+.section-filters .pill.active {
+  box-shadow: 0 2px 8px var(--accent-2);
 }
 
 .pill:hover {
@@ -433,6 +441,45 @@
   margin: 1.25rem;
 }
 
+.rc-tags {
+  display: flex;
+  flex-wrap: wrap;        /* allow multiple lines */
+  gap: 0.5rem 0.75rem;     /* row-gap / column-gap */
+  margin-top: 1rem;        /* push away from the text above */
+}
+
+/* base tag style (transparent bg + subtle border) */
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 999px;
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--header-border);
+  transition: box-shadow 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+/* tech = accent‑1 shadow */
+.tech-tag {
+  box-shadow: 0 2px 8px var(--accent-1);
+}
+
+/* section = accent‑2 shadow */
+.section-tag {
+  box-shadow: 0 2px 8px var(--accent-2);
+}
+
+/* hover lift + stronger shadow */
+.tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px currentColor;
+}
+
+
+
 
 /* ─── Light Mode Overrides ─── */
 body[data-theme="light"] {
@@ -487,9 +534,13 @@ body[data-theme="light"] .pill {
   border-color: var(--header-border);
   color: var(--text);
 }
-body[data-theme="light"] .pill.active {
-  background: rgba(0, 122, 255, 0.4  );
-  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+
+body[data-theme="light"] .tech-filters .pill.active {
+  box-shadow: 0 2px 8px var(--accent-1);
+}
+
+body[data-theme="light"] .section-filters .pill.active {
+  box-shadow: 0 2px 8px var(--accent-2);
 }
 
 /* Language switcher */
