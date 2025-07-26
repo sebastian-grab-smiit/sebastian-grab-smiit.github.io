@@ -56,6 +56,20 @@ export default function Home({
     )
   ).sort();
 
+  const techCounts = uniqueTechs.reduce((acc, tech) => {
+    acc[tech] = projs.filter(it =>
+      it.technologies.split(';').map(t => t.trim()).includes(tech)
+    ).length;
+    return acc;
+  }, {});
+
+  const sectionCounts = uniqueSections.reduce((acc, section) => {
+    acc[section] = projs.filter(it =>
+      it.sections.split(';').map(s => s.trim()).includes(section)
+    ).length;
+    return acc;
+  }, {});
+
   const [selectedTechs, setSelectedTechs] = useState([]);
   const [selectedSections, setSelectedSections] = useState([]);
 
@@ -166,36 +180,6 @@ export default function Home({
         </div>
       </section>
 
-      {/* CERTIFICATES */}
-      <section className="certs-section">
-        <h2>{lang === 'EN' ? 'Certificates' : 'Zertifikate'}</h2>
-        <div className="certs-grid">
-          {certs.map((c, i) => (
-            <div key={i} className="cert-card">
-              {c.logoUrl && (
-                <img src={c.logoUrl} alt={c.certificateName} className="cert-logo" />
-              )}
-              <div className="cc-name">{c.certificateName}</div>
-              <div className="cc-date">{fmt(c.date)}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* LANGUAGES */}
-      <section className="langs-section">
-        <h2>{lang === 'EN' ? 'Languages' : 'Sprachen'}</h2>
-        <div className="langs-grid">
-          {langs.map((l, i) => (
-            <div key={i} className="lang-pill">
-              {l.iconUrl && <img src={l.iconUrl} alt={l.languageName} />}
-              <span className="ln-name">{l.languageName}</span>
-              <span className="ln-level">{l.level}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ACADEMICS */}
       <section className="acad-section">
         <h2>{lang === 'EN' ? 'Academic History' : 'Akademischer Werdegang'}</h2>
@@ -266,45 +250,75 @@ export default function Home({
         </div>
       </section>
 
-      {/* ── FILTER BARS ── */}
-      <section className="filter-section">
-        <div className="filter-group">
-          <span className="filter-label">
-            {lang === 'EN' ? 'Filter by Technology' : 'Filter nach Technologie'}
-          </span>
-          <div className="filter-pills tech-filters">
-            {uniqueTechs.map((t) => (
-              <button
-                key={t}
-                className={`pill ${selectedTechs.includes(t) ? 'active' : ''}`}
-                onClick={() => toggleTech(t)}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+      {/* CERTIFICATES */}
+      <section className="certs-section">
+        <h2>{lang === 'EN' ? 'Certificates' : 'Zertifikate'}</h2>
+        <div className="certs-grid">
+          {certs.map((c, i) => (
+            <div key={i} className="cert-card">
+              {c.logoUrl && (
+                <img src={c.logoUrl} alt={c.certificateName} className="cert-logo" />
+              )}
+              <div className="cc-name">{c.certificateName}</div>
+              <div className="cc-date">{fmt(c.date)}</div>
+            </div>
+          ))}
         </div>
-        <div className="filter-group">
-          <span className="filter-label">
-            {lang === 'EN' ? 'Filter by Section' : 'Filter nach Bereich'}
-          </span>
-          <div className="filter-pills section-filters">
-            {uniqueSections.map((s) => (
-              <button
-                key={s}
-                className={`pill ${selectedSections.includes(s) ? 'active' : ''}`}
-                onClick={() => toggleSection(s)}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
+      </section>
+
+      {/* LANGUAGES */}
+      <section className="langs-section">
+        <h2>{lang === 'EN' ? 'Languages' : 'Sprachen'}</h2>
+        <div className="langs-grid">
+          {langs.map((l, i) => (
+            <div key={i} className="lang-pill">
+              {l.iconUrl && <img src={l.iconUrl} alt={l.languageName} />}
+              <span className="ln-name">{l.languageName}</span>
+              <span className="ln-level">{l.level}</span>
+            </div>
+          ))}
         </div>
-        </section>
+      </section>
 
       {/* PROJECTS */}
       <section className="projects-section">
         <h2>{lang === 'EN' ? 'Projects' : 'Projekte'}</h2>
+        {/* ── Filter Bars ── */}
+        <div className="filter-section">
+          <div className="filter-group">
+            <span className="filter-label">
+              {lang === 'EN' ? 'Filter by Technology' : 'Filter nach Technologie'}
+            </span>
+            <div className="filter-pills tech-filters">
+              {uniqueTechs.map((t) => (
+                <button
+                  key={t}
+                  className={`pill ${selectedTechs.includes(t) ? 'active' : ''}`}
+                  onClick={() => toggleTech(t)}
+                >
+                  {t} ({techCounts[t]})
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="filter-group">
+            <span className="filter-label">
+              {lang === 'EN' ? 'Filter by Section' : 'Filter nach Bereich'}
+            </span>
+            <div className="filter-pills section-filters">
+              {uniqueSections.map((s) => (
+                <button
+                  key={s}
+                  className={`pill ${selectedSections.includes(s) ? 'active' : ''}`}
+                  onClick={() => toggleSection(s)}
+                >
+                  {s} ({sectionCounts[s]})
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+        {/* ── Project Items ── */}
         <div className="resume-grid">
           {filteredProjects.map((p) => (
             <div
@@ -331,12 +345,6 @@ export default function Home({
                   )}
                 </p>
                 <p className="rc-desc-projects">{withLineBreaks(p.description)}</p>
-                {/* <p className="rc-tech">
-                  <em>{p.technologies}</em>
-                </p>
-                <p className="rc-sections">
-                  <em>{p.sections}</em>
-                </p> */}
                 <div className="rc-tags">
                   {p.technologies
                     .split(';')
