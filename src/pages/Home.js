@@ -56,22 +56,34 @@ export default function Home({
     )
   ).sort();
 
+  const [selectedTechs, setSelectedTechs] = useState([]);
+  const [selectedSections, setSelectedSections] = useState([]);
+
+  const techBase = projs.filter((it) => {
+    if (!selectedSections.length) return true;
+    const secList = it.sections.split(';').map((s) => s.trim());
+    return selectedSections.some((s) => secList.includes(s));
+  });
+
+  const sectionBase = projs.filter((it) => {
+    if (!selectedTechs.length) return true;
+    const techList = it.technologies.split(';').map((t) => t.trim());
+    return selectedTechs.some((t) => techList.includes(t));
+  });
+
   const techCounts = uniqueTechs.reduce((acc, tech) => {
-    acc[tech] = projs.filter(it =>
-      it.technologies.split(';').map(t => t.trim()).includes(tech)
+    acc[tech] = techBase.filter((it) =>
+      it.technologies.split(';').map((t) => t.trim()).includes(tech)
     ).length;
     return acc;
   }, {});
 
   const sectionCounts = uniqueSections.reduce((acc, section) => {
-    acc[section] = projs.filter(it =>
-      it.sections.split(';').map(s => s.trim()).includes(section)
+    acc[section] = sectionBase.filter((it) =>
+      it.sections.split(';').map((s) => s.trim()).includes(section)
     ).length;
     return acc;
   }, {});
-
-  const [selectedTechs, setSelectedTechs] = useState([]);
-  const [selectedSections, setSelectedSections] = useState([]);
 
   const toggleTech = (t) =>
     setSelectedTechs((prev) =>
@@ -82,22 +94,19 @@ export default function Home({
       prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]
     );
 
-  // filter function: include if ANY selected tech/section matches
   const itemMatches = (it) => {
-    const techList = it.technologies
-      .split(';')
-      .map((t) => t.trim());
-    const secList = it.sections
-      .split(';')
-      .map((s) => s.trim());
+    const techList = it.technologies.split(';').map((t) => t.trim());
+    const secList  = it.sections     .split(';').map((s) => s.trim());
 
-    // no filters → keep all
-    if (!selectedTechs.length && !selectedSections.length) return true;
+    const techOk = !selectedTechs.length
+      ? true
+      : selectedTechs.some((t) => techList.includes(t));
 
-    // tech OR section match
-    const techMatch = selectedTechs.some((t) => techList.includes(t));
-    const secMatch = selectedSections.some((s) => secList.includes(s));
-    return techMatch || secMatch;
+    const secOk  = !selectedSections.length
+      ? true
+      : selectedSections.some((s) => secList.includes(s));
+
+    return techOk && secOk;
   };
 
   const filteredProjects = projs.filter(itemMatches);
@@ -290,7 +299,9 @@ export default function Home({
               {lang === 'EN' ? 'Filter by Technology' : 'Filter nach Technologie'}
             </span>
             <div className="filter-pills tech-filters">
-              {uniqueTechs.map((t) => (
+              {uniqueTechs
+                .filter((t) => techCounts[t] > 0)
+                .map((t) => (
                 <button
                   key={t}
                   className={`pill ${selectedTechs.includes(t) ? 'active' : ''}`}
@@ -306,7 +317,9 @@ export default function Home({
               {lang === 'EN' ? 'Filter by Section' : 'Filter nach Bereich'}
             </span>
             <div className="filter-pills section-filters">
-              {uniqueSections.map((s) => (
+              {uniqueSections
+                .filter((s) => sectionCounts[s] > 0)
+                .map((s) => (
                 <button
                   key={s}
                   className={`pill ${selectedSections.includes(s) ? 'active' : ''}`}
