@@ -103,8 +103,9 @@ export async function fetchResume() {
         logoUrl:        r[5],
         role:           r[6],
         description:    r[7],
-        technologies:   r[8],
-        sections:       r[9],
+        tasks:          r[8],
+        technologies:   r[9],
+        sections:       r[10],
     }));
 }
 

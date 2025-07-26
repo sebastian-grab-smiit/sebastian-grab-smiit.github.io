@@ -265,6 +265,7 @@ export default function Home({
                 <strong>{r.role}</strong>
                 <p>{r.company}</p>
                 <p className="rc-desc">{r.description}</p>
+                <p className="rc-tasks">{withLineBreaks(r.tasks)}</p>
                 <p className="rc-tech">
                   <em>{r.technologies}</em>
                 </p>
@@ -305,7 +306,7 @@ export default function Home({
                     p.customer
                   )}
                 </p>
-                <p className="rc-desc">{withLineBreaks(p.description)}</p>
+                <p className="rc-desc-projects">{withLineBreaks(p.description)}</p>
                 <p className="rc-tech">
                   <em>{p.technologies}</em>
                 </p>

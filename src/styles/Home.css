@@ -1,3 +1,4 @@
+/* Home.css */
 .home {
   width: 100%;
   background: var(--bg);
@@ -202,6 +203,14 @@
   margin-bottom: 0.5rem;
 }
 .rc-desc {
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+.rc-desc-projects {
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+.rc-tasks {
   font-size: 0.9rem;
   margin: 0.5rem 0;
 }
@@ -417,8 +426,8 @@
   border: 1px solid var(--header-border);
 }
 
-.rc-desc,
-.pc-desc {
+.rc-tasks,
+.rc-desc-projects {
   /* allow "\n" in the text to produce real line breaks */
   white-space: pre-line;
   margin: 1.25rem;
