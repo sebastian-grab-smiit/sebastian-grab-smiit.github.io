@@ -11,6 +11,7 @@ import {
 import Home from './pages/Home';
 import Loading from './components/Loading';
 import ThemeSwitcher from './components/ThemeSwitcher';
+import NavBar from './components/NavBar';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './App.css';
@@ -18,6 +19,15 @@ import './App.css';
 export default function App() {
   const [cvData, setCvData] = useState(null);
   const [theme, setTheme] = useState('dark');
+
+  const params = new URLSearchParams(window.location.search);
+  const initial = params.get('lang') === 'DE' ? 'DE' : 'EN';
+  const [lang, setLang] = useState(initial);
+
+  useEffect(() => {
+    const newUrl = `${window.location.pathname}?lang=${lang}`;
+    window.history.replaceState({}, '', newUrl);
+  }, [lang]);
 
   useEffect(() => {
     async function loadData() {
@@ -55,14 +65,30 @@ export default function App() {
     document.body.setAttribute('data-theme', theme);
   }, [theme]);
 
+  const toggleLang = (l) => {
+    if (l !== lang) setLang(l);
+  };
+
   if (!cvData) {
     return <Loading />;
   }
 
   return (
     <div className="App">
-      <ThemeSwitcher theme={theme} setTheme={setTheme} />
-      <Home {...cvData} />
+      <ThemeSwitcher theme={theme} setTheme={setTheme} lang={lang} />
+      <div className="lang-switcher">
+        {['EN', 'DE'].map((l) => (
+          <button
+            key={l}
+            className={lang === l ? 'active' : ''}
+            onClick={() => toggleLang(l)}
+          >
+            {l}
+          </button>
+        ))}
+      </div>
+      <NavBar lang={lang} />
+      <Home lang={lang} {...cvData} />
     </div>
   );
 }

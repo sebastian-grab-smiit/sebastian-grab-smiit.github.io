@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Home.css';
 
 export default function Home({
+  lang,
   personal,
   certificates,
   languages,
@@ -10,19 +11,6 @@ export default function Home({
   resume,
   projects,
 }) {
-  // language state
-  const params = new URLSearchParams(window.location.search);
-  const initial = params.get('lang') === 'DE' ? 'DE' : 'EN';
-
-  const [lang, setLang] = useState(initial);
-
-  function toggleLang(newLang) {
-    setLang(newLang);
-    const params = new URLSearchParams(window.location.search);
-    params.set('lang', newLang);
-    window.history.replaceState(null, '', '?' + params.toString());
-  }
-
   // filter for selected language
   const person    = personal.find((p) => p.language === lang);
   const certs     = certificates.filter((c) => c.language === lang);
@@ -142,21 +130,8 @@ export default function Home({
   return (
     <div className="home">
 
-      {/* LANGUAGE SWITCHER */}
-      <div className="lang-switcher">
-        {['EN', 'DE'].map((l) => (
-          <button
-            key={l}
-            className={lang === l ? 'active' : ''}
-            onClick={() => toggleLang(l)}
-          >
-            {l}
-          </button>
-        ))}
-      </div>
-
       {/* PERSONAL HERO */}
-      <section className="hero-section">
+      <section section id = "personal" className="hero-section">
         <div className="hero-content">
           {person.imageUrl && (
             <img
@@ -190,7 +165,7 @@ export default function Home({
       </section>
 
       {/* ACADEMICS */}
-      <section className="acad-section">
+      <section section id = "academics" className="acad-section">
         <h2>{lang === 'EN' ? 'Academic History' : 'Akademischer Werdegang'}</h2>
         <div className="acad-grid">
           {acad.map((a) => (
@@ -217,7 +192,7 @@ export default function Home({
       </section>
 
       {/* SKILLS */}
-      <section className="skills-section">
+      <section section id = "skills" className="skills-section">
         <h2>{lang === 'EN' ? 'Skills' : 'Kenntnisse'}</h2>
         <div className="skills-grid">
           {skl.map((s, i) => (
@@ -238,7 +213,7 @@ export default function Home({
       </section>
 
       {/* RESUME */}
-      <section className="resume-section">
+      <section section id = "resume" className="resume-section">
         <h2>{lang === 'EN' ? 'Professional Experience' : 'Berufserfahrung'}</h2>
         <div className="resume-grid">
           {cvs.map((r) => (
@@ -263,7 +238,7 @@ export default function Home({
       </section>
 
       {/* CERTIFICATES */}
-      <section className="certs-section">
+      <section section id = "certificates" className="certs-section">
         <h2>{lang === 'EN' ? 'Certificates' : 'Zertifikate'}</h2>
         <div className="certs-grid">
           {certs.map((c, i) => (
@@ -279,7 +254,7 @@ export default function Home({
       </section>
 
       {/* LANGUAGES */}
-      <section className="langs-section">
+      <section section id = "languages" className="langs-section">
         <h2>{lang === 'EN' ? 'Languages' : 'Sprachen'}</h2>
         <div className="langs-grid">
           {langs.map((l, i) => (
@@ -293,7 +268,7 @@ export default function Home({
       </section>
 
       {/* PROJECTS */}
-      <section className="projects-section">
+      <section section id = "projects" className="projects-section">
         <h2>{lang === 'EN' ? 'Projects' : 'Projekte'}</h2>
         {/* ── Filter Bars ── */}
         <div className="filter-section">

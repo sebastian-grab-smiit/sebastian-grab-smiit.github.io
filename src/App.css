@@ -8,3 +8,40 @@
   color: var(--subtext);
   font-size: 1.2rem;
 }
+
+.lang-switcher {
+  position: fixed;
+  top: 1rem;
+  right: 2rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 1000;
+}
+
+.lang-switcher button {
+  background: none;
+  border: 2px solid var(--subtext);
+  color: var(--subtext);
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang-switcher button.active {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  color: var(--bg);
+}
+
+body[data-theme="light"] .lang-switcher button {
+  border-color: var(--header-border);
+  color: rgba(27,30,36,1);
+  background: rgba(245,245,245,1);
+}
+
+body[data-theme="light"] .lang-switcher button.active {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  color: var(--bg);
+}

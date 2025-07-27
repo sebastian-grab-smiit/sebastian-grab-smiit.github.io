@@ -6,28 +6,6 @@
   font-family: 'Poppins', sans-serif;
 }
 
-/* Language Switcher */
-.lang-switcher {
-  display: flex;
-  justify-content: flex-end;
-  padding: 1rem 2rem;
-  gap: 0.5rem;
-}
-.lang-switcher button {
-  background: none;
-  border: 2px solid var(--subtext);
-  color: var(--subtext);
-  padding: 0.25rem 0.75rem;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.lang-switcher button.active {
-  background: var(--accent-2);
-  border-color: var(--accent-2);
-  color: var(--bg);
-}
-
 /* Section common */
 .home section {
   padding: 2rem 0;
@@ -517,7 +495,10 @@ body[data-theme="light"] .testi-card {
   box-shadow: none;
 }
 
-body[data-theme="light"] .rc-header,
+body[data-theme="light"] .rc-header  {
+  background: #fafafa;
+}
+
 body[data-theme="light"] .hero-overlay {
   background: var(--card-bg);
 }
