@@ -154,6 +154,7 @@
   border-left: 4px solid var(--accent-1);
 }
 .ac-date {
+  margin-bottom: 0.5rem;
   color: var(--accent-1);
   font-size: 0.9rem;
 }
@@ -161,9 +162,14 @@
   margin: 0.5rem 0;
   font-weight: 600;
 }
+.ac-uni {
+  margin: 0.5rem 0;
+  font-weight: 200;
+}
 .ac-desc {
   color: var(--subtext);
   font-size: 0.95rem;
+  margin: 0.5rem 0;
 }
 .ac-grade {
   margin-top: 0.5rem;

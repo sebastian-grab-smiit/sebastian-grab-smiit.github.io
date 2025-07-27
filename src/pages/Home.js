@@ -200,8 +200,11 @@ export default function Home({
               )}
               <div className="ac-date">{rangeFmt(a.start, a.end)}</div>
               <strong className="ac-degree">
-                {a.degree}, {a.university}
+                {a.degree}
               </strong>
+              <p className="ac-uni">
+                {a.university}
+              </p>
               <p className="ac-desc">{a.description}</p>
               {a.grade && (
                 <div className="ac-grade">
