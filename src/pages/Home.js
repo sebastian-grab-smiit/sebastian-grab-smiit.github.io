@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/Home.css';
+import PowerBIReport from '../components/PowerBIReport';
 
 export default function Home({
   lang,
@@ -290,7 +291,7 @@ export default function Home({
               ))}
             </div>
           </div>
-          <div className="filter-group">
+          {/* <div className="filter-group">
             <span className="filter-label">
               {lang === 'EN' ? 'Filter by Section' : 'Filter nach Bereich'}
             </span>
@@ -307,7 +308,7 @@ export default function Home({
                 </button>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
         {/* ── Project Items ── */}
         <div className="resume-grid">
@@ -365,6 +366,11 @@ export default function Home({
           ))}
         </div>
       </section>
+
+      {/* Power BI Embed */}
+      <PowerBIReport
+        lang={lang}
+      />
     </div>
   );
 }

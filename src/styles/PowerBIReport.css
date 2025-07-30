@@ -1,0 +1,16 @@
+.powerbi-section {
+    padding: 2rem 1rem;
+    text-align: left;
+}
+.powerbi-container {
+    margin: 0 auto;
+    max-width: 1150px;
+    height: 725px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.powerbi-container iframe {
+    width: 100%;
+    height: 100%;
+}
