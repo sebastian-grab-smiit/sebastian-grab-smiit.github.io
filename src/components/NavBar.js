@@ -38,6 +38,11 @@ const sections = [
     label: { EN: 'Projects', DE: 'Projekte' },
     icon: '💼',
   },
+  {
+    id: 'powerbi-section',
+    label: { EN: 'Demo', DE: 'Demo' },
+    icon: '🖱️',
+  },
 ];
 
 export default function NavBar({ lang }) {
