@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import {
   fetchPersonal,
   fetchCertificates,
@@ -69,26 +70,36 @@ export default function App() {
     if (l !== lang) setLang(l);
   };
 
-  if (!cvData) {
-    return <Loading />;
-  }
-
   return (
     <div className="App">
-      <ThemeSwitcher theme={theme} setTheme={setTheme} lang={lang} />
-      <div className="lang-switcher">
-        {['EN', 'DE'].map((l) => (
-          <button
-            key={l}
-            className={lang === l ? 'active' : ''}
-            onClick={() => toggleLang(l)}
-          >
-            {l}
-          </button>
-        ))}
-      </div>
-      <NavBar lang={lang} />
-      <Home lang={lang} {...cvData} />
+      <SwitchTransition>
+        <CSSTransition
+          key={cvData ? 'home' : 'loading'}
+          timeout={400}
+          classNames="fade"
+        >
+          {cvData ? (
+            <div className="page">
+              <ThemeSwitcher theme={theme} setTheme={setTheme} lang={lang} />
+              <div className="lang-switcher">
+                {['EN', 'DE'].map((l) => (
+                  <button
+                    key={l}
+                    className={lang === l ? 'active' : ''}
+                    onClick={() => toggleLang(l)}
+                  >
+                    {l}
+                  </button>
+                ))}
+              </div>
+              <NavBar lang={lang} />
+              <Home lang={lang} {...cvData} />
+            </div>
+          ) : (
+            <Loading />
+          )}
+        </CSSTransition>
+      </SwitchTransition>
     </div>
   );
 }

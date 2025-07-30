@@ -29,11 +29,6 @@ const sections = [
     icon: '📜',
   },
   {
-    id: 'languages',
-    label: { EN: 'Languages', DE: 'Sprachen' },
-    icon: '🗣️',
-  },
-  {
     id: 'projects',
     label: { EN: 'Projects', DE: 'Projekte' },
     icon: '💼',

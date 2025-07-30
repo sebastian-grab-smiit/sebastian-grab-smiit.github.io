@@ -161,6 +161,24 @@ export default function Home({
                 </a>
               </p>
             )}
+            <div className="hero-langs">
+              {langs.map((l, i) => (
+                <span key={l.languageName} className="hero-lang">
+                  {l.iconUrl && (
+                    <img
+                      src={l.iconUrl}
+                      alt={l.languageName}
+                      className="hero-lang-icon"
+                    />
+                  )}
+                  <span className="hero-lang-name">
+                    {l.languageName}
+                    {l.level ? ` (${l.level})` : ''}
+                  </span>
+                  {i < langs.length - 1 && <span className="hero-lang-sep"></span>}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -249,20 +267,6 @@ export default function Home({
               )}
               <div className="cc-name">{c.certificateName}</div>
               <div className="cc-date">{fmt(c.date)}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* LANGUAGES */}
-      <section section id = "languages" className="langs-section">
-        <h2>{lang === 'EN' ? 'Languages' : 'Sprachen'}</h2>
-        <div className="langs-grid">
-          {langs.map((l, i) => (
-            <div key={i} className="lang-pill">
-              {l.iconUrl && <img src={l.iconUrl} alt={l.languageName} />}
-              <span className="ln-name">{l.languageName}</span>
-              <span className="ln-level">{l.level}</span>
             </div>
           ))}
         </div>
@@ -371,6 +375,20 @@ export default function Home({
       <PowerBIReport
         lang={lang}
       />
+
+      {/* FOOTER */}
+      <hr className="footer-separator" />
+      <footer className="footer">
+        <div className="footer-left">
+          © 2025 smiit GmbH
+        </div>
+        <div className="footer-right">
+          <button
+            className="impressum-button"
+            onClick={() => window.location.href = 'https://www.smiit.de/impressum'}
+          >{lang === 'EN' ? 'Legal Notice' : 'Impressum'}</button>
+        </div>
+      </footer>
     </div>
   );
 }

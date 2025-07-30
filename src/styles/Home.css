@@ -64,6 +64,34 @@
 .hero-contact a:hover {
   color: var(--accent-1);
 }
+.hero-langs {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  font-size: 0.9rem;
+  color: var(--subtext);
+}
+.hero-lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.hero-lang-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+.hero-lang-name {
+  line-height: 1;
+}
+.hero-lang-sep {
+  margin: 0 0.5rem;
+  color: var(--subtext);
+}
+
 
 /* CERTIFICATES */
 .certs-grid {
@@ -86,34 +114,6 @@
 .cc-date {
   color: var(--subtext);
   margin-top: 0.25rem;
-}
-
-/* LANGUAGES */
-.langs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-.lang-pill {
-  background: #1b1e24;
-  padding: 0.75rem;
-  border-radius: 0.5rem;
-  text-align: center;
-}
-.lang-pill img {
-  width: 32px;
-  height: 32px;
-  margin-bottom: 0.5rem;
-}
-.ln-name {
-  display: block;
-  font-weight: 600;
-}
-.ln-level {
-  color: var(--subtext);
 }
 
 /* ACADEMICS */
@@ -462,6 +462,37 @@
   box-shadow: 0 4px 12px currentColor;
 }
 
+/* ─── FOOTER ─── */
+.footer-separator {
+  border: 0;
+  border-top: 0.5px solid #272b33;
+  margin: 0;
+  width: 100%;
+  border-radius: 1px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-left {
+  font-size: 0.9rem;
+  color: var(--subtext);
+}
+
+.impressum-button {
+  color: var(--subtext);
+  background: var(--bg);
+  border: 0;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+}
 
 
 
@@ -488,7 +519,6 @@ body[data-theme="light"] .resume-card,
 body[data-theme="light"] .project-card,
 body[data-theme="light"] .skill-pill,
 body[data-theme="light"] .cp-card,
-body[data-theme="light"] .lang-pill,
 body[data-theme="light"] .testi-card {
   background: var(--card-bg);
   border-left-color: var(--accent-1); /* keep accent */
@@ -581,4 +611,12 @@ body[data-theme="light"] .acad-logo {
   background: rgba(255,255,255,0.9);
   border-color: rgba(0,0,0,0.1);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+body[data-theme="light"] .footer-separator {
+  border-top: 0.5px solid var(--header-border);
+}
+body[data-theme="light"] .impressum-button {
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
 }
