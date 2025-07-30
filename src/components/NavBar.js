@@ -39,7 +39,7 @@ const sections = [
     icon: '💼',
   },
   {
-    id: 'powerbi-section',
+    id: 'demo',
     label: { EN: 'Demo', DE: 'Demo' },
     icon: '🖱️',
   },
