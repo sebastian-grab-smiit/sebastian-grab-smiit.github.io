@@ -2,6 +2,67 @@ import React, { useState } from 'react';
 import '../styles/Home.css';
 import PowerBIReport from '../components/PowerBIReport';
 
+/* ──────────────────────────────
+    Helper Functions
+────────────────────────────── */
+
+// Language-based date formatting
+function fmt(lang, d) {
+  if (d instanceof Date && !isNaN(d)) {
+    const locale = lang === 'EN' ? 'en-US' : 'de-DE';
+    return d.toLocaleDateString(locale, { month: 'short', year: 'numeric' });
+  }
+  return lang === 'EN' ? 'Present' : 'heute';
+}
+
+// Format date range (start–end)
+function rangeFmt(lang, start, end) {
+  if (!(end instanceof Date) || isNaN(end)) {
+    return `${fmt(lang, start)} – ${lang === 'EN' ? 'Present' : 'heute'}`;
+  }
+  const sameMonth =
+    start.getFullYear() === end.getFullYear() &&
+    start.getMonth() === end.getMonth();
+  return sameMonth ? fmt(lang, start) : `${fmt(lang, start)} – ${fmt(lang, end)}`;
+}
+
+// For rendering multi-line text (bullets, etc.)
+function withLineBreaks(text) {
+  if (typeof text !== 'string') return text;
+  return text.replace(/ *• */g, '\n• ').replace(/^\n/, '');
+}
+
+// Extract unique, sorted values from item arrays (e.g., technologies/sections)
+function getUniqueSortedFromItems(items, key) {
+  return Array.from(
+    new Set(
+      items.flatMap((it) =>
+        (it[key] || '')
+          .split(';')
+          .map((x) => x.trim())
+          .filter(Boolean)
+      )
+    )
+  ).sort();
+}
+
+// Count how many times each value (tech/section) occurs
+function getCounts(base, key, uniqueList) {
+  return uniqueList.reduce((acc, val) => {
+    acc[val] = base.filter((it) =>
+      (it[key] || '')
+        .split(';')
+        .map((x) => x.trim())
+        .includes(val)
+    ).length;
+    return acc;
+  }, {});
+}
+
+/* ──────────────────────────────
+    Main Home Component
+────────────────────────────── */
+
 export default function Home({
   lang,
   personal,
@@ -12,68 +73,41 @@ export default function Home({
   resume,
   projects,
 }) {
-  // filter for selected language
-  const person    = personal.find((p) => p.language === lang);
-  const certs     = certificates.filter((c) => c.language === lang);
-  const langs     = languages.filter((l) => l.language === lang);
-  const acad      = academics.filter((a) => a.language === lang);
-  const cvs       = resume.filter((r)   => r.language === lang).sort((a, b) => b.start.getTime() - a.start.getTime());
-  const projs     = projects.filter((p) => p.language === lang).sort((a, b) => b.start.getTime() - a.start.getTime());
-  const skl       = skills.filter((p) => p.language === lang); // .sort((a, b) => b.level - a.level);
+  // ─── Filter Data by Language ───
+  const person = personal.find((p) => p.language === lang);
+  const certs  = certificates.filter((c) => c.language === lang);
+  const langs  = languages.filter((l) => l.language === lang);
+  const acad   = academics.filter((a) => a.language === lang);
+  const cvs    = resume.filter((r) => r.language === lang)
+                       .sort((a, b) => b.start.getTime() - a.start.getTime());
+  const projs  = projects.filter((p) => p.language === lang)
+                         .sort((a, b) => b.start.getTime() - a.start.getTime());
+  const skl    = skills.filter((p) => p.language === lang);
 
-  // ───── Filters ─────
-  // extract unique techs & sections from both resume & projects
-  const allItems = [...projs];
-  const uniqueTechs = Array.from(
-    new Set(
-      allItems.flatMap((it) =>
-        it.technologies
-          .split(';')
-          .map((t) => t.trim())
-          .filter(Boolean)
-      )
-    )
-  ).sort();
-  const uniqueSections = Array.from(
-    new Set(
-      allItems.flatMap((it) =>
-        it.sections
-          .split(';')
-          .map((s) => s.trim())
-          .filter(Boolean)
-      )
-    )
-  ).sort();
+  // ─── Filter Logic: Tech/Sections ───
+  const uniqueTechs    = getUniqueSortedFromItems(projs, 'technologies');
+  const uniqueSections = getUniqueSortedFromItems(projs, 'sections');
 
   const [selectedTechs, setSelectedTechs] = useState([]);
   const [selectedSections, setSelectedSections] = useState([]);
 
+  // Helper: get filter base for counts
   const techBase = projs.filter((it) => {
     if (!selectedSections.length) return true;
-    const secList = it.sections.split(';').map((s) => s.trim());
+    const secList = (it.sections || '').split(';').map((s) => s.trim());
     return selectedSections.some((s) => secList.includes(s));
   });
-
   const sectionBase = projs.filter((it) => {
     if (!selectedTechs.length) return true;
-    const techList = it.technologies.split(';').map((t) => t.trim());
+    const techList = (it.technologies || '').split(';').map((t) => t.trim());
     return selectedTechs.some((t) => techList.includes(t));
   });
 
-  const techCounts = uniqueTechs.reduce((acc, tech) => {
-    acc[tech] = techBase.filter((it) =>
-      it.technologies.split(';').map((t) => t.trim()).includes(tech)
-    ).length;
-    return acc;
-  }, {});
+  // Counts for filter display
+  const techCounts    = getCounts(techBase, 'technologies', uniqueTechs);
+  const sectionCounts = getCounts(sectionBase, 'sections', uniqueSections);
 
-  const sectionCounts = uniqueSections.reduce((acc, section) => {
-    acc[section] = sectionBase.filter((it) =>
-      it.sections.split(';').map((s) => s.trim()).includes(section)
-    ).length;
-    return acc;
-  }, {});
-
+  // Toggle handlers
   const toggleTech = (t) =>
     setSelectedTechs((prev) =>
       prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]
@@ -83,63 +117,33 @@ export default function Home({
       prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]
     );
 
+  // Project filter logic
   const itemMatches = (it) => {
-    const techList = it.technologies.split(';').map((t) => t.trim());
-    const secList  = it.sections     .split(';').map((s) => s.trim());
+    const techList = (it.technologies || '').split(';').map((t) => t.trim());
+    const secList  = (it.sections || '').split(';').map((s) => s.trim());
 
     const techOk = !selectedTechs.length
       ? true
       : selectedTechs.some((t) => techList.includes(t));
-
     const secOk  = !selectedSections.length
       ? true
       : selectedSections.some((s) => secList.includes(s));
 
     return techOk && secOk;
   };
-
   const filteredProjects = projs.filter(itemMatches);
 
-  // date formatting
-  const fmt = (d) => {
-    if (d instanceof Date && !isNaN(d)) {
-      const locale = lang === 'EN' ? 'en-US' : 'de-DE';
-      return d.toLocaleDateString(locale, {
-        month: 'short',
-        year: 'numeric',
-      });
-    }
-    return lang === 'EN' ? 'Present' : 'heute';
-  };
-
-  function rangeFmt(start, end) {
-    if (!(end instanceof Date) || isNaN(end)) {
-      return `${fmt(start)} – ${lang === 'EN' ? 'Present' : 'heute'}`;
-    }
-    const sameMonth = start.getFullYear() === end.getFullYear() &&
-                      start.getMonth()    === end.getMonth();
-    return sameMonth ? fmt(start) : `${fmt(start)} – ${fmt(end)}`;
-  }
-
-  function withLineBreaks(text) {
-    if (typeof text !== 'string') return text;
-    return text
-      .replace(/ *• */g, '\n• ')
-      .replace(/^\n/, '');
-  }
-
+  /* ──────────────────────────────
+      RENDER
+  ────────────────────────────── */
   return (
     <div className="home">
 
-      {/* PERSONAL HERO */}
-      <section section id = "personal" className="hero-section">
+      {/* ───── PERSONAL HERO ───── */}
+      <section id="personal" className="hero-section">
         <div className="hero-content">
           {person.imageUrl && (
-            <img
-              className="hero-avatar"
-              src={person.imageUrl}
-              alt={person.name}
-            />
+            <img className="hero-avatar" src={person.imageUrl} alt={person.name} />
           )}
           <div className="hero-details">
             <h1 className="hero-name">{person.name}</h1>
@@ -152,11 +156,7 @@ export default function Home({
             <p className="hero-contact">{person.address}</p>
             {person.linkedInUrl && (
               <p className="hero-contact">
-                <a
-                  href={person.linkedInUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={person.linkedInUrl} target="_blank" rel="noopener noreferrer">
                   LinkedIn ↗
                 </a>
               </p>
@@ -183,8 +183,8 @@ export default function Home({
         </div>
       </section>
 
-      {/* ACADEMICS */}
-      <section section id = "academics" className="acad-section">
+      {/* ───── ACADEMICS ───── */}
+      <section id="academics" className="acad-section">
         <h2>{lang === 'EN' ? 'Academic History' : 'Akademischer Werdegang'}</h2>
         <div className="acad-grid">
           {acad.map((a) => (
@@ -192,13 +192,9 @@ export default function Home({
               {a.logoUrl && (
                 <img src={a.logoUrl} alt={a.university} className="acad-logo" />
               )}
-              <div className="ac-date">{rangeFmt(a.start, a.end)}</div>
-              <strong className="ac-degree">
-                {a.degree}
-              </strong>
-              <p className="ac-uni">
-                {a.university}
-              </p>
+              <div className="ac-date">{rangeFmt(lang, a.start, a.end)}</div>
+              <strong className="ac-degree">{a.degree}</strong>
+              <p className="ac-uni">{a.university}</p>
               <p className="ac-desc">{a.description}</p>
               {a.grade && (
                 <div className="ac-grade">
@@ -210,8 +206,8 @@ export default function Home({
         </div>
       </section>
 
-      {/* SKILLS */}
-      <section section id = "skills" className="skills-section">
+      {/* ───── SKILLS ───── */}
+      <section id="skills" className="skills-section">
         <h2>{lang === 'EN' ? 'Skills' : 'Kenntnisse'}</h2>
         <div className="skills-grid">
           {skl.map((s, i) => (
@@ -221,26 +217,21 @@ export default function Home({
                 <span className="skill-percent">{s.level}%</span>
               </div>
               <div className="skill-bar">
-                <div
-                  className="skill-fill"
-                  style={{ width: `${s.level}%` }}
-                />
+                <div className="skill-fill" style={{ width: `${s.level}%` }} />
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* RESUME */}
-      <section section id = "resume" className="resume-section">
+      {/* ───── RESUME / EXPERIENCE ───── */}
+      <section id="resume" className="resume-section">
         <h2>{lang === 'EN' ? 'Professional Experience' : 'Berufserfahrung'}</h2>
         <div className="resume-grid">
           {cvs.map((r) => (
             <div key={r.id} className="resume-card">
               <div className="rc-header">
-                <span className="rc-date">
-                  {rangeFmt(r.start, r.end)}
-                </span>
+                <span className="rc-date">{rangeFmt(lang, r.start, r.end)}</span>
               </div>
               <div className="rc-body">
                 {r.logoUrl && (
@@ -256,8 +247,8 @@ export default function Home({
         </div>
       </section>
 
-      {/* CERTIFICATES */}
-      <section section id = "certificates" className="certs-section">
+      {/* ───── CERTIFICATES ───── */}
+      <section id="certificates" className="certs-section">
         <h2>{lang === 'EN' ? 'Certificates' : 'Zertifikate'}</h2>
         <div className="certs-grid">
           {certs.map((c, i) => (
@@ -266,16 +257,16 @@ export default function Home({
                 <img src={c.logoUrl} alt={c.certificateName} className="cert-logo" />
               )}
               <div className="cc-name">{c.certificateName}</div>
-              <div className="cc-date">{fmt(c.date)}</div>
+              <div className="cc-date">{fmt(lang, c.date)}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* PROJECTS */}
-      <section section id = "projects" className="projects-section">
+      {/* ───── PROJECTS + FILTERS ───── */}
+      <section id="projects" className="projects-section">
         <h2>{lang === 'EN' ? 'Projects' : 'Projekte'}</h2>
-        {/* ── Filter Bars ── */}
+        {/* Tech Filters */}
         <div className="filter-section">
           <div className="filter-group">
             <span className="filter-label">
@@ -285,36 +276,18 @@ export default function Home({
               {uniqueTechs
                 .filter((t) => techCounts[t] > 0)
                 .map((t) => (
-                <button
-                  key={t}
-                  className={`pill ${selectedTechs.includes(t) ? 'active' : ''}`}
-                  onClick={() => toggleTech(t)}
-                >
-                  {t} ({techCounts[t]})
-                </button>
-              ))}
+                  <button
+                    key={t}
+                    className={`pill ${selectedTechs.includes(t) ? 'active' : ''}`}
+                    onClick={() => toggleTech(t)}
+                  >
+                    {t} ({techCounts[t]})
+                  </button>
+                ))}
             </div>
           </div>
-          {/* <div className="filter-group">
-            <span className="filter-label">
-              {lang === 'EN' ? 'Filter by Section' : 'Filter nach Bereich'}
-            </span>
-            <div className="filter-pills section-filters">
-              {uniqueSections
-                .filter((s) => sectionCounts[s] > 0)
-                .map((s) => (
-                <button
-                  key={s}
-                  className={`pill ${selectedSections.includes(s) ? 'active' : ''}`}
-                  onClick={() => toggleSection(s)}
-                >
-                  {s} ({sectionCounts[s]})
-                </button>
-              ))}
-            </div>
-          </div> */}
         </div>
-        {/* ── Project Items ── */}
+        {/* Project Items */}
         <div className="resume-grid">
           {filteredProjects.map((p) => (
             <div
@@ -322,9 +295,7 @@ export default function Home({
               className="resume-card"
             >
               <div className="rc-header">
-                <span className="rc-date">
-                  {rangeFmt(p.start, p.end)}
-                </span>
+                <span className="rc-date">{rangeFmt(lang, p.start, p.end)}</span>
               </div>
               <div className="rc-body">
                 {p.logoUrl && (
@@ -347,11 +318,8 @@ export default function Home({
                     .map((t) => t.trim())
                     .filter(Boolean)
                     .map((t) => (
-                      <span key={t} className="tag tech-tag">
-                        {t}
-                      </span>
-                    ))
-                  }
+                      <span key={t} className="tag tech-tag">{t}</span>
+                    ))}
                 </div>
                 <div className="rc-tags">
                   {p.sections
@@ -359,11 +327,8 @@ export default function Home({
                     .map((s) => s.trim())
                     .filter(Boolean)
                     .map((s) => (
-                      <span key={s} className="tag section-tag">
-                        {s}
-                      </span>
-                    ))
-                  }
+                      <span key={s} className="tag section-tag">{s}</span>
+                    ))}
                 </div>
               </div>
             </div>
@@ -371,12 +336,10 @@ export default function Home({
         </div>
       </section>
 
-      {/* Power BI Embed */}
-      <PowerBIReport
-        lang={lang}
-      />
+      {/* ───── Power BI Embed ───── */}
+      <PowerBIReport lang={lang} />
 
-      {/* FOOTER */}
+      {/* ───── FOOTER ───── */}
       <hr className="footer-separator" />
       <footer className="footer">
         <div className="footer-left">
@@ -386,7 +349,9 @@ export default function Home({
           <button
             className="impressum-button"
             onClick={() => window.location.href = 'https://www.smiit.de/impressum'}
-          >{lang === 'EN' ? 'Legal Notice' : 'Impressum'}</button>
+          >
+            {lang === 'EN' ? 'Legal Notice' : 'Impressum'}
+          </button>
         </div>
       </footer>
     </div>

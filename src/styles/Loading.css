@@ -3,10 +3,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;            /* full viewport height */
-  background: var(--bg);    /* matches your app background */
+  height: 100vh;
+  background: var(--bg);
 }
-
 .spinner {
   width: 48px;
   height: 48px;
@@ -16,7 +15,6 @@
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
 }
-
 .loading-text {
   font-family: 'Poppins', sans-serif;
   color: var(--subtext);
@@ -24,14 +22,12 @@
   animation: fade 1.5s ease-in-out infinite;
 }
 
-/* Rotate the spinner */
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-/* Fade text in/out */
 @keyframes fade {
   0%, 100% {
     opacity: 0.3;
