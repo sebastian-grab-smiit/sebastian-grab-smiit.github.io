@@ -12,18 +12,17 @@ import {
 import Home from './pages/Home';
 import Loading from './components/Loading';
 import NavBar from './components/NavBar';
+import AppLogo from './components/AppLogo';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './App.css';
-import logoWhite from './assets/logo-white.png';
-import logoBlack from './assets/logo-black.png';
 
 export default function App() {
   const [cvData, setCvData] = useState(null);
   const [theme, setTheme] = useState('dark');
 
   const params = new URLSearchParams(window.location.search);
-  const initial = params.get('lang') === 'DE' ? 'DE' : 'EN';
+  const initial = params.get('lang') === 'EN' ? 'EN' : 'DE';
   const [lang, setLang] = useState(initial);
 
   useEffect(() => {
@@ -81,11 +80,9 @@ export default function App() {
         >
           {cvData ? (
             <div className="page">
-              <div className="app-logo">
-                <a href="https://www.smiit.de">
-                  <img src={theme === 'dark' ? logoWhite : logoBlack} alt="smiit GmbH Logo" />
-                </a>
-              </div>
+              {/* <div className="app-logo">
+                <AppLogo theme={theme} />
+              </div> */}
               <div className="lang-switcher">
                 {['EN', 'DE'].map((l) => (
                   <button
@@ -101,7 +98,7 @@ export default function App() {
               <Home lang={lang} {...cvData} />
             </div>
           ) : (
-            <Loading />
+            <Loading lang={lang}/>
           )}
         </CSSTransition>
       </SwitchTransition>

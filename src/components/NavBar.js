@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import ThemeSwitcher from './ThemeSwitcher';
 import '../styles/NavBar.css';
 
@@ -24,11 +25,6 @@ const sections = [
     icon: '📄',
   },
   {
-    id: 'certificates',
-    label: { EN: 'Certificates', DE: 'Zertifikate' },
-    icon: '📜',
-  },
-  {
     id: 'projects',
     label: { EN: 'Projects', DE: 'Projekte' },
     icon: '💼',
@@ -37,6 +33,11 @@ const sections = [
     id: 'demo',
     label: { EN: 'Demo', DE: 'Demo' },
     icon: '🖱️',
+  },
+  {
+    id: 'certificates',
+    label: { EN: 'Certificates', DE: 'Zertifikate' },
+    icon: '📜',
   },
 ];
 
@@ -58,22 +59,29 @@ export default function NavBar({ lang, theme, setTheme }) {
   }, []);
 
   return (
-    <nav className="navbar">
-      <div className="navbar-content">
-        <ul>
-          {sections.map(sec => (
-            <li key={sec.id} className={active === sec.id ? 'active' : ''}>
-              <a href={`#${sec.id}`} className="navbar-link">
-                <span className="icon">{sec.icon}</span>
-                <span className="label">{sec.label[lang]}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <div className="navbar-bottom">
-          <ThemeSwitcher theme={theme} setTheme={setTheme} lang={lang} />
+    <motion.nav
+      className="navbar"
+      initial={{ x: -70, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.7, delay: 0.15, ease: 'easeOut' }}
+    >
+      <nav className="navbar">
+        <div className="navbar-content">
+          <ul>
+            {sections.map(sec => (
+              <li key={sec.id} className={active === sec.id ? 'active' : ''}>
+                <a href={`#${sec.id}`} className="navbar-link">
+                  <span className="icon">{sec.icon}</span>
+                  <span className="label">{sec.label[lang]}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div className="navbar-bottom">
+            <ThemeSwitcher theme={theme} setTheme={setTheme} lang={lang} />
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </motion.nav>
   );
 }

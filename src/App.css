@@ -11,7 +11,7 @@
 
 .lang-switcher {
   position: fixed;
-  top: 1rem;
+  top: 1.5rem;
   right: 2rem;
   display: flex;
   gap: 0.5rem;
@@ -29,18 +29,6 @@
 }
 
 .lang-switcher button.active {
-  background: var(--accent-2);
-  border-color: var(--accent-2);
-  color: var(--bg);
-}
-
-body[data-theme="light"] .lang-switcher button {
-  border-color: var(--header-border);
-  color: rgba(27,30,36,1);
-  background: rgba(245,245,245,1);
-}
-
-body[data-theme="light"] .lang-switcher button.active {
   background: var(--accent-2);
   border-color: var(--accent-2);
   color: var(--bg);
@@ -64,8 +52,8 @@ body[data-theme="light"] .lang-switcher button.active {
 
 .app-logo {
   position: fixed;
-  top: 0.5rem;
-  left: 1.75rem;
+  top: 1rem;
+  left: 2.5rem;
   z-index: 1200;
   background: none;
   display: flex;
@@ -74,7 +62,19 @@ body[data-theme="light"] .lang-switcher button.active {
 }
 
 .app-logo img {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   object-fit: contain;
+}
+
+body[data-theme="light"] .lang-switcher button {
+  border-color: var(--header-border);
+  color: rgba(27,30,36,1);
+  background: rgba(245,245,245,1);
+}
+
+body[data-theme="light"] .lang-switcher button.active {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  color: var(--bg);
 }

@@ -11,7 +11,7 @@ export default function PowerBIReport({ lang }) {
                 title="Power BI Report - smiit Analytics"
                 src={src}
                 frameBorder="0"
-                allowFullScreen="false"
+                allowFullScreen
                 />
             </div>
         </section>

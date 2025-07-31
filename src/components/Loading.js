@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Loading.css';
 
-export default function Loading() {
-
-  const params = new URLSearchParams(window.location.search);
-  const initial = params.get('lang') === 'DE' ? 'DE' : 'EN';
-
-  const [lang, setLang] = useState(initial);
-
+export default function Loading({lang}) {
   return (
     <div className="loader-container">
       <div className="spinner" />
