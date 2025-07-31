@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ThemeSwitcher from './ThemeSwitcher';
 import '../styles/NavBar.css';
 
 const sections = [
@@ -39,7 +40,7 @@ const sections = [
   },
 ];
 
-export default function NavBar({ lang }) {
+export default function NavBar({ lang, theme, setTheme }) {
   const [active, setActive] = useState(sections[0].id);
 
   useEffect(() => {
@@ -58,18 +59,21 @@ export default function NavBar({ lang }) {
 
   return (
     <nav className="navbar">
-      <ul>
-        {sections.map(sec => (
-          <li key={sec.id} className={active === sec.id ? 'active' : ''}>
-            <a href={`#${sec.id}`}>
-              <span className="icon">{sec.icon}</span>
-              <span className="label">
-                {sec.label[lang]}
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div className="navbar-content">
+        <ul>
+          {sections.map(sec => (
+            <li key={sec.id} className={active === sec.id ? 'active' : ''}>
+              <a href={`#${sec.id}`} className="navbar-link">
+                <span className="icon">{sec.icon}</span>
+                <span className="label">{sec.label[lang]}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div className="navbar-bottom">
+          <ThemeSwitcher theme={theme} setTheme={setTheme} lang={lang} />
+        </div>
+      </div>
     </nav>
   );
 }

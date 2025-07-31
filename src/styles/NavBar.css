@@ -5,23 +5,40 @@
   width: 72px;
   background: var(--bg);
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: stretch;
   z-index: 100;
   transition: width 0.3s;
 }
-.navbar:hover {
-  width: 200px;
+.navbar-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
 }
 .navbar ul {
   list-style: none;
   padding: 0;
   margin: 0;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  justify-content: center;
+  margin-top: 4rem;
 }
 .navbar li {
   width: 100%;
   margin: 8px 0;
+}
+.navbar-bottom {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 1.5rem;
+  border-top: 1px solid var(--header-border);
+  padding-top: 1.5rem;
 }
 .navbar a {
   display: flex;
@@ -58,4 +75,21 @@
   width: 4px;
   background: var(--accent);
   border-radius: 0 4px 4px 0;
+}
+
+
+.navbar-link, .theme-switch-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-muted);
+  padding: 12px;
+  position: relative;
+  background: none;
+  border: none;
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 0;
+  transition: color 0.2s, background 0.2s;
 }

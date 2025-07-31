@@ -61,3 +61,20 @@ body[data-theme="light"] .lang-switcher button.active {
   opacity: 0;
   transition: opacity 400ms ease-out;
 }
+
+.app-logo {
+  position: fixed;
+  top: 0.5rem;
+  left: 1.75rem;
+  z-index: 1200;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.app-logo img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}

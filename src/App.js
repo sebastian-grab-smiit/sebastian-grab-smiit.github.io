@@ -11,11 +11,12 @@ import {
 } from './services/googleSheetReader';
 import Home from './pages/Home';
 import Loading from './components/Loading';
-import ThemeSwitcher from './components/ThemeSwitcher';
 import NavBar from './components/NavBar';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './App.css';
+import logoWhite from './assets/logo-white.png';
+import logoBlack from './assets/logo-black.png';
 
 export default function App() {
   const [cvData, setCvData] = useState(null);
@@ -80,7 +81,11 @@ export default function App() {
         >
           {cvData ? (
             <div className="page">
-              <ThemeSwitcher theme={theme} setTheme={setTheme} lang={lang} />
+              <div className="app-logo">
+                <a href="https://www.smiit.de">
+                  <img src={theme === 'dark' ? logoWhite : logoBlack} alt="smiit GmbH Logo" />
+                </a>
+              </div>
               <div className="lang-switcher">
                 {['EN', 'DE'].map((l) => (
                   <button
@@ -92,7 +97,7 @@ export default function App() {
                   </button>
                 ))}
               </div>
-              <NavBar lang={lang} />
+              <NavBar lang={lang} theme={theme} setTheme={setTheme} />
               <Home lang={lang} {...cvData} />
             </div>
           ) : (
