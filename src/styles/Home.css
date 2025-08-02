@@ -165,6 +165,10 @@
   opacity: 1;
   transform: scale(1);
 }
+.skill-stack:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
 .stack-label {
   font-weight: bold;
   font-size: 1.07rem;

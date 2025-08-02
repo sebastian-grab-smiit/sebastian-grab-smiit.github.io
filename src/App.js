@@ -59,7 +59,7 @@ export default function App() {
 
     loadData();
 
-    AOS.init({ duration: 800, once: true });
+    AOS.init({ duration: 800, false: true, mirror: true, });
   }, []);
 
   useEffect(() => {

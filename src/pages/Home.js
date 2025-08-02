@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import '../styles/Home.css';
 import PowerBIReport from '../components/PowerBIReport';
+import Timeline from '../components/Timeline';
 import DroppingSection from '../services/DroppingSection';
 
 /* ──────────────────────────────
@@ -215,25 +216,24 @@ export default function Home({
         </section>
       </DroppingSection>
 
-      {/* ───── ACADEMICS ───── */}
+      {/* ───── ACADEMICS & RESUME ───── */}
       <DroppingSection index={2}>
-        <section id="academics" className="acad-section">
-          <h2>{lang === 'EN' ? 'Academic History' : 'Akademischer Werdegang'}</h2>
-          <div className="acad-grid">
-            {acad.map((a) => (
-              <div key={a.university + a.start} className="acad-card">
-                {a.logoUrl && (
-                  <img src={a.logoUrl} alt={a.university} className="acad-logo" />
+        <h2>{lang === 'EN' ? 'Academic & Professional Experience' : 'Akademischer & Beruflicher Werdegang'}</h2>
+        <Timeline resume={cvs} academics={acad} lang={lang} />
+      </DroppingSection>
+
+      {/* ───── CERTIFICATES ───── */}
+      <DroppingSection index={3}>
+        <section id="certificates" className="certs-section">
+          <h2>{lang === 'EN' ? 'Certificates' : 'Zertifikate'}</h2>
+          <div className="certs-grid">
+            {certs.map((c, i) => (
+              <div key={i} className="cert-card">
+                {c.logoUrl && (
+                  <img src={c.logoUrl} alt={c.certificateName} className="cert-logo" />
                 )}
-                <div className="ac-date">{rangeFmt(lang, a.start, a.end)}</div>
-                <strong className="ac-degree">{a.degree}</strong>
-                <p className="ac-uni">{a.university}</p>
-                <p className="ac-desc">{a.description}</p>
-                {a.grade && (
-                  <div className="ac-grade">
-                    {lang === 'EN' ? 'Grade' : 'Note'}: {a.grade}
-                  </div>
-                )}
+                <div className="cc-name">{c.certificateName}</div>
+                <div className="cc-date">{fmt(lang, c.date)}</div>
               </div>
             ))}
           </div>
@@ -241,7 +241,7 @@ export default function Home({
       </DroppingSection>
 
       {/* ───── SKILLS ───── */}
-      <DroppingSection index={3}>
+      <DroppingSection index={4}>
         <section id="skills" className="skills-section">
           <h2>{lang === 'EN' ? 'Skills' : 'Kenntnisse'}</h2>
           <div className="skills-carousel-wrapper">
@@ -282,33 +282,8 @@ export default function Home({
         </section>
       </DroppingSection>
 
-      {/* ───── RESUME / EXPERIENCE ───── */}
-      <DroppingSection index={4}>
-        <section id="resume" className="resume-section">
-          <h2>{lang === 'EN' ? 'Professional Experience' : 'Berufserfahrung'}</h2>
-          <div className="resume-grid">
-            {cvs.map((r) => (
-              <div key={r.id} className="resume-card">
-                <div className="rc-header">
-                  <span className="rc-date">{rangeFmt(lang, r.start, r.end)}</span>
-                </div>
-                <div className="rc-body">
-                  {r.logoUrl && (
-                    <img src={r.logoUrl} alt={r.company} className="rc-logo" />
-                  )}
-                  <strong>{r.role}</strong>
-                  <p>{r.company}</p>
-                  <p className="rc-desc">{r.description}</p>
-                  <p className="rc-tasks">{withLineBreaks(r.tasks)}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </DroppingSection>
-
       {/* ───── PROJECTS + FILTERS ───── */}
-      <DroppingSection index={6}>
+      <DroppingSection index={5}>
         <section id="projects" className="projects-section">
           <h2>{lang === 'EN' ? 'Projects' : 'Projekte'}</h2>
           {/* Tech Filters */}
@@ -384,24 +359,6 @@ export default function Home({
 
       {/* ───── Power BI Embed ───── */}
       <PowerBIReport lang={lang} />
-
-      {/* ───── CERTIFICATES ───── */}
-      <DroppingSection index={5}>
-        <section id="certificates" className="certs-section">
-          <h2>{lang === 'EN' ? 'Certificates' : 'Zertifikate'}</h2>
-          <div className="certs-grid">
-            {certs.map((c, i) => (
-              <div key={i} className="cert-card">
-                {c.logoUrl && (
-                  <img src={c.logoUrl} alt={c.certificateName} className="cert-logo" />
-                )}
-                <div className="cc-name">{c.certificateName}</div>
-                <div className="cc-date">{fmt(lang, c.date)}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </DroppingSection>
 
       {/* ───── FOOTER ───── */}
       <hr className="footer-separator" />

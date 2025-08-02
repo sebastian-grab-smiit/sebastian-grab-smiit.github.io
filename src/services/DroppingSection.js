@@ -6,7 +6,7 @@ const sectionDelay = 0.12;
 
 export default function DroppingSection({ children, index }) {
     const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: '-5% 0px' }); // animate when 5% in view
+    const isInView = useInView(ref, { once: false, margin: '-5% 0px' });
 
     return (
         <motion.section
