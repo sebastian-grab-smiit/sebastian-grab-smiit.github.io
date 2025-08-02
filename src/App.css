@@ -9,31 +9,6 @@
   font-size: 1.2rem;
 }
 
-.lang-switcher {
-  position: fixed;
-  top: 1.5rem;
-  right: 2rem;
-  display: flex;
-  gap: 0.5rem;
-  z-index: 1000;
-}
-
-.lang-switcher button {
-  background: none;
-  border: 2px solid var(--subtext);
-  color: var(--subtext);
-  padding: 0.25rem 0.75rem;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.lang-switcher button.active {
-  background: var(--accent-2);
-  border-color: var(--accent-2);
-  color: var(--bg);
-}
-
 .fade-enter {
   opacity: 0;
 }
@@ -67,14 +42,116 @@
   object-fit: contain;
 }
 
-body[data-theme="light"] .lang-switcher button {
-  border-color: var(--header-border);
-  color: rgba(27,30,36,1);
-  background: rgba(245,245,245,1);
+@keyframes spin-in {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin-out {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
 }
 
-body[data-theme="light"] .lang-switcher button.active {
-  background: var(--accent-2);
-  border-color: var(--accent-2);
-  color: var(--bg);
+.settings-gear {
+  position: fixed;
+  top: 1.5rem;
+  right: 2.5rem;
+  z-index: 1300;
+  background: rgba(255, 255, 255, 0);
+  border: 1px solid rgba(255, 255, 255, 0);
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, transform .1s;
+  color: var(--text);
+}
+.settings-gear:hover,
+.settings-gear:focus {
+  background: rgba(255, 255, 255, 0);
+  transform: scale(1.03);
+  outline: none;
+}
+.settings-gear.spin-in {
+  animation: spin-in 0.6s ease-in-out;
+}
+.settings-gear.spin-out {
+  animation: spin-out 0.6s ease-in-out;
+}
+
+/* remove this obsolete rule if you kept it */
+.settings-gear.spin {
+  display: none; /* or delete it entirely */
+}
+.settings-popover {
+  position: fixed;
+  top: 5.25rem;
+  right: 3rem;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: var(--shadow);
+  min-width: 240px;
+  z-index: 1400;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.settings-popover .section + .section {
+  padding-top: 8px;
+  border-top: 1px solid var(--header-border);
+}
+
+.settings-popover .label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+}
+
+.settings-popover .options {
+  display: flex;
+  gap: 8px;
+}
+
+.settings-popover button {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  flex: 1;
+  transition: background .15s, border-color .15s, color .15s;
+  color: var(--subtext);
+  position: relative;
+}
+
+.settings-popover button:hover,
+.settings-popover button:focus {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--accent-1);
+  color: var(--text);
+  outline: 2px solid var(--accent-1);
+  outline-offset: 2px;
+}
+
+.settings-popover button.active,
+.settings-popover button[aria-pressed="true"] {
+  background: var(--accent-1);
+  color: #fff;
+  border-color: var(--accent-1);
+  box-shadow: 0 4px 12px rgba(1, 152, 253, 0.35);
 }

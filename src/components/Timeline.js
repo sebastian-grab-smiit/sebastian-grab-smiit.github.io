@@ -48,9 +48,9 @@ const parseTasks = (text) => {
 };
 
 /* ─── layout helpers ─── */
-const PX_PER_MONTH = 6;
-const MIN_GAP_PX = 50;
-const MAX_GAP_PX = 100;
+const PX_PER_MONTH = 5;
+const MIN_GAP_PX = 30;
+const MAX_GAP_PX = 60;
 
 const monthsBetween = (d1, d2) =>
   (d2.getFullYear() - d1.getFullYear()) * 12 +

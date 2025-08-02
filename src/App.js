@@ -11,15 +11,18 @@ import {
 } from './services/googleSheetReader';
 import Home from './pages/Home';
 import Loading from './components/Loading';
-import NavBar from './components/NavBar';
 import AppLogo from './components/AppLogo';
+import SettingsModal from './components/SettingsModal';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './App.css';
 
 export default function App() {
   const [cvData, setCvData] = useState(null);
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState(() => {
+    // optional: initialize from localStorage or fallback to 'dark'
+    return localStorage.getItem('theme') || 'dark';
+  });
 
   const params = new URLSearchParams(window.location.search);
   const initial = params.get('lang') === 'EN' ? 'EN' : 'DE';
@@ -51,7 +54,15 @@ export default function App() {
           fetchProjects(),
         ]);
 
-        setCvData({ personal, certificates, languages, academics, skills, resume, projects });
+        setCvData({
+          personal,
+          certificates,
+          languages,
+          academics,
+          skills,
+          resume,
+          projects,
+        });
       } catch (err) {
         console.error('Failed to load CV data', err);
       }
@@ -59,11 +70,12 @@ export default function App() {
 
     loadData();
 
-    AOS.init({ duration: 800, false: true, mirror: true, });
+    AOS.init({ duration: 800, false: true, mirror: true });
   }, []);
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme); // persist
   }, [theme]);
 
   const toggleLang = (l) => {
@@ -80,25 +92,22 @@ export default function App() {
         >
           {cvData ? (
             <div className="page">
-              {/* <div className="app-logo">
+              <div className="app-logo">
                 <AppLogo theme={theme} />
-              </div> */}
-              <div className="lang-switcher">
-                {['EN', 'DE'].map((l) => (
-                  <button
-                    key={l}
-                    className={lang === l ? 'active' : ''}
-                    onClick={() => toggleLang(l)}
-                  >
-                    {l}
-                  </button>
-                ))}
               </div>
-              <NavBar lang={lang} theme={theme} setTheme={setTheme} />
+
+              {/* Settings gear top-right */}
+              <SettingsModal
+                lang={lang}
+                setLang={toggleLang}
+                theme={theme}
+                setTheme={setTheme}
+              />
+
               <Home lang={lang} {...cvData} />
             </div>
           ) : (
-            <Loading lang={lang}/>
+            <Loading lang={lang} />
           )}
         </CSSTransition>
       </SwitchTransition>

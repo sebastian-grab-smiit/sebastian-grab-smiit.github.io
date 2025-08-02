@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
 import '../styles/Home.css';
 import PowerBIReport from '../components/PowerBIReport';
 import Timeline from '../components/Timeline';
@@ -140,7 +139,51 @@ export default function Home({
 
   // Counts for filter display
   const techCounts    = getCounts(techBase, 'technologies', uniqueTechs);
-  const sectionCounts = getCounts(sectionBase, 'sections', uniqueSections);
+
+  const heroInnerRef = useRef(null);
+
+const ticking = useRef(false);
+const SCROLL_THRESHOLD = 250; // bis hier hin normalisiert sich der Zoom
+const MAX_SCALE = 1.08;
+const MIN_SCALE = 1.0;
+
+useEffect(() => {
+  const updateScale = () => {
+    const scrollY = window.scrollY;
+    const t = Math.min(scrollY / SCROLL_THRESHOLD, 1); // 0..1
+    // easeOutQuad: 1 - (1 - t)^2
+    const eased = 1 - Math.pow(1 - t, 2);
+    const scale = MAX_SCALE - (MAX_SCALE - MIN_SCALE) * eased; // von 1.08 → 1.0
+    if (heroInnerRef.current) {
+      heroInnerRef.current.style.transform = `scale(${scale})`;
+    }
+  };
+
+  const onScroll = () => {
+    if (!ticking.current) {
+      ticking.current = true;
+      requestAnimationFrame(() => {
+        updateScale();
+        ticking.current = false;
+      });
+    }
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  updateScale();
+
+  return () => {
+    window.removeEventListener("scroll", onScroll);
+  };
+}, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      document.body.classList.add('scrolled');
+      window.removeEventListener('scroll', onScroll);
+    };
+    window.addEventListener('scroll', onScroll, { once: true });
+  }, []);
 
   // Toggle handlers
   const toggleTech = (t) =>
@@ -173,12 +216,17 @@ export default function Home({
       {/* ───── PERSONAL HERO ───── */}
       <DroppingSection index={1}>
         <section id="personal" className="hero-section">
+        <div
+          className="hero-inner"
+          ref={heroInnerRef}
+          aria-label="Hero content with scroll zoom"
+        >
           <div className="hero-content">
             {person.imageUrl && (
               <img className="hero-avatar" src={person.imageUrl} alt={person.name} />
             )}
             <div className="hero-details">
-              <h1 className="hero-name">{person.name}</h1>
+              <h1 tabIndex={-1} className="hero-name">{person.name}</h1>
               <p className="hero-job">{person.job}</p>
               <p className="hero-desc">{person.description}</p>
               <p className="hero-contact">
@@ -213,6 +261,7 @@ export default function Home({
               </div>
             </div>
           </div>
+        </div>
         </section>
       </DroppingSection>
 
