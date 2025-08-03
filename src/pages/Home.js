@@ -34,6 +34,11 @@ function withLineBreaks(text) {
   return text.replace(/ *• */g, '\n• ').replace(/^\n/, '');
 }
 
+function pointWithLineBreaks(text) {
+  if (typeof text !== 'string') return text;
+  return text.replace(/(?<!\.)\. /g, '.\n');
+}
+
 // Extract unique, sorted values from item arrays (e.g., technologies/sections)
 function getUniqueSortedFromItems(items, key) {
   return Array.from(
@@ -228,7 +233,7 @@ useEffect(() => {
             <div className="hero-details">
               <h1 tabIndex={-1} className="hero-name">{person.name}</h1>
               <p className="hero-job">{person.job}</p>
-              <p className="hero-desc">{person.description}</p>
+              <p className="hero-desc">{pointWithLineBreaks(person.description)}</p>
               <p className="hero-contact">
                 <a href={`mailto:${person.email}`}>{person.email}</a> •{' '}
                 <a href={`tel:${person.phone}`}>{person.phone}</a>

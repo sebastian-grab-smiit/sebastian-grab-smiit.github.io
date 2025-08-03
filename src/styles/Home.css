@@ -61,6 +61,7 @@
   max-width: 720px;
   margin-bottom: 1rem;
   color: var(--subtext);
+  white-space: pre-line;
 }
 .hero-contact a { color: var(--text); text-decoration: none; }
 .hero-contact a:hover { color: var(--accent-1); }
@@ -77,13 +78,14 @@
 .hero-lang-icon { width: 20px; height: 20px; object-fit: contain; border-radius: 50%; }
 .hero-lang-name { line-height: 1; }
 .hero-lang-sep { margin: 0 0.5rem; color: var(--subtext); }
-body:not(.scrolled) .home > :not(.hero-section) {
+
+/* body:not(.scrolled) .home > :not(.hero-section) {
   opacity: 0.4;
   pointer-events: none;
   filter: blur(2px);
   transform: translateY(8px);
   transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
-}
+} */
 
 /* GRID LAYOUTS */
 .certs-grid, .acad-grid, .resume-grid, .projects-grid, .skills-grid {
