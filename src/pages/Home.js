@@ -219,16 +219,17 @@ useEffect(() => {
   ────────────────────────────── */
   return (
     <div className="home">
+      {theme === "dark" &&
       <Background
-        quality={2.6}     // perf vs. sharpness
-        intensity={theme === "dark" ? 0.1 : 0.05}   // motion/contrast gain
-        speed={0.8}       // base tempo
-        opacity={theme === "dark" ? 0.5 : 0.1}    // overall strength
-        blur={10}         // make it softer (try 18–24)
+        quality={0.1}     // perf vs. sharpness
+        intensity={theme === "dark" ? 0.2 : 0.05}   // motion/contrast gain
+        speed={1.8}       // base tempo
+        opacity={theme === "dark" ? 0.6 : 0.1}    // overall strength
+        blur={0}         // make it softer (try 18–24)
         desaturate={theme === "dark" ? 0.25 : 0.1} // reduce color pop
-        parallax={0.24}   // how much it follows scroll (0–0.5)
+        parallax={0.14}   // how much it follows scroll (0–0.5)
         energyGain={0.5}  // how responsive to fast scrolls (0–1)
-      />
+      />}
 
       {/* ───── PERSONAL HERO ───── */}
       <DroppingSection index={1}>
