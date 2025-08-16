@@ -419,9 +419,6 @@ body[data-theme="light"] .impressum-button { background: var(--bg); }
   .hero-contact { font-size: 0.95rem; }
   .hero-langs { gap: 0.4rem 0.6rem; }
 
-  /* Skills: single column */
-  .skills-carousel-inner { grid-template-columns: 1fr; }
-
   /* Section padding tighter */
   .home section { padding: 1.25rem 0; }
   .home h2 { padding: 0 1rem; }

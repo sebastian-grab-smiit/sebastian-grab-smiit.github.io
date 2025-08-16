@@ -93,6 +93,8 @@ export default function Home({
   resume,
   projects,
 }) {
+  const STACK_WIDTH = 320;
+
   // Responsive number of cards visible in the skills carousel
   const [visibleStacks, setVisibleStacks] = useState(3);
   useEffect(() => {
@@ -105,7 +107,6 @@ export default function Home({
     window.addEventListener('resize', calc);
     return () => window.removeEventListener('resize', calc);
   }, []);
-const STACK_WIDTH = 320;
 
   // ─── Filter Data by Language ───
   const person = personal.find((p) => p.language === lang);
