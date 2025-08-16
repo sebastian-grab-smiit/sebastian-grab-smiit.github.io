@@ -3,6 +3,8 @@
   background: var(--bg);
   color: var(--text);
   font-family: 'Poppins', sans-serif;
+  position: relative; 
+  z-index: 1;
 }
 
 .home section {
@@ -15,6 +17,7 @@
   font-size: 1.8rem;
   border-bottom: 2px solid var(--header-border);
 }
+
 
 /* HERO */
 .hero-inner {

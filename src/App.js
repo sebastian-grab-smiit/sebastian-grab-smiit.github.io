@@ -104,7 +104,7 @@ export default function App() {
                 setTheme={setTheme}
               />
 
-              <Home lang={lang} {...cvData} />
+              <Home lang={lang} theme={theme} {...cvData} />
             </div>
           ) : (
             <Loading lang={lang} />

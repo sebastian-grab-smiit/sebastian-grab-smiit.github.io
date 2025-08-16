@@ -3,6 +3,7 @@ import '../styles/Home.css';
 import PowerBIReport from '../components/PowerBIReport';
 import Timeline from '../components/Timeline';
 import DroppingSection from '../services/DroppingSection';
+import Background from '../components/Background';
 
 /* ──────────────────────────────
     Helper Functions
@@ -84,6 +85,7 @@ const STACK_WIDTH = 320;
 
 export default function Home({
   lang,
+  theme,
   personal,
   certificates,
   languages,
@@ -217,6 +219,16 @@ useEffect(() => {
   ────────────────────────────── */
   return (
     <div className="home">
+      <Background
+        quality={2.6}     // perf vs. sharpness
+        intensity={theme === "dark" ? 0.1 : 0.05}   // motion/contrast gain
+        speed={0.8}       // base tempo
+        opacity={theme === "dark" ? 0.5 : 0.1}    // overall strength
+        blur={10}         // make it softer (try 18–24)
+        desaturate={theme === "dark" ? 0.25 : 0.1} // reduce color pop
+        parallax={0.24}   // how much it follows scroll (0–0.5)
+        energyGain={0.5}  // how responsive to fast scrolls (0–1)
+      />
 
       {/* ───── PERSONAL HERO ───── */}
       <DroppingSection index={1}>
