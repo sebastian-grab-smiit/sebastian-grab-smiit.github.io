@@ -1,0 +1,51 @@
+
+/* === Mobile Overrides (generated) === */
+
+/* 1) Make all media fluid by default */
+img, video, canvas, svg, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 2) Containers should never exceed viewport width */
+.home h2,
+.home .container,
+.timeline-section {
+  width: min(100%, 1200px);
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* 3) Scalable typography with clamp() */
+:root {
+  --fs-h1: clamp(1.6rem, 5vw + 0.5rem, 2.4rem);
+  --fs-h2: clamp(1.2rem, 3.2vw + 0.5rem, 1.8rem);
+  --fs-body: clamp(0.95rem, 1.2vw + 0.6rem, 1.05rem);
+}
+.home h1, .hero-title { font-size: var(--fs-h1); line-height: 1.2; }
+.home h2 { font-size: var(--fs-h2); line-height: 1.25; }
+.home p, .home li, .home a, .timeline-description { font-size: var(--fs-body); }
+
+/* 4) Improve tap targets */
+button, .impressum-button {
+  min-height: 44px;
+  padding: 0.7rem 1rem;
+}
+
+/* 5) Prevent layout overflow from long words/URLs */
+*, *::before, *::after { min-width: 0; }
+p, h1, h2, h3, h4, h5, h6 { overflow-wrap: anywhere; word-break: break-word; }
+
+/* 6) Timeline: earlier single-column switch & gentler visuals */
+@media (max-width: 900px) {
+  .timeline-item.left, .timeline-item.right {
+    left: 0; right: auto; transform: none; width: 100%;
+  }
+  .timeline-arrow { display: none; }
+  .timeline-logo { width: 36px; height: 36px; }
+}
+
+/* 7) Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}

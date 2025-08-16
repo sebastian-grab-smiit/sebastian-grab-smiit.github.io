@@ -76,7 +76,18 @@ function groupSkills(skills) {
   });
   return groups;
 }
-const VISIBLE_STACKS = 3;
+// Responsive number of cards visible in the skills carousel
+  const [visibleStacks, setVisibleStacks] = useState(3);
+  useEffect(() => {
+    const calc = () => {
+      const w = window.innerWidth || 1200;
+      const vs = w <= 560 ? 1 : w <= 900 ? 2 : 3;
+      setVisibleStacks(vs);
+    };
+    calc();
+    window.addEventListener('resize', calc);
+    return () => window.removeEventListener('resize', calc);
+  }, []);
 const STACK_WIDTH = 320;
 
 /* ──────────────────────────────
@@ -118,11 +129,17 @@ export default function Home({
 
   const displayCategories = categories.filter(cat => (groupedSkills[cat.name] || []).length > 0);
   const [startIdx, setStartIdx] = useState(0);
-  const maxStartIdx = Math.max(0, displayCategories.length - VISIBLE_STACKS);
+  // Clamp the carousel index when visible item count or data changes
+  useEffect(() => {
+    const maxIdx = Math.max(0, (displayCategories?.length || 0) - visibleStacks);
+    setStartIdx((s) => Math.min(s, maxIdx));
+  }, [visibleStacks, displayCategories.length]);
+
+  const maxStartIdx = Math.max(0, displayCategories.length - visibleStacks);
   const prev = () => setStartIdx(idx => Math.max(idx - 1, 0));
   const next = () => setStartIdx(idx => Math.min(idx + 1, maxStartIdx));
   const canPrev = startIdx > 0;
-  const canNext = startIdx + VISIBLE_STACKS < displayCategories.length;
+  const canNext = startIdx + visibleStacks < displayCategories.length;
   const translateX = -(startIdx * (STACK_WIDTH + 40));
 
   // ─── Filter Logic: Tech/Sections ───
@@ -344,7 +361,7 @@ useEffect(() => {
                 ))}
               </div>
             </div>
-            <button className="carousel-arrow right" onClick={() => setStartIdx(idx => Math.min(idx + 1, displayCategories.length - VISIBLE_STACKS))} disabled={!canNext}>›</button>
+            <button className="carousel-arrow right" onClick={() => setStartIdx(idx => Math.min(idx + 1, displayCategories.length - visibleStacks))} disabled={!canNext}>›</button>
           </div>
         </section>
       </DroppingSection>

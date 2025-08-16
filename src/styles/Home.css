@@ -366,3 +366,64 @@ body[data-theme="light"] .acad-logo {
 }
 body[data-theme="light"] .footer-separator { border-top: 0.5px solid var(--header-border); }
 body[data-theme="light"] .impressum-button { background: var(--bg); }
+
+/* ─────────────────────────────────────────────────────────────
+   Responsive: Tablet & Mobile
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .home section { padding: 1.5rem 0; }
+  .home h2 { padding: 0 1.25rem; }
+  .certs-grid, .acad-grid, .resume-grid, .projects-grid, .skills-grid { padding: 0 1.25rem; }
+  .hero-section { padding: 0 1.25rem; }
+}
+
+@media (max-width: 992px) {
+  /* Hero becomes stacked */
+  .hero-content { flex-direction: column; gap: 1rem; text-align: center; }
+  .hero-details { width: 100%; text-align: center; }
+  .hero-name { font-size: clamp(2rem, 7vw, 3rem); }
+  .hero-job { font-size: 1.05rem; }
+  .hero-avatar { width: 128px; height: 128px; }
+  .hero-langs { justify-content: center; }
+
+  /* Cards compact */
+  .cert-card, .acad-card, .resume-card, .project-card { padding: 1rem; }
+  .rc-logo, .cert-logo, .acad-logo { width: 32px; height: 32px; }
+
+  /* Skills carousel: switch to grid, no arrows */
+  .skills-carousel-outer { width: 100%; }
+  .skills-carousel-inner { 
+    display: grid; 
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    transform: none !important;
+  }
+  .skill-stack { width: auto !important; }
+  .carousel-arrow { display: none; }
+}
+
+@media (max-width: 768px) {
+  .home h2 { font-size: 1.5rem; }
+  .rc-body strong { font-size: 1rem; }
+  .rc-desc, .rc-desc-projects { font-size: 0.95rem; }
+  .tag { font-size: 0.78rem; padding: 0.25rem 0.6rem; }
+
+  /* Grids with narrower min columns */
+  .certs-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+  .acad-grid  { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .resume-grid, .projects-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+}
+
+@media (max-width: 560px) {
+  .hero-avatar { width: 112px; height: 112px; }
+  .hero-contact { font-size: 0.95rem; }
+  .hero-langs { gap: 0.4rem 0.6rem; }
+
+  /* Skills: single column */
+  .skills-carousel-inner { grid-template-columns: 1fr; }
+
+  /* Section padding tighter */
+  .home section { padding: 1.25rem 0; }
+  .home h2 { padding: 0 1rem; }
+  .certs-grid, .acad-grid, .resume-grid, .projects-grid, .skills-grid { padding: 0 1rem; }
+}
