@@ -76,19 +76,7 @@ function groupSkills(skills) {
   });
   return groups;
 }
-// Responsive number of cards visible in the skills carousel
-  const [visibleStacks, setVisibleStacks] = useState(3);
-  useEffect(() => {
-    const calc = () => {
-      const w = window.innerWidth || 1200;
-      const vs = w <= 560 ? 1 : w <= 900 ? 2 : 3;
-      setVisibleStacks(vs);
-    };
-    calc();
-    window.addEventListener('resize', calc);
-    return () => window.removeEventListener('resize', calc);
-  }, []);
-const STACK_WIDTH = 320;
+
 
 /* ──────────────────────────────
     Main Home Component
@@ -105,6 +93,20 @@ export default function Home({
   resume,
   projects,
 }) {
+  // Responsive number of cards visible in the skills carousel
+  const [visibleStacks, setVisibleStacks] = useState(3);
+  useEffect(() => {
+    const calc = () => {
+      const w = window.innerWidth || 1200;
+      const vs = w <= 560 ? 1 : w <= 900 ? 2 : 3;
+      setVisibleStacks(vs);
+    };
+    calc();
+    window.addEventListener('resize', calc);
+    return () => window.removeEventListener('resize', calc);
+  }, []);
+const STACK_WIDTH = 320;
+
   // ─── Filter Data by Language ───
   const person = personal.find((p) => p.language === lang);
   const certs  = certificates.filter((c) => c.language === lang);
