@@ -195,42 +195,44 @@ export default function Home({
 
   const heroInnerRef = useRef(null);
 
-const ticking = useRef(false);
-const SCROLL_THRESHOLD = 250; // bis hier hin normalisiert sich der Zoom
-const MAX_SCALE = 1.2;
-const MIN_SCALE = 1.0;
+  const isMobile = !useMinWidth(561);
 
-const showPowerBI = useMinWidth(650);
+  const ticking = useRef(false);
+  const SCROLL_THRESHOLD = 250;
+  const MAX_SCALE = isMobile ? 1.1 : 1.2;
+  const MIN_SCALE = isMobile ? 0.9 : 1.0;
 
-useEffect(() => {
-  const updateScale = () => {
-    const scrollY = window.scrollY;
-    const t = Math.min(scrollY / SCROLL_THRESHOLD, 1); // 0..1
-    // easeOutQuad: 1 - (1 - t)^2
-    const eased = 1 - Math.pow(1 - t, 2);
-    const scale = MAX_SCALE - (MAX_SCALE - MIN_SCALE) * eased; // von 1.08 → 1.0
-    if (heroInnerRef.current) {
-      heroInnerRef.current.style.transform = `scale(${scale})`;
-    }
-  };
+  const showPowerBI = useMinWidth(650);
 
-  const onScroll = () => {
-    if (!ticking.current) {
-      ticking.current = true;
-      requestAnimationFrame(() => {
-        updateScale();
-        ticking.current = false;
-      });
-    }
-  };
+  useEffect(() => {
+    const updateScale = () => {
+      const scrollY = window.scrollY;
+      const t = Math.min(scrollY / SCROLL_THRESHOLD, 1); // 0..1
+      // easeOutQuad: 1 - (1 - t)^2
+      const eased = 1 - Math.pow(1 - t, 2);
+      const scale = MAX_SCALE - (MAX_SCALE - MIN_SCALE) * eased; // von 1.08 → 1.0
+      if (heroInnerRef.current) {
+        heroInnerRef.current.style.transform = `scale(${scale})`;
+      }
+    };
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-  updateScale();
+    const onScroll = () => {
+      if (!ticking.current) {
+        ticking.current = true;
+        requestAnimationFrame(() => {
+          updateScale();
+          ticking.current = false;
+        });
+      }
+    };
 
-  return () => {
-    window.removeEventListener("scroll", onScroll);
-  };
-}, []);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    updateScale();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
