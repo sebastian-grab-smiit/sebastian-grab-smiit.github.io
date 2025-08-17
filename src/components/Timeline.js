@@ -81,7 +81,7 @@ function useBucketedRows(resume, academics) {
     const rows = rawRows.map((r, idx, arr) => {
       if (idx === 0) return { ...r, marginTop: 30 };
       const prev = arr[idx - 1];
-      const ideal = monthsBetween(prev.date, r.date) * PX_PER_MONTH;
+      const ideal = Math.abs(monthsBetween(prev.date, r.date)) * PX_PER_MONTH;
       const clamped = Math.min(Math.max(ideal, MIN_GAP_PX), MAX_GAP_PX);
       return { ...r, marginTop: clamped };
     });
