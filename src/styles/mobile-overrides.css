@@ -166,3 +166,17 @@ p, h1, h2, h3, h4, h5, h6 { overflow-wrap: anywhere; word-break: break-word; }
   .home h2 { padding: 0 1rem; }
   .certs-grid, .acad-grid, .resume-grid, .projects-grid, .skills-grid { padding: 0 1rem; }
 }
+
+/* Smaller tech filter pills on mobile */
+@media (max-width: 768px) {
+  .tech-filters .pill {
+    font-size: 0.82rem;      /* was 0.9rem */
+    padding: 0.4rem 0.7rem;  /* override the global button padding */
+    min-height: 36px;        /* override 44px */
+    line-height: 1.1;
+  }
+}
+
+.tech-filters .pill {
+  font-size: clamp(0.72rem, 1.6vw, 0.9rem);
+  }
