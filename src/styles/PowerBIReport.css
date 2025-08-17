@@ -4,7 +4,6 @@
     text-align: left;
     z-index: 2;
     isolation: isolate;
-    aspect-ratio: 16 / 10;
     height: auto;
     max-height: none;
 }

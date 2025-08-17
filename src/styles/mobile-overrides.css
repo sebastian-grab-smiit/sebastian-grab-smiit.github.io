@@ -107,3 +107,102 @@ p, h1, h2, h3, h4, h5, h6 { overflow-wrap: anywhere; word-break: break-word; }
 
   .carousel-arrow { display: none !important; }
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   Responsive: Tablet & Mobile
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .home section { padding: 1.5rem 0; }
+  .home h2 { padding: 0 1.25rem; }
+  .certs-grid, .acad-grid, .resume-grid, .projects-grid, .skills-grid { padding: 0 1.25rem; }
+  .hero-section { padding: 0 1.25rem; }
+}
+
+@media (max-width: 992px) {
+  /* Hero becomes stacked */
+  .hero-content { flex-direction: column; gap: 1rem; text-align: center; }
+  .hero-details { width: 100%; text-align: center; }
+  .hero-name { font-size: clamp(2rem, 7vw, 3rem); }
+  .hero-job { font-size: 1.05rem; }
+  .hero-avatar { width: 128px; height: 128px; }
+  .hero-langs { justify-content: center; }
+
+  /* Cards compact */
+  .cert-card, .acad-card, .resume-card, .project-card { padding: 1rem; }
+  .rc-logo, .cert-logo, .acad-logo { width: 32px; height: 32px; }
+
+  /* Skills carousel: switch to grid, no arrows */
+  .skills-carousel-outer { width: 100%; }
+  .skills-carousel-inner { 
+    display: grid; 
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    transform: none !important;
+  }
+  .skill-stack { width: auto !important; }
+  .carousel-arrow { display: none; }
+}
+
+@media (max-width: 768px) {
+  .home h2 { font-size: 1.5rem; }
+  .rc-body strong { font-size: 1rem; }
+  .rc-desc, .rc-desc-projects { font-size: 0.95rem; }
+  .tag { font-size: 0.78rem; padding: 0.25rem 0.6rem; }
+
+  /* Grids with narrower min columns */
+  .certs-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+  .acad-grid  { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .resume-grid, .projects-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+}
+
+@media (max-width: 560px) {
+  .hero-avatar { width: 112px; height: 112px; }
+  .hero-contact { font-size: 0.95rem; }
+  .hero-langs { gap: 0.4rem 0.6rem; }
+
+  /* Section padding tighter */
+  .home section { padding: 1.25rem 0; }
+  .home h2 { padding: 0 1rem; }
+  .certs-grid, .acad-grid, .resume-grid, .projects-grid, .skills-grid { padding: 0 1rem; }
+}
+
+/* Dots under the carousel */
+.skills-pager {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 0.75rem 0 0;
+}
+.pager-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--header-border);
+  border: 0; padding: 0; cursor: pointer;
+  transition: transform .2s, background .2s;
+}
+.pager-dot.active { background: var(--accent-1); transform: scale(1.2); }
+
+/* Subtle "Swipe →" hint on first visit */
+.swipe-hint {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .9rem; color: var(--subtext);
+  justify-content: center;
+  width: 100%;
+  margin-top: .25rem;
+  opacity: .9; animation: pulseFade 2.2s ease-in-out 3;
+}
+@keyframes pulseFade {
+  0% { opacity: 0; transform: translateY(4px); }
+  15% { opacity: .9; transform: none; }
+  85% { opacity: .9; }
+  100% { opacity: 0; }
+}
+
+/* Optional: show a "peek" of next card for stronger affordance */
+@media (max-width: 560px) {
+  .skills-carousel-outer { padding: 0 1rem; }
+  .skills-carousel-inner .skill-stack,
+  .skills-carousel-outer .skill-stack {
+    flex: 0 0 88%;
+  }
+}
