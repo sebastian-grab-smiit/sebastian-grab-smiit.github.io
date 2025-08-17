@@ -77,6 +77,32 @@ function groupSkills(skills) {
   return groups;
 }
 
+function useMinWidth(px) {
+  const getMatch = () =>
+    typeof window !== 'undefined'
+      ? window.matchMedia(`(min-width: ${px}px)`).matches
+      : true; // safe default for build
+
+  const [matches, setMatches] = React.useState(getMatch);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mql = window.matchMedia(`(min-width: ${px}px)`);
+    const onChange = () => setMatches(mql.matches);
+    // modern + fallback for older browsers
+    if (mql.addEventListener) mql.addEventListener('change', onChange);
+    else mql.addListener(onChange);
+    // set once in case initial render was off
+    onChange();
+    return () => {
+      if (mql.removeEventListener) mql.removeEventListener('change', onChange);
+      else mql.removeListener(onChange);
+    };
+  }, [px]);
+
+  return matches;
+}
+
 
 /* ──────────────────────────────
     Main Home Component
@@ -171,8 +197,10 @@ export default function Home({
 
 const ticking = useRef(false);
 const SCROLL_THRESHOLD = 250; // bis hier hin normalisiert sich der Zoom
-const MAX_SCALE = 1.08;
+const MAX_SCALE = 1.2;
 const MIN_SCALE = 1.0;
+
+const showPowerBI = useMinWidth(650);
 
 useEffect(() => {
   const updateScale = () => {
@@ -445,7 +473,7 @@ useEffect(() => {
       </DroppingSection>
 
       {/* ───── Power BI Embed ───── */}
-      <PowerBIReport lang={lang} />
+      {showPowerBI && <PowerBIReport lang={lang} />}
 
       {/* ───── FOOTER ───── */}
       <hr className="footer-separator" />

@@ -9,6 +9,7 @@
 
 .home section {
   padding: 2rem 0;
+  overflow-x: clip;
 }
 .home h2 {
   max-width: 1200px;
@@ -30,6 +31,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   padding: 0 2rem;
   position: relative;
   z-index: 10;
@@ -81,14 +83,6 @@
 .hero-lang-icon { width: 20px; height: 20px; object-fit: contain; border-radius: 50%; }
 .hero-lang-name { line-height: 1; }
 .hero-lang-sep { margin: 0 0.5rem; color: var(--subtext); }
-
-/* body:not(.scrolled) .home > :not(.hero-section) {
-  opacity: 0.4;
-  pointer-events: none;
-  filter: blur(2px);
-  transform: translateY(8px);
-  transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
-} */
 
 /* GRID LAYOUTS */
 .certs-grid, .acad-grid, .resume-grid, .projects-grid, .skills-grid {

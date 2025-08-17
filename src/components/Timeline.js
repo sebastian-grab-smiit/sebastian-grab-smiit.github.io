@@ -76,7 +76,7 @@ function useBucketedRows(resume, academics) {
       map.get(key)[it.side] = it;
     }
 
-    const rawRows = [...map.values()].sort((a, b) => a.date - b.date); // oldest → newest
+    const rawRows = [...map.values()].sort((a, b) => b.date - a.date); // oldest → newest
 
     const rows = rawRows.map((r, idx, arr) => {
       if (idx === 0) return { ...r, marginTop: 30 };
