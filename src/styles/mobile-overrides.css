@@ -180,3 +180,55 @@ p, h1, h2, h3, h4, h5, h6 { overflow-wrap: anywhere; word-break: break-word; }
 .tech-filters .pill {
   font-size: clamp(0.72rem, 1.6vw, 0.9rem);
   }
+
+/* === Skills: horizontal scroll with a "peek" (≤900px) === */
+@media (max-width: 900px) {
+  :root { --skills-gap: 2.5rem; }              /* must match your desktop gap */
+  .carousel-arrow { display: none !important; }
+
+  /* Make the outer a horizontal scroller */
+  .skills-carousel-outer {
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding-inline: 0 !important;              /* avoid initial left offset */
+    scroll-padding-inline: 0 !important;
+  }
+
+  /* Track = flex row; kill the desktop translate */
+  .skills-carousel-inner {
+    display: flex !important;
+    gap: var(--skills-gap) !important;
+    transform: none !important;
+    transition: none !important;
+    width: max-content;                         /* expand to fit */
+  }
+
+  /* Cards become fixed-width items that snap */
+  .skills-carousel-inner .skill-stack {
+    flex: 0 0 var(--skill-card-w);
+    min-width: 0 !important;
+    scroll-snap-align: start;
+  }
+}
+
+/* Phones: show ~1.5 cards */
+@media (max-width: 560px) {
+  .skills-carousel-inner .skill-stack {
+    --skill-card-w: calc((100% - (var(--skills-gap) * 0.25)) / 1.25);
+  }
+}
+
+/* Tablets: show ~2.5 cards */
+@media (min-width: 561px) and (max-width: 900px) {
+  .skills-carousel-inner .skill-stack {
+    --skill-card-w: calc((100% - (var(--skills-gap) * 1.25)) / 2.25);
+  }
+}
+
+/* If an older rule switched the skills to a grid on ≤992px, override it: */
+@media (max-width: 992px) {
+  .skills-carousel-inner { display: flex !important; }
+}
