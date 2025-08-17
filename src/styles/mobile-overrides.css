@@ -151,7 +151,7 @@ p, h1, h2, h3, h4, h5, h6 { overflow-wrap: anywhere; word-break: break-word; }
   .tag { font-size: 0.78rem; padding: 0.25rem 0.6rem; }
 
   /* Grids with narrower min columns */
-  .certs-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+  .certs-grid { grid-template-columns: 1; }
   .acad-grid  { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
   .resume-grid, .projects-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
 }
@@ -165,44 +165,4 @@ p, h1, h2, h3, h4, h5, h6 { overflow-wrap: anywhere; word-break: break-word; }
   .home section { padding: 1.25rem 0; }
   .home h2 { padding: 0 1rem; }
   .certs-grid, .acad-grid, .resume-grid, .projects-grid, .skills-grid { padding: 0 1rem; }
-}
-
-/* Dots under the carousel */
-.skills-pager {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin: 0.75rem 0 0;
-}
-.pager-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--header-border);
-  border: 0; padding: 0; cursor: pointer;
-  transition: transform .2s, background .2s;
-}
-.pager-dot.active { background: var(--accent-1); transform: scale(1.2); }
-
-/* Subtle "Swipe →" hint on first visit */
-.swipe-hint {
-  display: inline-flex; align-items: center; gap: .4rem;
-  font-size: .9rem; color: var(--subtext);
-  justify-content: center;
-  width: 100%;
-  margin-top: .25rem;
-  opacity: .9; animation: pulseFade 2.2s ease-in-out 3;
-}
-@keyframes pulseFade {
-  0% { opacity: 0; transform: translateY(4px); }
-  15% { opacity: .9; transform: none; }
-  85% { opacity: .9; }
-  100% { opacity: 0; }
-}
-
-/* Optional: show a "peek" of next card for stronger affordance */
-@media (max-width: 560px) {
-  .skills-carousel-outer { padding: 0 1rem; }
-  .skills-carousel-inner .skill-stack,
-  .skills-carousel-outer .skill-stack {
-    flex: 0 0 88%;
-  }
 }

@@ -116,12 +116,10 @@ export async function fetchProjects() {
         description:    r[2],
         customer:       r[3],
         address:        r[4],
-        latitude:       r[5],
-        longitude:      r[6],
-        logoUrl:        r[7],
-        start:          new Date(r[8]),
-        end:            new Date(r[9]),
-        technologies:   r[10],
-        sections:       r[11],
+        logoUrl:        r[5],
+        start:          new Date(r[6]),
+        end:            new Date(r[7]),
+        technologies:   r[8],
+        sections:       r[9],
     }));
 }
