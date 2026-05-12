@@ -27,7 +27,7 @@ export default function Header({ forceLang }: { forceLang?: string }) {
           focus: "My focus",
           experience: "Experience",
           projects: "Projects",
-          contact: "Talk to a difital expert",
+          contact: "Talk to me",
         }
 
   const navLinks = [

@@ -207,7 +207,7 @@ const dictionaries = {
       titleLine2Pre: "Data that has",
       titleHighlight: "impact",
       titleLine2Post: ".",
-      titleLine3: "Software that carries.",
+      titleLine3: "Software that scales.",
       ctaEmail: "Reach out",
       ctaEmailShort: "Contact",
       ctaDownload: "Download CV",
