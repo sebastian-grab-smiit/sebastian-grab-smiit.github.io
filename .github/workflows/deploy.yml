@@ -1,8 +1,8 @@
-name: Deploy static content to Pages
+name: Deploy Next.js to GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
@@ -14,38 +14,46 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+# Env secrets need to be set in GitHub Repository
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build-deploy:
     runs-on: ubuntu-latest
-
     env:
-      REACT_APP_GOOGLE_SHEET_ID:      ${{ secrets.REACT_APP_GOOGLE_SHEET_ID }}
-      REACT_APP_GOOGLE_SHEET_PERSONAL_GID:    ${{ secrets.REACT_APP_GOOGLE_SHEET_PERSONAL_GID }}
-      REACT_APP_GOOGLE_SHEET_CERTIFICATES_GID: ${{ secrets.REACT_APP_GOOGLE_SHEET_CERTIFICATES_GID }}
-      REACT_APP_GOOGLE_SHEET_LANGUAGES_GID: ${{ secrets.REACT_APP_GOOGLE_SHEET_LANGUAGES_GID }}
-      REACT_APP_GOOGLE_SHEET_ACADEMICS_GID: ${{ secrets.REACT_APP_GOOGLE_SHEET_ACADEMICS_GID }}
-      REACT_APP_GOOGLE_SHEET_SKILLS_GID: ${{ secrets.REACT_APP_GOOGLE_SHEET_SKILLS_GID }}
-      REACT_APP_GOOGLE_SHEET_RESUME_GID: ${{ secrets.REACT_APP_GOOGLE_SHEET_RESUME_GID }}
-      REACT_APP_GOOGLE_SHEET_PROJECTS_GID: ${{ secrets.REACT_APP_GOOGLE_SHEET_PROJECTS_GID }}
-      REACT_APP_PBI_URL: ${{ secrets.REACT_APP_PBI_URL }}
-
+      NEXT_PUBLIC_CALENDLY_URL: ${{ secrets.NEXT_PUBLIC_CALENDLY_URL }}
+      NEXT_PUBLIC_GOOGLE_SHEET_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_ID }}
+      NEXT_PUBLIC_GOOGLE_SHEET_PERSONAL_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_PERSONAL_GID }}
+      NEXT_PUBLIC_GOOGLE_SHEET_CERTIFICATES_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_CERTIFICATES_GID }}
+      NEXT_PUBLIC_GOOGLE_SHEET_LANGUAGES_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_LANGUAGES_GID }}
+      NEXT_PUBLIC_GOOGLE_SHEET_ACADEMICS_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_ACADEMICS_GID }}
+      NEXT_PUBLIC_GOOGLE_SHEET_SKILLS_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_SKILLS_GID }}
+      NEXT_PUBLIC_GOOGLE_SHEET_RESUME_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_RESUME_GID }}
+      NEXT_PUBLIC_GOOGLE_SHEET_PROJECTS_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_PROJECTS_GID }}
+      NEXT_TELEMETRY_DISABLED: 1
+      CI: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build (produces /out)
         run: npm run build
+
+      - name: Sanity check
+        run: |
+          echo "Repo root:" && ls -la
+          echo ".next:" && ls -la .next || true
+          echo "out:" && ls -la out || true
+
+      - name: Add .nojekyll (allow _next assets)
+        run: touch out/.nojekyll
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -53,7 +61,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build
+          path: ./out
 
       - name: Deploy to GitHub Pages
         id: deployment

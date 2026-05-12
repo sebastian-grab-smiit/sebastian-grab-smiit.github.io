@@ -1,7 +1,27 @@
-*.env
-*.txt
-/node_modules
-/.parcel-cache
-/build
-/dist
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 /.archiv
+/.old
+
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files
+.env
+/.kilo
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
