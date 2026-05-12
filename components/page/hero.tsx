@@ -79,7 +79,7 @@ export default function Hero({
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="grid 3xl:grid-cols-2 gap-6 3xl:gap-16 items-start 3xl:min-h-[52rem] pt-6"
             >
-              <div className="max-w-[640px] md:mx-auto md:text-center 3xl:mx-0 3xl:text-left">
+              <div className="max-w-[640px] sm:mx-auto sm:text-center 3xl:mx-0 3xl:text-left">
                 <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-[#21569c] mb-5 sm:mb-8 md:mb-10">
                   <span
                     aria-hidden="true"
@@ -88,7 +88,7 @@ export default function Hero({
                   {eyebrow}
                   <span
                     aria-hidden="true"
-                    className="hidden md:inline-block 3xl:hidden h-px w-7 bg-gradient-to-l from-transparent to-[#21569c]"
+                    className="hidden sm:inline-block 3xl:hidden h-px w-7 bg-gradient-to-l from-transparent to-[#21569c]"
                   />
                 </span>
 
@@ -119,12 +119,12 @@ export default function Hero({
                 </h1>
 
                 {person.description && (
-                  <p className="mt-5 sm:mt-6 md:mt-7 text-sm sm:text-base md:text-[1.05rem] text-[#0B162D]/70 leading-relaxed max-w-[52ch] md:mx-auto 3xl:mx-0 whitespace-pre-line">
+                  <p className="mt-5 sm:mt-6 md:mt-7 text-sm sm:text-base md:text-[1.05rem] text-[#0B162D]/70 leading-relaxed max-w-[52ch] sm:mx-auto 3xl:mx-0 whitespace-pre-line">
                     {person.description}
                   </p>
                 )}
 
-                <div className="mt-6 sm:mt-8 md:mt-10 flex flex-wrap md:justify-center 3xl:justify-start gap-2 sm:gap-3">
+                <div className="mt-6 sm:mt-8 md:mt-10 flex flex-wrap sm:justify-center 3xl:justify-start gap-2 sm:gap-3">
                   <a href={person.email ? `mailto:${person.email}` : "#"}>
                     <button className="group flex items-center gap-2 sm:gap-2.5 bg-[#21569c] hover:bg-[#1a4580] text-white px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl font-medium text-xs sm:text-sm transition-colors duration-300 cursor-pointer shadow-[0_14px_28px_rgba(33,86,156,0.18)]">
                       <span className="sm:hidden">{dict.hero.ctaEmailShort}</span>
@@ -150,7 +150,7 @@ export default function Hero({
                   />
                 </div>
 
-                <div className="mt-6 sm:mt-8 md:mt-12 flex flex-wrap md:justify-center 3xl:justify-start gap-x-5 sm:gap-x-6 gap-y-2 text-[0.72rem] sm:text-sm text-[#0B162D]/60">
+                <div className="mt-6 sm:mt-8 md:mt-12 flex flex-wrap sm:justify-center 3xl:justify-start gap-x-5 sm:gap-x-6 gap-y-2 text-[0.72rem] sm:text-sm text-[#0B162D]/60">
                   <Stat label={dict.hero.statYears} />
                   <Stat label={dict.hero.statProjects} />
                   <Stat label={dict.hero.statRegion} />
@@ -161,7 +161,7 @@ export default function Hero({
             </motion.div>
 
             {/* Hero image in flow below text — used at < 1300px. CSS-cropped to show only the content portion (bottom 40% of file) */}
-            <div className="3xl:hidden relative w-full max-w-[640px] md:mx-auto mt-8 aspect-[1200/854] overflow-hidden">
+            <div className="3xl:hidden relative w-full max-w-[640px] sm:mx-auto mt-8 aspect-[1200/854] overflow-hidden">
               <Image
                 src="/assets/hero_mobile.webp"
                 alt=""

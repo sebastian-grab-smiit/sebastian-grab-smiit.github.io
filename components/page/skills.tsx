@@ -61,6 +61,7 @@ export default function Skills({ skills, dict }: SkillsProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
+          className="sm:text-center 3xl:text-left"
         >
           <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-[#21569c] mb-5">
             <span

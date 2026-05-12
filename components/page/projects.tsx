@@ -67,7 +67,7 @@ export default function Projects({ projects, locale, dict }: ProjectsProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="mb-6 md:mb-8"
+          className="mb-6 md:mb-8 sm:text-center 3xl:text-left"
         >
           <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-[#21569c] mb-5">
             <span
@@ -82,7 +82,7 @@ export default function Projects({ projects, locale, dict }: ProjectsProps) {
         </motion.div>
 
         {allTechs.length > 0 && (
-          <div className="mb-10 space-y-5">
+          <div className="mb-10 space-y-5 sm:text-center 3xl:text-left">
             <FilterRow
               label={dict.labels.filterByTech}
               values={allTechs}
@@ -184,7 +184,7 @@ function FilterRow({
       <div className="text-xs uppercase tracking-[0.18em] font-semibold text-[#0B162D] mb-3">
         {label}
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 sm:justify-center 3xl:justify-start">
         {values.map((v) => {
           const active = selected.includes(v)
           return (

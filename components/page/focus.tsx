@@ -85,7 +85,7 @@ export default function Focus({ dict, locale }: FocusProps) {
   }))
 
   const headerInner = (
-    <>
+    <div className="sm:text-center 3xl:text-left">
       <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-[#21569c] mb-5">
         <span
           aria-hidden="true"
@@ -96,7 +96,7 @@ export default function Focus({ dict, locale }: FocusProps) {
       <h2 className="font-serif text-[2.2rem] sm:text-[2.6rem] md:text-[3rem] leading-tight text-[#0B162D] tracking-tight">
         {dict.sections.focus}
       </h2>
-    </>
+    </div>
   )
 
   return (

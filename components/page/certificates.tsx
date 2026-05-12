@@ -29,7 +29,7 @@ export default function Certificates({ certificates, locale, dict }: Certificate
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="font-serif text-[1.7rem] sm:text-[2rem] md:text-[2.2rem] leading-tight text-[#0B162D] tracking-tight mb-8 md:mb-10 text-left lg:text-center"
+          className="font-serif text-[1.7rem] sm:text-[2rem] md:text-[2.2rem] leading-tight text-[#0B162D] tracking-tight mb-8 md:mb-10 text-left sm:text-center 3xl:text-left"
         >
           {dict.sections.certificates}
         </motion.h2>
