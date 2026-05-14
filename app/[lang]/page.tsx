@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { getDictionary, type Locale } from "@/lib/dictionary"
 import { fetchCv, localeToSheetLang } from "@/lib/sheet"
-import { buildPageMetadata } from "@/lib/seo"
+import { buildPageMetadata, buildPersonJsonLd } from "@/lib/seo"
 import Hero from "@/components/page/hero"
 import Focus from "@/components/page/focus"
 import Experience from "@/components/page/experience"
@@ -50,24 +50,40 @@ export default async function Page({
   const projects = data.projects.filter((p) => p.language === sheetLang)
   const certificates = data.certificates.filter((c) => c.language === sheetLang)
 
+  const personJsonLd = buildPersonJsonLd({
+    lang,
+    person,
+    academics,
+    certificates,
+    skills,
+    resume,
+    languages,
+  })
+
   return (
-    <main>
-      <Hero
-        person={person}
-        languages={languages}
-        resume={resume}
-        academics={academics}
-        skills={skills}
-        certificates={certificates}
-        projects={projects}
-        dict={dict}
-        locale={lang}
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
-      <Focus dict={dict} locale={lang} />
-      <Skills skills={skills} dict={dict} />
-      <Experience resume={resume} academics={academics} locale={lang} dict={dict} />
-      <Certificates certificates={certificates} locale={lang} dict={dict} />
-      <Projects projects={projects} locale={lang} dict={dict} />
-    </main>
+      <main>
+        <Hero
+          person={person}
+          languages={languages}
+          resume={resume}
+          academics={academics}
+          skills={skills}
+          certificates={certificates}
+          projects={projects}
+          dict={dict}
+          locale={lang}
+        />
+        <Focus dict={dict} locale={lang} />
+        <Skills skills={skills} dict={dict} />
+        <Experience resume={resume} academics={academics} locale={lang} dict={dict} />
+        <Certificates certificates={certificates} locale={lang} dict={dict} />
+        <Projects projects={projects} locale={lang} dict={dict} />
+      </main>
+    </>
   )
 }
