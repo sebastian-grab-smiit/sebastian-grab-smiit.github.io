@@ -508,7 +508,7 @@ function drawMain(args: {
         isLast: i === entries.length - 1,
       })
     }
-    cursor += 6
+    cursor += 22
   }
 
   if (academics.length > 0) {
@@ -730,7 +730,23 @@ function drawAcademicEntry(args: {
     cursor += uniSize + 4
   }
 
-  if (!isLast) cursor += 8
+  if (entry.description) {
+    const descSize = 8.5
+    const res = drawWrappedText(page, entry.description, {
+      x: textX,
+      topY: cursor,
+      pageH: PAGE_H,
+      font: fonts.sans,
+      size: descSize,
+      color: COLORS.darkSoft,
+      maxWidth: textW,
+      lineHeight: descSize * 1.45,
+      maxLines: 2,
+    })
+    cursor = res.bottomY + 2
+  }
+
+  if (!isLast) cursor += 12
   return cursor
 }
 
