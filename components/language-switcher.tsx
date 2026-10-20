@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { ChevronDown } from "lucide-react"
 import ReactCountryFlag from "react-country-flag"
@@ -50,15 +50,33 @@ export function LanguageSwitcher({ light = false }: { light?: boolean }) {
   const pathname = usePathname() || "/"
   const current = useMemo(() => computeLangFromPath(pathname), [pathname])
   const [isOpen, setIsOpen] = useState(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+  // Hover opens the menu for mouse users; the click that usually follows must not close it again.
+  const openedByHoverRef = useRef(false)
+  const menuId = useId()
+
+  useEffect(() => {
+    if (!isOpen) return
+    const onPointerDown = (e: PointerEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setIsOpen(false)
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false)
+    }
+    document.addEventListener("pointerdown", onPointerDown)
+    document.addEventListener("keydown", onKeyDown)
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown)
+      document.removeEventListener("keydown", onKeyDown)
+    }
+  }, [isOpen])
 
   const selectLang = useCallback(
     (target: Lang) => {
+      setIsOpen(false)
       if (target === current) return
       const nextPath = buildPathForLang(pathname, target)
-      const search = typeof window !== "undefined" ? window.location.search : ""
-      const hash = typeof window !== "undefined" ? window.location.hash : ""
-      router.push(`${nextPath}${search}${hash}`)
-      setIsOpen(false)
+      router.push(`${nextPath}${window.location.search}${window.location.hash}`)
     },
     [current, pathname, router],
   )
@@ -67,43 +85,66 @@ export function LanguageSwitcher({ light = false }: { light?: boolean }) {
 
   return (
     <div
+      ref={rootRef}
       className="relative"
-      onMouseEnter={() => setIsOpen(true)}
+      onMouseEnter={() => {
+        openedByHoverRef.current = !isOpen
+        setIsOpen(true)
+      }}
       onMouseLeave={() => setIsOpen(false)}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setIsOpen(false)
+      }}
     >
       <button
-        className={`flex items-center gap-2 px-2 py-2 text-sm font-medium transition-colors cursor-pointer bg-transparent border-none outline-none ${
+        type="button"
+        onClick={() => {
+          if (openedByHoverRef.current) {
+            openedByHoverRef.current = false
+            return
+          }
+          setIsOpen((open) => !open)
+        }}
+        aria-expanded={isOpen}
+        aria-controls={menuId}
+        aria-label={`Language: ${currentLang.label}`}
+        className={`flex items-center gap-2 px-2 py-2 text-sm font-medium transition-colors cursor-pointer bg-transparent border-none ${
           light ? "text-white hover:text-white/70" : "text-black hover:text-black/70"
         }`}
-        aria-label="Language selection"
       >
         {currentLang.short}
-        <ChevronDown className="w-4 h-4 opacity-60" />
+        <ChevronDown
+          aria-hidden="true"
+          className={`w-4 h-4 opacity-60 transition-transform ${isOpen ? "rotate-180" : ""}`}
+        />
       </button>
 
       <div
+        id={menuId}
         className={`absolute right-0 mt-2 w-40 bg-white/95 backdrop-blur-md border border-black/10 rounded-xl shadow-xl transition-all duration-200 z-50 ${
-          isOpen
-            ? "opacity-100 visible translate-y-0"
-            : "opacity-0 invisible -translate-y-2"
+          isOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2"
         }`}
       >
-        <div className="p-1">
+        <ul className="p-1">
           {languages.map((lang) => (
-            <button
-              key={lang.code}
-              onClick={() => selectLang(lang.code)}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors cursor-pointer ${
-                lang.code === current
-                  ? "bg-black/5 text-black font-medium"
-                  : "text-gray-700 hover:bg-black/5"
-              }`}
-            >
-              <Flag country={lang.country} />
-              <span>{lang.label}</span>
-            </button>
+            <li key={lang.code}>
+              <button
+                type="button"
+                lang={lang.code}
+                aria-current={lang.code === current ? "true" : undefined}
+                onClick={() => selectLang(lang.code)}
+                className={`w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors cursor-pointer ${
+                  lang.code === current
+                    ? "bg-black/5 text-black font-medium"
+                    : "text-gray-700 hover:bg-black/5"
+                }`}
+              >
+                <Flag country={lang.country} />
+                <span>{lang.label}</span>
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   )

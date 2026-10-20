@@ -16,6 +16,7 @@ import type {
   Project,
 } from "@/lib/sheet"
 import type { Dictionary, Locale } from "@/lib/dictionary"
+import { siteConfig } from "@/site.config"
 
 interface HeroProps {
   person: Personal | undefined
@@ -59,7 +60,10 @@ export default function Hero({
         style={{ pointerEvents: contentVisible ? "auto" : "none" }}
         aria-hidden={!contentVisible}
       >
-        <section id="hero" className="relative isolate overflow-hidden bg-background pt-16 sm:pt-24 md:pt-28 pb-10 md:pb-14">
+        <section
+          id="hero"
+          className="relative isolate overflow-hidden bg-background pt-16 sm:pt-24 md:pt-28 pb-10 md:pb-14"
+        >
           {/* Desktop hero image (≥1300px only): positioned absolute on right (right 50% of file has content) */}
           <div className="hidden 3xl:block pointer-events-none absolute top-0 inset-x-0 mx-auto max-w-[calc(1400px+16rem)] h-[52rem] z-0">
             <Image
@@ -80,30 +84,30 @@ export default function Hero({
               className="grid 3xl:grid-cols-2 gap-6 3xl:gap-16 items-start 3xl:min-h-[52rem] pt-6"
             >
               <div className="max-w-[640px] sm:mx-auto sm:text-center 3xl:mx-0 3xl:text-left">
-                <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-[#21569c] mb-5 sm:mb-8 md:mb-10">
+                <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-brand mb-5 sm:mb-8 md:mb-10">
                   <span
                     aria-hidden="true"
-                    className="inline-block h-px w-7 bg-gradient-to-r from-transparent to-[#21569c]"
+                    className="inline-block h-px w-7 bg-gradient-to-r from-transparent to-brand"
                   />
                   {eyebrow}
                   <span
                     aria-hidden="true"
-                    className="hidden sm:inline-block 3xl:hidden h-px w-7 bg-gradient-to-l from-transparent to-[#21569c]"
+                    className="hidden sm:inline-block 3xl:hidden h-px w-7 bg-gradient-to-l from-transparent to-brand"
                   />
                 </span>
 
-                <h1 className="font-serif text-[2.2rem] sm:text-[2.6rem] md:text-[3rem] leading-[1.15] text-[#0B162D] tracking-tight">
+                <h1 className="font-serif text-[2.2rem] sm:text-[2.6rem] md:text-[3rem] leading-[1.15] text-ink tracking-tight">
                   <span className="block">{dict.hero.titleLine1}</span>
                   <span className="block">
                     {dict.hero.titleLine2Pre}
-                    <span className="text-[#21569c] inline-block relative isolate z-0 mx-1.5 sm:mx-2">
+                    <span className="text-brand inline-block relative isolate z-0 mx-1.5 sm:mx-2">
                       {dict.hero.titleHighlight}
                       {dict.hero.titleLine2Post}
                       <svg
                         aria-hidden="true"
                         viewBox="0 0 100 10"
                         preserveAspectRatio="none"
-                        className="pointer-events-none absolute w-full h-2 sm:h-3 -bottom-0.5 sm:-bottom-1 left-0 text-[#21569c]/45 z-[-1]"
+                        className="pointer-events-none absolute w-full h-2 sm:h-3 -bottom-0.5 sm:-bottom-1 left-0 text-brand/45 z-[-1]"
                       >
                         <path
                           d="M0 5 Q 50 10 100 5"
@@ -119,18 +123,19 @@ export default function Hero({
                 </h1>
 
                 {person.description && (
-                  <p className="mt-5 sm:mt-6 md:mt-7 text-sm sm:text-base md:text-[1.05rem] text-[#0B162D]/70 leading-relaxed max-w-[52ch] sm:mx-auto 3xl:mx-0 whitespace-pre-line">
+                  <p className="mt-5 sm:mt-6 md:mt-7 text-sm sm:text-base md:text-[1.05rem] text-ink/70 leading-relaxed max-w-[52ch] sm:mx-auto 3xl:mx-0 whitespace-pre-line">
                     {person.description}
                   </p>
                 )}
 
                 <div className="mt-6 sm:mt-8 md:mt-10 flex flex-wrap sm:justify-center 3xl:justify-start gap-2 sm:gap-3">
-                  <a href={person.email ? `mailto:${person.email}` : "#"}>
-                    <button className="group flex items-center gap-2 sm:gap-2.5 bg-[#21569c] hover:bg-[#1a4580] text-white px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl font-medium text-xs sm:text-sm transition-colors duration-300 cursor-pointer shadow-[0_14px_28px_rgba(33,86,156,0.18)]">
-                      <span className="sm:hidden">{dict.hero.ctaEmailShort}</span>
-                      <span className="hidden sm:inline">{dict.hero.ctaEmail}</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </button>
+                  <a
+                    href={`mailto:${person.email || siteConfig.email}`}
+                    className="group flex items-center gap-2 sm:gap-2.5 bg-brand hover:bg-brand-hover text-white px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl font-medium text-xs sm:text-sm transition-colors duration-300 cursor-pointer shadow-[0_14px_28px_rgba(33,86,156,0.18)]"
+                  >
+                    <span className="sm:hidden">{dict.hero.ctaEmailShort}</span>
+                    <span className="hidden sm:inline">{dict.hero.ctaEmail}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </a>
                   <CvDownloadButton
                     label={
@@ -150,7 +155,7 @@ export default function Hero({
                   />
                 </div>
 
-                <div className="mt-6 sm:mt-8 md:mt-12 flex flex-wrap sm:justify-center 3xl:justify-start gap-x-5 sm:gap-x-6 gap-y-2 text-[0.72rem] sm:text-sm text-[#0B162D]/60">
+                <div className="mt-6 sm:mt-8 md:mt-12 flex flex-wrap sm:justify-center 3xl:justify-start gap-x-5 sm:gap-x-6 gap-y-2 text-[0.72rem] sm:text-sm text-ink/60">
                   <Stat label={dict.hero.statYears} />
                   <Stat label={dict.hero.statProjects} />
                   <Stat label={dict.hero.statRegion} />
@@ -175,12 +180,7 @@ export default function Hero({
         </section>
       </motion.div>
 
-      {introVisible && (
-        <IntroOverlay
-          onExitStart={handleIntroExitStart}
-          onDone={handleIntroDone}
-        />
-      )}
+      {introVisible && <IntroOverlay onExitStart={handleIntroExitStart} onDone={handleIntroDone} />}
     </>
   )
 }
@@ -188,7 +188,7 @@ export default function Hero({
 function Stat({ label }: { label: string }) {
   return (
     <span className="inline-flex items-center gap-1.5">
-      <CheckCircle2 className="w-4 h-4 text-[#21569c]" />
+      <CheckCircle2 className="w-4 h-4 text-brand" />
       {label}
     </span>
   )

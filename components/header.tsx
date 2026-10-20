@@ -70,11 +70,12 @@ export default function Header({ forceLang }: { forceLang?: string }) {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-6">
-            <a href={contactHref} className="hidden lg:block">
-              <Button className="bg-[#F703EB] hover:bg-[#DE02D2] text-white rounded-md px-3 py-2 font-medium text-sm tracking-tight cursor-pointer shadow-none border-none">
-                {L.contact}
-              </Button>
-            </a>
+            <Button
+              asChild
+              className="hidden lg:inline-flex bg-magenta hover:bg-magenta-hover text-white rounded-md px-3 py-2 font-medium text-sm tracking-tight cursor-pointer shadow-none border-none"
+            >
+              <a href={contactHref}>{L.contact}</a>
+            </Button>
             <div className="px-2 hidden lg:block">
               <LanguageSwitcher />
             </div>
@@ -83,7 +84,7 @@ export default function Header({ forceLang }: { forceLang?: string }) {
               <a
                 href={contactHref}
                 aria-label={L.contact}
-                className="h-8.5 w-8.5 rounded-lg border border-[#F703EB] bg-[#F703EB]/85 backdrop-blur-md flex items-center justify-center shadow-sm"
+                className="h-8.5 w-8.5 rounded-lg border border-magenta bg-magenta/85 backdrop-blur-md flex items-center justify-center shadow-sm"
               >
                 <CalendarDays className="h-4 w-4 text-white" />
               </a>

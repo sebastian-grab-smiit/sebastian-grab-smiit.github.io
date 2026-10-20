@@ -19,23 +19,25 @@ export default function Certificates({ certificates, locale, dict }: Certificate
   )
 
   return (
-    <section
-      id="certificates"
-      className="relative bg-background -mt-6 md:-mt-12 pb-16 md:pb-24"
-    >
+    <section id="certificates" className="relative bg-background -mt-6 md:-mt-12 pb-16 md:pb-24">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <motion.h2
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="font-serif text-[1.7rem] sm:text-[2rem] md:text-[2.2rem] leading-tight text-[#0B162D] tracking-tight mb-8 md:mb-10 text-left sm:text-center 3xl:text-left"
+          className="font-serif text-[1.7rem] sm:text-[2rem] md:text-[2.2rem] leading-tight text-ink tracking-tight mb-8 md:mb-10 text-left sm:text-center 3xl:text-left"
         >
           {dict.sections.certificates}
         </motion.h2>
 
         {/* Mobile + tablet: horizontal scroll-snap carousel */}
-        <div className="lg:hidden -mx-4 sm:-mx-6 overflow-x-auto snap-x snap-mandatory scroll-px-4 sm:scroll-px-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div
+          role="region"
+          aria-label={dict.sections.certificates}
+          tabIndex={0}
+          className="lg:hidden -mx-4 sm:-mx-6 overflow-x-auto snap-x snap-mandatory scroll-px-4 sm:scroll-px-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        >
           <div className="flex items-stretch gap-4 px-4 sm:px-6 pb-2">
             {sorted.map((c, idx) => (
               <CertificateCard
@@ -52,12 +54,7 @@ export default function Certificates({ certificates, locale, dict }: Certificate
         {/* Desktop: wrapped grid */}
         <div className="hidden lg:flex flex-wrap items-stretch justify-center gap-6">
           {sorted.map((c, idx) => (
-            <CertificateCard
-              key={`${c.certificateName}-${idx}`}
-              c={c}
-              idx={idx}
-              locale={locale}
-            />
+            <CertificateCard key={`${c.certificateName}-${idx}`} c={c} idx={idx} locale={locale} />
           ))}
         </div>
       </div>
@@ -86,11 +83,7 @@ function CertificateCard({
     >
       {c.logoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={c.logoUrl}
-          alt={c.certificateName}
-          className="h-16 w-auto object-contain mb-3"
-        />
+        <img src={c.logoUrl} alt={c.certificateName} className="h-16 w-auto object-contain mb-3" />
       ) : (
         <div className="h-16 w-16 mb-3 rounded-md bg-black/5" aria-hidden="true" />
       )}

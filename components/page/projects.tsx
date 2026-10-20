@@ -33,10 +33,7 @@ export default function Projects({ projects, locale, dict }: ProjectsProps) {
   const [showAll, setShowAll] = useState(false)
 
   const sortedProjects = useMemo(
-    () =>
-      [...projects].sort(
-        (a, b) => (b.start?.getTime() ?? 0) - (a.start?.getTime() ?? 0),
-      ),
+    () => [...projects].sort((a, b) => (b.start?.getTime() ?? 0) - (a.start?.getTime() ?? 0)),
     [projects],
   )
   const allTechs = useMemo(() => uniqueTechs(sortedProjects), [sortedProjects])
@@ -69,14 +66,14 @@ export default function Projects({ projects, locale, dict }: ProjectsProps) {
           transition={{ duration: 0.5 }}
           className="mb-6 md:mb-8 sm:text-center 3xl:text-left"
         >
-          <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-[#21569c] mb-5">
+          <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-brand mb-5">
             <span
               aria-hidden="true"
-              className="inline-block h-px w-7 bg-gradient-to-r from-transparent to-[#21569c]"
+              className="inline-block h-px w-7 bg-gradient-to-r from-transparent to-brand"
             />
             {dict.projects.eyebrow}
           </span>
-          <h2 className="font-serif text-[2.2rem] sm:text-[2.6rem] md:text-[3rem] leading-tight text-[#0B162D] tracking-tight">
+          <h2 className="font-serif text-[2.2rem] sm:text-[2.6rem] md:text-[3rem] leading-tight text-ink tracking-tight">
             {dict.sections.projects}
           </h2>
         </motion.div>
@@ -91,6 +88,7 @@ export default function Projects({ projects, locale, dict }: ProjectsProps) {
             />
             {hasFilters && (
               <button
+                type="button"
                 onClick={() => setSelectedTechs([])}
                 className="text-xs text-black/60 hover:text-black underline underline-offset-4 cursor-pointer"
               >
@@ -106,11 +104,7 @@ export default function Projects({ projects, locale, dict }: ProjectsProps) {
               key={`${p.role}-${p.customer}-${idx}`}
               className={showAll ? "" : hideClassForIndex(idx)}
             >
-              <ProjectCard
-                project={p}
-                locale={locale}
-                presentLabel={dict.labels.present}
-              />
+              <ProjectCard project={p} locale={locale} presentLabel={dict.labels.present} />
             </div>
           ))}
         </div>
@@ -159,7 +153,7 @@ function ShowMoreButton({
       <button
         type="button"
         onClick={onClick}
-        className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-black/15 hover:border-black/40 text-sm font-medium text-[#0B162D] hover:bg-black/[0.02] transition-colors cursor-pointer"
+        className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-black/15 hover:border-black/40 text-sm font-medium text-ink hover:bg-black/[0.02] transition-colors cursor-pointer"
       >
         {label}
         <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
@@ -181,15 +175,15 @@ function FilterRow({
 }) {
   return (
     <div>
-      <div className="text-xs uppercase tracking-[0.18em] font-semibold text-[#0B162D] mb-3">
-        {label}
-      </div>
+      <div className="text-xs uppercase tracking-[0.18em] font-semibold text-ink mb-3">{label}</div>
       <div className="flex flex-wrap gap-2 sm:justify-center 3xl:justify-start">
         {values.map((v) => {
           const active = selected.includes(v)
           return (
             <button
               key={v}
+              type="button"
+              aria-pressed={active}
               onClick={() => onToggle(v)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors cursor-pointer ${
                 active
@@ -240,12 +234,8 @@ function ProjectCard({
           <div className="text-xs font-mono text-black/55">
             {formatRange(locale, project.start, project.end, presentLabel)}
           </div>
-          <h3 className="font-medium text-base text-black mt-0.5 truncate">
-            {project.role}
-          </h3>
-          <p className="text-sm text-[#21569c] font-medium truncate">
-            {project.customer}
-          </p>
+          <h3 className="font-medium text-base text-black mt-0.5 truncate">{project.role}</h3>
+          <p className="text-sm text-brand font-medium truncate">{project.customer}</p>
         </div>
       </div>
 
@@ -253,7 +243,7 @@ function ProjectCard({
         <ul className="space-y-1.5 text-sm text-black/75 mb-4">
           {points.map((t, i) => (
             <li key={i} className="flex gap-2">
-              <span className="text-[#F703EB] mt-1.5 leading-none">·</span>
+              <span className="text-magenta mt-1.5 leading-none">·</span>
               <span className="leading-relaxed">{t}</span>
             </li>
           ))}
@@ -266,7 +256,7 @@ function ProjectCard({
             {techs.map((t) => (
               <span
                 key={t}
-                className="px-2 py-0.5 text-[11px] rounded-full bg-[#F703EB]/10 text-[#F703EB] font-medium"
+                className="px-2 py-0.5 text-[11px] rounded-full bg-magenta/10 text-magenta font-medium"
               >
                 {t}
               </span>
