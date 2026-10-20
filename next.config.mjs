@@ -1,12 +1,9 @@
-// next.config.mjs
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === 'production'
-const basePath = ''
-
-export default {
-  output: 'export',
+const nextConfig = {
+  // Fully static site for GitHub Pages; CV data is fetched from the Google Sheet at build time.
+  output: "export",
   images: { unoptimized: true },
-  basePath,
-  assetPrefix: basePath,
   trailingSlash: true,
 }
+
+export default nextConfig
