@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { Mail, MapPin, Phone, Linkedin } from "lucide-react"
+import { siteConfig } from "@/site.config"
 
 export default function Footer({ forceLang }: { forceLang?: string }) {
   const lang = forceLang === "en" ? "en" : "de"
@@ -28,19 +29,19 @@ export default function Footer({ forceLang }: { forceLang?: string }) {
           <div className="flex items-start gap-4">
             <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden shadow-lg flex-shrink-0">
               <Image
-                src="/assets/sebastian.webp"
-                alt="Sebastian Grab"
+                src={siteConfig.portrait}
+                alt={siteConfig.name}
                 fill
                 sizes="(max-width: 640px) 64px, 80px"
                 className="object-cover"
               />
             </div>
             <div className="space-y-1 pt-1">
-              <div className="text-sm font-semibold text-black">Sebastian Grab</div>
+              <div className="text-sm font-semibold text-black">{siteConfig.name}</div>
               <div className="text-sm text-black/70 leading-relaxed">
-                Co-Founder & Software Engineer
+                {siteConfig.role}
                 <br />
-                smiit GmbH
+                {siteConfig.company.name}
               </div>
             </div>
           </div>
@@ -51,24 +52,26 @@ export default function Footer({ forceLang }: { forceLang?: string }) {
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 flex-shrink-0" />
                 <a
-                  href="mailto:sebastian.grab@smiit.de"
+                  href={`mailto:${siteConfig.email}`}
                   className="hover:text-black transition-colors"
                 >
-                  sebastian.grab@smiit.de
+                  {siteConfig.email}
                 </a>
               </li>
-              <li className="flex items-center gap-2">
-                <Phone className="h-4 w-4 flex-shrink-0" />
-                <a
-                  href="tel:+491604073198"
-                  className="hover:text-black transition-colors"
-                >
-                  +49 160 4073198
-                </a>
-              </li>
+              {siteConfig.phone && (
+                <li className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 flex-shrink-0" />
+                  <a
+                    href={`tel:${siteConfig.phone.replace(/\s+/g, "")}`}
+                    className="hover:text-black transition-colors"
+                  >
+                    {siteConfig.phone}
+                  </a>
+                </li>
+              )}
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <span>70176 Stuttgart</span>
+                <span>{siteConfig.location}</span>
               </li>
             </ul>
           </div>
@@ -78,7 +81,7 @@ export default function Footer({ forceLang }: { forceLang?: string }) {
             <ul className="space-y-2 text-sm text-black/70">
               <li>
                 <a
-                  href="https://www.linkedin.com/in/sebastian-grab/"
+                  href={siteConfig.linkedInUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 hover:text-black transition-colors"
@@ -103,7 +106,7 @@ export default function Footer({ forceLang }: { forceLang?: string }) {
 
         <div className="pt-4 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-3">
           <p className="text-xs text-black/55">
-            © {new Date().getFullYear()} Sebastian Grab · smiit GmbH. {L.rights}
+            © {new Date().getFullYear()} {siteConfig.name} · {siteConfig.company.name}. {L.rights}
           </p>
           <div className="flex gap-6 text-xs text-black/55">
             <a

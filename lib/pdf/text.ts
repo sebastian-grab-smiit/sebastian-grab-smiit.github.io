@@ -42,12 +42,7 @@ export function sanitize(text: string | null | undefined): string {
   return out
 }
 
-export function wrapText(
-  text: string,
-  font: PDFFont,
-  size: number,
-  maxWidth: number,
-): string[] {
+export function wrapText(text: string, font: PDFFont, size: number, maxWidth: number): string[] {
   const clean = sanitize(text)
   if (!clean) return []
   const paragraphs = clean.split("\n")
@@ -113,7 +108,9 @@ export function drawWrappedText(
   const lines = opts.maxWidth
     ? wrapText(text, opts.font, opts.size, opts.maxWidth)
     : [sanitize(text)]
-  const limited = opts.maxLines ? truncateLines(lines, opts.maxLines, opts.font, opts.size, opts.maxWidth) : lines
+  const limited = opts.maxLines
+    ? truncateLines(lines, opts.maxLines, opts.font, opts.size, opts.maxWidth)
+    : lines
   let y = opts.topY
   for (const line of limited) {
     const baseline = opts.pageH - y - opts.size

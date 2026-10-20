@@ -27,6 +27,13 @@
 }
 
 @theme {
+  /* Brand palette. Mirrored for inline styles and SVG in lib/brand.ts. */
+  --color-ink: #0b162d;
+  --color-brand: #21569c;
+  --color-brand-hover: #1a4580;
+  --color-magenta: #f703eb;
+  --color-magenta-hover: #de02d2;
+
   --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;
   --font-serif: var(--font-serif), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
@@ -76,40 +83,6 @@
   a:focus-visible,
   button:focus-visible,
   [role="button"]:focus-visible {
-    @apply outline-none ring-1 ring-black/20;
+    @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-background;
   }
-}
-
-@layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-}
-
-.section-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  color: #21569c;
-  text-transform: uppercase;
-  margin-bottom: 1.25rem;
-}
-.section-eyebrow::before {
-  content: "";
-  display: inline-block;
-  width: 1.75rem;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #21569c);
-}
-
-.section-highlight {
-  color: #21569c;
 }

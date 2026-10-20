@@ -9,12 +9,9 @@ import type {
 } from "@/lib/sheet"
 import type { Locale } from "@/lib/dictionary"
 import { formatMonth, formatRange, splitTags } from "@/lib/format"
+import { siteConfig } from "@/site.config"
 import { COLORS } from "./colors"
-import {
-  addLinkAnnotation,
-  drawContainedImage,
-  type Fonts,
-} from "./primitives"
+import { addLinkAnnotation, drawContainedImage, type Fonts } from "./primitives"
 import { drawWrappedText, sanitize, wrapText } from "./text"
 import { loadAndEmbedImages } from "./images"
 
@@ -81,14 +78,14 @@ const MAIN_RIGHT = 40
 const MAIN_W = PAGE_W - MAIN_X - MAIN_RIGHT
 const LOGO_SIZE = 18
 const LOGO_GUTTER = 10
-const PHOTO_URL = "/assets/sebastian.webp"
+const PHOTO_URL = siteConfig.portrait
 
 export async function buildCvPdf(input: CvPdfInput): Promise<Uint8Array> {
   const doc = await PDFDocument.create()
   doc.setTitle(`${input.person.name} - CV`)
   doc.setAuthor(input.person.name)
-  doc.setCreator("cv.smiit.de")
-  doc.setProducer("cv.smiit.de")
+  doc.setCreator(new URL(siteConfig.url).host)
+  doc.setProducer(new URL(siteConfig.url).host)
 
   const fonts: Fonts = {
     sans: await doc.embedFont(StandardFonts.Helvetica),
@@ -260,11 +257,7 @@ function drawSidebarContact(
     const wrapped = wrapText(text, opts.fonts.sans, size, SIDEBAR_INNER_W)
     for (let i = 0; i < wrapped.length; i++) {
       const line = wrapped[i]
-      const color = item.url
-        ? COLORS.primaryLight
-        : item.muted
-          ? COLORS.darkMuted
-          : COLORS.gray300
+      const color = item.url ? COLORS.primaryLight : item.muted ? COLORS.darkMuted : COLORS.gray300
       const baseline = PAGE_H - cursor - size
       page.drawText(line, {
         x: SIDEBAR_PAD,
@@ -491,9 +484,7 @@ function drawMain(args: {
 
   if (resume.length > 0) {
     cursor = drawMainSectionHeading(page, strings.experience, { topY: cursor, fonts })
-    const sorted = [...resume].sort(
-      (a, b) => (b.start?.getTime() ?? 0) - (a.start?.getTime() ?? 0),
-    )
+    const sorted = [...resume].sort((a, b) => (b.start?.getTime() ?? 0) - (a.start?.getTime() ?? 0))
     const maxEntries = 5
     const entries = sorted.slice(0, maxEntries)
     for (let i = 0; i < entries.length; i++) {
@@ -582,9 +573,7 @@ function drawResumeEntry(args: {
   }
 
   const dateSize = 7.5
-  const dateText = sanitize(
-    formatRange(locale, entry.start, entry.end, strings.present),
-  )
+  const dateText = sanitize(formatRange(locale, entry.start, entry.end, strings.present))
   const dateW = fonts.mono.widthOfTextAtSize(dateText, dateSize)
   page.drawText(dateText, {
     x: MAIN_X + MAIN_W - dateW,
@@ -689,9 +678,7 @@ function drawAcademicEntry(args: {
   }
 
   const dateSize = 7.5
-  const dateText = sanitize(
-    formatRange(locale, entry.start, entry.end, strings.present),
-  )
+  const dateText = sanitize(formatRange(locale, entry.start, entry.end, strings.present))
   const dateW = fonts.mono.widthOfTextAtSize(dateText, dateSize)
   page.drawText(dateText, {
     x: MAIN_X + MAIN_W - dateW,
@@ -750,17 +737,13 @@ function drawAcademicEntry(args: {
   return cursor
 }
 
-function drawFooter(
-  page: PDFPage,
-  fonts: Fonts,
-  locale: Locale,
-  strings: CvStrings,
-) {
+function drawFooter(page: PDFPage, fonts: Fonts, locale: Locale, strings: CvStrings) {
   const size = 7
-  const dateText = new Date().toLocaleDateString(
-    locale === "en" ? "en-US" : "de-DE",
-    { day: "2-digit", month: "long", year: "numeric" },
-  )
+  const dateText = new Date().toLocaleDateString(locale === "en" ? "en-US" : "de-DE", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  })
   const text = sanitize(`${strings.footer} ${dateText}`)
   const tw = fonts.mono.widthOfTextAtSize(text, size)
   page.drawText(text, {

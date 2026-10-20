@@ -27,10 +27,7 @@ export function IntroOverlay({
   const onDoneRef = useRef(onDone)
   const onExitStartRef = useRef(onExitStart)
 
-  const L =
-    lang === "de"
-      ? { loading: "Daten laden..." }
-      : { loading: "Loading data..." }
+  const L = lang === "de" ? { loading: "Daten laden..." } : { loading: "Loading data..." }
 
   useEffect(() => {
     onDoneRef.current = onDone
@@ -91,11 +88,7 @@ export function IntroOverlay({
       <motion.div
         className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40"
         initial={{ scale: 0.5, opacity: 0 }}
-        animate={
-          phase === "initial"
-            ? { scale: 0.5, opacity: 0 }
-            : { scale: 1, opacity: 1 }
-        }
+        animate={phase === "initial" ? { scale: 0.5, opacity: 0 } : { scale: 1, opacity: 1 }}
         transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
       >
         <Image src="/icon.png" alt="smiit" fill className="object-contain" priority />
@@ -112,9 +105,7 @@ export function IntroOverlay({
             ].join(" ")}
             initial={{ y: 24, opacity: 0 }}
             animate={
-              phase === "text" || phase === "exit"
-                ? { y: 0, opacity: 1 }
-                : { y: 24, opacity: 0 }
+              phase === "text" || phase === "exit" ? { y: 0, opacity: 1 } : { y: 24, opacity: 0 }
             }
             transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
           >

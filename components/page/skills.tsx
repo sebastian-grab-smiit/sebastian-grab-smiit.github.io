@@ -2,17 +2,10 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
-import {
-  BarChart3,
-  Brain,
-  Cloud,
-  Code2,
-  Workflow,
-  Wrench,
-  type LucideIcon,
-} from "lucide-react"
+import { BarChart3, Brain, Cloud, Code2, Workflow, Wrench, type LucideIcon } from "lucide-react"
 import type { Skill } from "@/lib/sheet"
 import type { Dictionary } from "@/lib/dictionary"
+import { BRAND } from "@/lib/brand"
 
 interface SkillsProps {
   skills: Skill[]
@@ -20,15 +13,15 @@ interface SkillsProps {
 }
 
 const CATEGORY_META: Record<string, { color: string; Icon: LucideIcon }> = {
-  Coding: { color: "#F703EB", Icon: Code2 },
-  "Cloud / DevOps": { color: "#21569c", Icon: Cloud },
+  Coding: { color: BRAND.magenta, Icon: Code2 },
+  "Cloud / DevOps": { color: BRAND.blue, Icon: Cloud },
   Analytics: { color: "#16AEA3", Icon: BarChart3 },
   "AI / Data": { color: "#D97706", Icon: Brain },
   Automation: { color: "#14a800", Icon: Workflow },
 }
 
 const DEFAULT_META: { color: string; Icon: LucideIcon } = {
-  color: "#21569c",
+  color: BRAND.blue,
   Icon: Wrench,
 }
 
@@ -51,10 +44,7 @@ export default function Skills({ skills, dict }: SkillsProps) {
   const categories = Object.keys(grouped)
 
   return (
-    <section
-      id="skills"
-      className="relative bg-background pt-8 md:pt-12 pb-10 md:pb-12"
-    >
+    <section id="skills" className="relative bg-background pt-8 md:pt-12 pb-10 md:pb-12">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -63,30 +53,25 @@ export default function Skills({ skills, dict }: SkillsProps) {
           transition={{ duration: 0.5 }}
           className="sm:text-center 3xl:text-left"
         >
-          <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-[#21569c] mb-5">
+          <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-brand mb-5">
             <span
               aria-hidden="true"
-              className="inline-block h-px w-7 bg-gradient-to-r from-transparent to-[#21569c]"
+              className="inline-block h-px w-7 bg-gradient-to-r from-transparent to-brand"
             />
             {dict.skills.eyebrow}
           </span>
-          <h2 className="font-serif text-[2.2rem] sm:text-[2.6rem] md:text-[3rem] leading-tight text-[#0B162D] tracking-tight">
+          <h2 className="font-serif text-[2.2rem] sm:text-[2.6rem] md:text-[3rem] leading-tight text-ink tracking-tight">
             {dict.sections.skills}
           </h2>
         </motion.div>
 
         {/* Mobile: full-bleed swipe story */}
-        <SkillsSwipeStory categories={categories} grouped={grouped} />
+        <SkillsSwipeStory categories={categories} grouped={grouped} label={dict.sections.skills} />
 
         {/* Tablet + Desktop: grid */}
         <div className="hidden sm:grid mt-8 grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 md:gap-5">
           {categories.map((cat, idx) => (
-            <SkillCategoryCard
-              key={cat}
-              cat={cat}
-              list={grouped[cat]}
-              idx={idx}
-            />
+            <SkillCategoryCard key={cat} cat={cat} list={grouped[cat]} idx={idx} />
           ))}
         </div>
       </div>
@@ -97,9 +82,11 @@ export default function Skills({ skills, dict }: SkillsProps) {
 function SkillsSwipeStory({
   categories,
   grouped,
+  label,
 }: {
   categories: string[]
   grouped: Record<string, Skill[]>
+  label: string
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [activeIdx, setActiveIdx] = useState(0)
@@ -127,7 +114,10 @@ function SkillsSwipeStory({
       <div
         ref={containerRef}
         className="-mx-4 overflow-x-auto overflow-y-hidden snap-x snap-mandatory [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        role="region"
         aria-roledescription="carousel"
+        aria-label={label}
+        tabIndex={0}
       >
         <div className="flex">
           {categories.map((cat, idx) => (
@@ -138,19 +128,21 @@ function SkillsSwipeStory({
               aria-label={`${idx + 1} / ${total}: ${cat}`}
             >
               <div className="min-h-[300px] flex flex-col items-center text-center pt-2">
-                <div className="text-[0.7rem] font-mono uppercase tracking-[0.22em] text-[#0B162D]/45 mb-3 tabular-nums">
+                <div className="text-[0.7rem] font-mono uppercase tracking-[0.22em] text-ink/60 mb-3 tabular-nums">
                   {String(idx + 1).padStart(2, "0")}
-                  <span className="mx-1.5 text-[#0B162D]/25">/</span>
+                  <span aria-hidden="true" className="mx-1.5 text-ink/25">
+                    /
+                  </span>
                   {String(total).padStart(2, "0")}
                 </div>
-                <h3 className="font-serif text-[2rem] leading-[1.05] text-[#0B162D] tracking-tight mb-5">
+                <h3 className="font-serif text-[2rem] leading-[1.05] text-ink tracking-tight mb-5">
                   {cat}
                 </h3>
                 <div className="flex flex-wrap justify-center gap-2">
                   {grouped[cat].map((s) => (
                     <span
                       key={s.name}
-                      className="px-3 py-1.5 rounded-md text-sm font-medium bg-[#0B162D]/[0.05] text-[#0B162D]/80"
+                      className="px-3 py-1.5 rounded-md text-sm font-medium bg-ink/[0.05] text-ink/80"
                     >
                       {s.name}
                     </span>
@@ -171,9 +163,7 @@ function SkillsSwipeStory({
             aria-label={`Slide ${i + 1}: ${cat}`}
             aria-current={i === activeIdx ? "true" : undefined}
             className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === activeIdx
-                ? "w-6 bg-[#0B162D]/60"
-                : "w-1.5 bg-[#0B162D]/20"
+              i === activeIdx ? "w-6 bg-ink/60" : "w-1.5 bg-ink/20"
             }`}
           />
         ))}

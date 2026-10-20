@@ -6,34 +6,31 @@ import { useLenis } from "@/components/smooth-scroll-provider"
 
 export function ScrollToTop() {
   const pathname = usePathname()
-  const lenis = useLenis()
+  const lenisRef = useLenis()
 
   useLayoutEffect(() => {
     const hash = window.location.hash
 
     if (hash) {
-      // Hash-Fragment vorhanden: zum entsprechenden Element scrollen
-      // Kurzes Timeout, damit das DOM (inkl. Client-Komponenten) vollständig gerendert ist
+      // Wait briefly so client components below the fold have rendered their anchors.
       const timeoutId = setTimeout(() => {
-        const element = document.querySelector(hash) as HTMLElement | null
-        if (element) {
-          if (lenis) {
-            lenis.scrollTo(element, { immediate: true })
-          } else {
-            element.scrollIntoView({ behavior: "instant" })
-          }
+        const element = document.querySelector<HTMLElement>(hash)
+        if (!element) return
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(element, { immediate: true })
+        } else {
+          element.scrollIntoView({ behavior: "instant" })
         }
       }, 100)
       return () => clearTimeout(timeoutId)
-    } else {
-      // Kein Hash: Normal zum Seitenanfang scrollen
-      if (lenis) {
-        lenis.scrollTo(0, { immediate: true })
-      } else {
-        window.scrollTo({ top: 0, left: 0, behavior: "instant" })
-      }
     }
-  }, [pathname, lenis])
+
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true })
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" })
+    }
+  }, [pathname, lenisRef])
 
   return null
 }

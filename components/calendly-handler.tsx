@@ -26,14 +26,9 @@ export function CalendlyHandler({ url }: Props) {
 
   const getLang = useCallback((): string => {
     try {
-      const htmlLang =
-        typeof document !== "undefined" ? document.documentElement.lang : ""
+      const htmlLang = typeof document !== "undefined" ? document.documentElement.lang : ""
       if (htmlLang?.toLowerCase().startsWith("en")) return "en"
-      if (
-        typeof window !== "undefined" &&
-        window.location?.pathname?.startsWith("/en")
-      )
-        return "en"
+      if (typeof window !== "undefined" && window.location?.pathname?.startsWith("/en")) return "en"
     } catch {
       /* SSR / edge – fall through */
     }
@@ -45,9 +40,7 @@ export function CalendlyHandler({ url }: Props) {
     const baseEN = (process.env.NEXT_PUBLIC_CALENDLY_URL_EN ?? "").trim()
     const baseDE = (process.env.NEXT_PUBLIC_CALENDLY_URL_DE ?? "").trim()
     const fallback = (process.env.NEXT_PUBLIC_CALENDLY_URL ?? "").trim()
-    const base = (
-      url ?? (lang === "en" ? baseEN || fallback : baseDE || fallback)
-    ).trim()
+    const base = (url ?? (lang === "en" ? baseEN || fallback : baseDE || fallback)).trim()
 
     if (!base) return ""
 
@@ -105,21 +98,15 @@ export function CalendlyHandler({ url }: Props) {
     }
   }, [buildCalendlyUrl])
 
-
   const cleanHash = useCallback(() => {
     try {
       if (window.location.hash === "#book") {
-        history.replaceState(
-          null,
-          "",
-          window.location.pathname + window.location.search
-        )
+        history.replaceState(null, "", window.location.pathname + window.location.search)
       }
     } catch {
       /* ignore */
     }
   }, [])
-
 
   useEffect(() => {
     const handleHash = () => {
@@ -136,22 +123,18 @@ export function CalendlyHandler({ url }: Props) {
     return () => window.removeEventListener("hashchange", handleHash)
   }, [open, cleanHash])
 
-
   useEffect(() => {
     const onOpen = () => open()
     window.addEventListener("open-calendly", onOpen)
     return () => window.removeEventListener("open-calendly", onOpen)
   }, [open])
 
-
   useEffect(() => {
     const onWarmIntent = (e: Event) => {
       const target = e.target as HTMLElement | null
       if (!target) return
 
-      const trigger = target.closest<HTMLElement>(
-        'a[href*="#book"], [data-open-calendly="true"]'
-      )
+      const trigger = target.closest<HTMLElement>('a[href*="#book"], [data-open-calendly="true"]')
       if (!trigger) return
 
       warmup()
@@ -170,15 +153,12 @@ export function CalendlyHandler({ url }: Props) {
     }
   }, [warmup])
 
-
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement | null
       if (!target) return
 
-      const trigger = target.closest<HTMLElement>(
-        'a[href*="#book"], [data-open-calendly="true"]'
-      )
+      const trigger = target.closest<HTMLElement>('a[href*="#book"], [data-open-calendly="true"]')
       if (!trigger) return
 
       warmup()
@@ -195,10 +175,7 @@ export function CalendlyHandler({ url }: Props) {
 
   return (
     <>
-      <link
-        rel="stylesheet"
-        href="https://assets.calendly.com/assets/external/widget.css"
-      />
+      <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
       <link rel="preconnect" href="https://assets.calendly.com" crossOrigin="anonymous" />
       <link rel="dns-prefetch" href="https://assets.calendly.com" />
 

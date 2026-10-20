@@ -7,7 +7,7 @@ import Header from "@/components/header"
 import { ScrollToTop } from "@/components/scroll-to-top"
 import { CalendlyHandler } from "@/components/calendly-handler"
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider"
-import { buildPageMetadata } from "@/lib/seo"
+import { buildPageMetadata, DEFAULT_COPY } from "@/lib/seo"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
@@ -21,14 +21,7 @@ export async function generateMetadata({
   const { lang } = await params
   return buildPageMetadata({
     lang: lang === "en" ? "en" : "de",
-    title: {
-      de: "Sebastian Grab – Lebenslauf",
-      en: "Sebastian Grab – CV",
-    },
-    description: {
-      de: "Lebenslauf von Sebastian Grab: Werdegang, Projekte, Kenntnisse und Zertifikate.",
-      en: "Sebastian Grab's CV: experience, projects, skills, and certificates.",
-    },
+    ...DEFAULT_COPY,
   })
 }
 
