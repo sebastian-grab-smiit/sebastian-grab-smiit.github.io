@@ -1,96 +1,35 @@
-name: Deploy Next.js to GitHub Pages
+name: Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   workflow_dispatch:
-  schedule:
-    - cron: "0 4 * * *"    # 06:00 MESZ (Sommer) / 05:00 MEZ (Winter)
-    - cron: "0 16 * * *"   # 18:00 MESZ (Sommer) / 17:00 MEZ (Winter)
+  # Sent by the Google Apps Script in scripts/google-apps-script when the sheet changes.
+  repository_dispatch:
+    types: [sheet-updated]
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
-# Env secrets need to be set in GitHub Repository
+permissions:
+  contents: read
+
 jobs:
-  build-deploy:
+  ci:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: ci
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       pages: write
       id-token: write
-    env:
-      NEXT_PUBLIC_CALENDLY_URL: ${{ secrets.NEXT_PUBLIC_CALENDLY_URL }}
-      NEXT_PUBLIC_GOOGLE_SHEET_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_ID }}
-      NEXT_PUBLIC_GOOGLE_SHEET_PERSONAL_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_PERSONAL_GID }}
-      NEXT_PUBLIC_GOOGLE_SHEET_CERTIFICATES_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_CERTIFICATES_GID }}
-      NEXT_PUBLIC_GOOGLE_SHEET_LANGUAGES_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_LANGUAGES_GID }}
-      NEXT_PUBLIC_GOOGLE_SHEET_ACADEMICS_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_ACADEMICS_GID }}
-      NEXT_PUBLIC_GOOGLE_SHEET_SKILLS_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_SKILLS_GID }}
-      NEXT_PUBLIC_GOOGLE_SHEET_RESUME_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_RESUME_GID }}
-      NEXT_PUBLIC_GOOGLE_SHEET_PROJECTS_GID: ${{ secrets.NEXT_PUBLIC_GOOGLE_SHEET_PROJECTS_GID }}
-      NEXT_TELEMETRY_DISABLED: 1
-      CI: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build (produces /out)
-        run: npm run build
-
-      - name: Sanity check
-        run: |
-          echo "Repo root:" && ls -la
-          echo ".next:" && ls -la .next || true
-          echo "out:" && ls -la out || true
-
-      - name: Add .nojekyll (allow _next assets)
-        run: touch out/.nojekyll
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./out
-
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
-
-  keepalive:
-    if: github.event_name == 'schedule'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Push empty commit if repo nearing inactivity limit
-        run: |
-          last=$(git log -1 --format=%ct)
-          now=$(date +%s)
-          age_days=$(( (now - last) / 86400 ))
-          echo "Last commit is $age_days days old."
-          if [ "$age_days" -ge 45 ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit --allow-empty -m "chore: keepalive to prevent scheduled workflow deactivation"
-            git push
-          else
-            echo "No keepalive needed."
-          fi
