@@ -1,13 +1,7 @@
 import type { PDFDocument, PDFImage } from "pdf-lib"
 
 function isPng(buf: Uint8Array): boolean {
-  return (
-    buf.length >= 8 &&
-    buf[0] === 0x89 &&
-    buf[1] === 0x50 &&
-    buf[2] === 0x4e &&
-    buf[3] === 0x47
-  )
+  return buf.length >= 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47
 }
 
 function isJpg(buf: Uint8Array): boolean {
@@ -30,9 +24,7 @@ async function blobToPngBytes(blob: Blob): Promise<Uint8Array | null> {
     const ctx = canvas.getContext("2d")
     if (!ctx) return null
     ctx.drawImage(bitmap, 0, 0, w, h)
-    const pngBlob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob(resolve, "image/png"),
-    )
+    const pngBlob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"))
     if (!pngBlob) return null
     return new Uint8Array(await pngBlob.arrayBuffer())
   } catch {

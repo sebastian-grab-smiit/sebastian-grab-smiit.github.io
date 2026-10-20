@@ -2,6 +2,7 @@ import { PDFDocument, StandardFonts, type PDFFont, type PDFImage, type PDFPage }
 import type { Personal, Project } from "@/lib/sheet"
 import type { Locale } from "@/lib/dictionary"
 import { bulletize, formatRange, splitTags } from "@/lib/format"
+import { siteConfig } from "@/site.config"
 import { COLORS } from "./colors"
 import {
   drawBullet,
@@ -66,8 +67,8 @@ export async function buildProjectsPdf(input: ProjectsPdfInput): Promise<Uint8Ar
   const doc = await PDFDocument.create()
   doc.setTitle(`${input.person.name} - Projects`)
   doc.setAuthor(input.person.name)
-  doc.setCreator("cv.smiit.de")
-  doc.setProducer("cv.smiit.de")
+  doc.setCreator(new URL(siteConfig.url).host)
+  doc.setProducer(new URL(siteConfig.url).host)
 
   const fonts: Fonts = {
     sans: await doc.embedFont(StandardFonts.Helvetica),
@@ -283,9 +284,7 @@ function drawEntry(args: EntryArgs) {
   let cursor = topY
 
   const dateSize = 8
-  const dateText = sanitize(
-    formatRange(locale, project.start, project.end, strings.present),
-  )
+  const dateText = sanitize(formatRange(locale, project.start, project.end, strings.present))
   const dateW = fonts.mono.widthOfTextAtSize(dateText, dateSize)
   page.drawText(dateText, {
     x: x + width - dateW,
@@ -404,18 +403,14 @@ function drawEntry(args: EntryArgs) {
   }
 }
 
-function paintFooters(
-  doc: PDFDocument,
-  fonts: Fonts,
-  locale: Locale,
-  strings: ProjectsStrings,
-) {
+function paintFooters(doc: PDFDocument, fonts: Fonts, locale: Locale, strings: ProjectsStrings) {
   const pages = doc.getPages()
   const total = pages.length
-  const dateText = new Date().toLocaleDateString(
-    locale === "en" ? "en-US" : "de-DE",
-    { day: "2-digit", month: "long", year: "numeric" },
-  )
+  const dateText = new Date().toLocaleDateString(locale === "en" ? "en-US" : "de-DE", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  })
   for (let i = 0; i < total; i++) {
     const p = pages[i]
     const size = 7

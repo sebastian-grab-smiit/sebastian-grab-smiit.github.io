@@ -15,12 +15,7 @@ interface ExperienceProps {
   dict: Dictionary
 }
 
-export default function Experience({
-  resume,
-  academics,
-  locale,
-  dict,
-}: ExperienceProps) {
+export default function Experience({ resume, academics, locale, dict }: ExperienceProps) {
   const resumeSorted = [...resume].sort(
     (a, b) => (b.start?.getTime() ?? 0) - (a.start?.getTime() ?? 0),
   )
@@ -35,18 +30,10 @@ export default function Experience({
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
           {resumeSorted.length > 0 && (
-            <ProfessionalColumn
-              entries={resumeSorted}
-              locale={locale}
-              dict={dict}
-            />
+            <ProfessionalColumn entries={resumeSorted} locale={locale} dict={dict} />
           )}
           {academicsSorted.length > 0 && (
-            <AcademicColumn
-              entries={academicsSorted}
-              locale={locale}
-              dict={dict}
-            />
+            <AcademicColumn entries={academicsSorted} locale={locale} dict={dict} />
           )}
         </div>
       </div>
@@ -61,7 +48,7 @@ function ColumnHeading({ children }: { children: React.ReactNode }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5 }}
-      className="font-serif text-[1.7rem] sm:text-[2rem] md:text-[2.2rem] leading-tight text-[#0B162D] tracking-tight mb-8 md:mb-10 sm:text-center 3xl:text-left"
+      className="font-serif text-[1.7rem] sm:text-[2rem] md:text-[2.2rem] leading-tight text-ink tracking-tight mb-8 md:mb-10 sm:text-center 3xl:text-left"
     >
       {children}
     </motion.h2>
@@ -82,10 +69,7 @@ function ProfessionalColumn({
       <ColumnHeading>{dict.sections.experienceProfessional}</ColumnHeading>
 
       <ol className="relative space-y-8 md:space-y-10">
-        <div
-          aria-hidden="true"
-          className="absolute left-[5px] top-3 bottom-3 w-px bg-black/10"
-        />
+        <div aria-hidden="true" className="absolute left-[5px] top-3 bottom-3 w-px bg-black/10" />
 
         {entries.map((entry, idx) => (
           <ProfessionalItem
@@ -125,10 +109,10 @@ function ProfessionalItem({
     >
       <span
         aria-hidden="true"
-        className="absolute left-0 top-[7px] h-2.5 w-2.5 rounded-full bg-[#F703EB] ring-4 ring-background"
+        className="absolute left-0 top-[7px] h-2.5 w-2.5 rounded-full bg-magenta ring-4 ring-background"
       />
 
-      <div className="hidden sm:block text-xs text-[#0B162D]/55 font-mono leading-snug pt-1">
+      <div className="hidden sm:block text-xs text-ink/55 font-mono leading-snug pt-1">
         {dateRange}
       </div>
 
@@ -142,20 +126,18 @@ function ProfessionalItem({
               className="h-8 w-8 object-contain rounded-md bg-white border border-black/5 shrink-0"
             />
           )}
-          <h3 className="text-[0.95rem] sm:text-base leading-snug text-[#0B162D] pt-0.5">
+          <h3 className="text-[0.95rem] sm:text-base leading-snug text-ink pt-0.5">
             <span className="font-semibold">{entry.role}</span>
-            {entry.company && (
-              <span className="text-[#0B162D]/55 font-normal"> – {entry.company}</span>
-            )}
+            {entry.company && <span className="text-ink/55 font-normal"> – {entry.company}</span>}
           </h3>
         </div>
 
-        <div className="sm:hidden mt-1.5 text-xs text-[#0B162D]/55 font-mono leading-snug">
+        <div className="sm:hidden mt-1.5 text-xs text-ink/55 font-mono leading-snug">
           {dateRange}
         </div>
 
         {entry.description && (
-          <p className="mt-1.5 text-sm text-[#0B162D]/70 leading-relaxed whitespace-pre-line">
+          <p className="mt-1.5 text-sm text-ink/70 leading-relaxed whitespace-pre-line">
             {entry.description}
           </p>
         )}
@@ -165,7 +147,7 @@ function ProfessionalItem({
             {techs.map((t) => (
               <span
                 key={t}
-                className="px-2 py-0.5 text-[11px] rounded-md bg-black/[0.04] text-[#0B162D]/70 font-medium"
+                className="px-2 py-0.5 text-[11px] rounded-md bg-black/[0.04] text-ink/70 font-medium"
               >
                 {t}
               </span>
@@ -226,12 +208,7 @@ function AcademicAccordionItem({
   locale: Locale
   dict: Dictionary
 }) {
-  const dateRange = formatRange(
-    locale,
-    entry.start,
-    entry.end,
-    dict.labels.present,
-  )
+  const dateRange = formatRange(locale, entry.start, entry.end, dict.labels.present)
 
   return (
     <motion.div
@@ -248,7 +225,7 @@ function AcademicAccordionItem({
         className="w-full text-left flex items-center gap-3 px-6 md:px-8 py-3 md:py-4 hover:bg-black/[0.015] transition-colors cursor-pointer"
       >
         <ChevronDown
-          className={`h-5 w-5 text-[#0B162D]/40 shrink-0 transition-transform duration-300 ${
+          className={`h-5 w-5 text-ink/40 shrink-0 transition-transform duration-300 ${
             isOpen ? "rotate-0" : "-rotate-90"
           }`}
         />
@@ -262,14 +239,12 @@ function AcademicAccordionItem({
         )}
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline flex-wrap gap-x-3 gap-y-0.5">
-            <h3 className="text-[0.95rem] md:text-[1.05rem] font-semibold text-[#0B162D] leading-tight">
+            <h3 className="text-[0.95rem] md:text-[1.05rem] font-semibold text-ink leading-tight">
               {entry.degree}
             </h3>
-            <span className="text-xs font-mono text-[#0B162D]/55">{dateRange}</span>
+            <span className="text-xs font-mono text-ink/55">{dateRange}</span>
           </div>
-          {entry.university && (
-            <p className="text-sm text-[#0B162D]/65 mt-1">{entry.university}</p>
-          )}
+          {entry.university && <p className="text-sm text-ink/65 mt-1">{entry.university}</p>}
         </div>
       </button>
 
@@ -296,12 +271,12 @@ function AcademicAccordionItem({
 
               <div className="min-w-0">
                 {entry.description && (
-                  <p className="text-sm text-[#0B162D]/70 leading-relaxed whitespace-pre-line">
+                  <p className="text-sm text-ink/70 leading-relaxed whitespace-pre-line">
                     {entry.description}
                   </p>
                 )}
                 {entry.grade !== null && (
-                  <p className="mt-6 text-sm font-mono text-[#0B162D]/65">
+                  <p className="mt-6 text-sm font-mono text-ink/65">
                     {dict.labels.grade}: {entry.grade.toFixed(1)}
                   </p>
                 )}

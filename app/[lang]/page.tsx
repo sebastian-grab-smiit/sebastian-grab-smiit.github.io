@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { getDictionary, type Locale } from "@/lib/dictionary"
-import { fetchCv, localeToSheetLang } from "@/lib/sheet"
-import { buildPageMetadata, buildPersonJsonLd } from "@/lib/seo"
+import { fetchCv, localeToSheetLang, selectLanguage } from "@/lib/sheet"
+import { buildPageMetadata, buildPersonJsonLd, DEFAULT_COPY, SITE_NAME } from "@/lib/seo"
 import Hero from "@/components/page/hero"
 import Focus from "@/components/page/focus"
 import Experience from "@/components/page/experience"
@@ -22,33 +22,20 @@ export async function generateMetadata({
   return buildPageMetadata({
     lang,
     title: {
-      de: "Sebastian Grab – Lebenslauf und Projekte",
-      en: "Sebastian Grab – CV and Projects",
+      de: `${SITE_NAME} – Lebenslauf und Projekte`,
+      en: `${SITE_NAME} – CV and Projects`,
     },
-    description: {
-      de: "Lebenslauf von Sebastian Grab: Werdegang, Projekte, Kenntnisse und Zertifikate.",
-      en: "Sebastian Grab's CV: experience, projects, skills, and certificates.",
-    },
+    description: DEFAULT_COPY.description,
   })
 }
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ lang: Locale }>
-}) {
+export default async function Page({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params
   const dict = getDictionary(lang)
-  const sheetLang = localeToSheetLang(lang)
-  const data = await fetchCv()
-
-  const person = data.personal.find((p) => p.language === sheetLang)
-  const languages = data.languages.filter((l) => l.language === sheetLang)
-  const academics = data.academics.filter((a) => a.language === sheetLang)
-  const resume = data.resume.filter((r) => r.language === sheetLang)
-  const skills = data.skills.filter((s) => s.language === sheetLang)
-  const projects = data.projects.filter((p) => p.language === sheetLang)
-  const certificates = data.certificates.filter((c) => c.language === sheetLang)
+  const { person, languages, academics, resume, skills, projects, certificates } = selectLanguage(
+    await fetchCv(),
+    localeToSheetLang(lang),
+  )
 
   const personJsonLd = buildPersonJsonLd({
     lang,

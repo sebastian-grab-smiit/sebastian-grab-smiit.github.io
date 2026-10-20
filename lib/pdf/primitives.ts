@@ -1,4 +1,12 @@
-import { PDFArray, PDFName, PDFString, type PDFFont, type PDFImage, type PDFPage, type RGB } from "pdf-lib"
+import {
+  PDFArray,
+  PDFName,
+  PDFString,
+  type PDFFont,
+  type PDFImage,
+  type PDFPage,
+  type RGB,
+} from "pdf-lib"
 import { COLORS } from "./colors"
 import { drawWrappedText, sanitize } from "./text"
 
@@ -150,7 +158,11 @@ export interface PillOptions {
   borderColor?: RGB
 }
 
-export function drawPill(page: PDFPage, text: string, opts: PillOptions): { width: number; height: number } {
+export function drawPill(
+  page: PDFPage,
+  text: string,
+  opts: PillOptions,
+): { width: number; height: number } {
   const size = opts.size ?? 7.5
   const px = opts.paddingX ?? 6
   const py = opts.paddingY ?? 3

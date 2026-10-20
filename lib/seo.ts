@@ -1,18 +1,24 @@
 import type { Metadata } from "next"
+import { siteConfig } from "@/site.config"
 import type { Locale } from "./dictionary"
-import type {
-  Academic,
-  Certificate,
-  LanguageSkill,
-  Personal,
-  ResumeEntry,
-  Skill,
-} from "./sheet"
+import type { Academic, Certificate, LanguageSkill, Personal, ResumeEntry, Skill } from "./sheet"
 
-export const SITE_NAME = "Sebastian Grab"
-export const SITE_URL = "https://grab.smiit.de"
+export const SITE_NAME = siteConfig.name
+export const SITE_URL = siteConfig.url
 
 type LocalizedString = { de: string; en: string }
+
+/** Default title and description shared by the layout and the redirect page. */
+export const DEFAULT_COPY = {
+  title: {
+    de: `${SITE_NAME} – Lebenslauf`,
+    en: `${SITE_NAME} – CV`,
+  },
+  description: {
+    de: `Lebenslauf von ${SITE_NAME}: Werdegang, Projekte, Kenntnisse und Zertifikate.`,
+    en: `${SITE_NAME}'s CV: experience, projects, skills, and certificates.`,
+  },
+} satisfies Record<string, LocalizedString>
 
 export function buildPageMetadata({
   lang,
@@ -136,9 +142,7 @@ export function buildPersonJsonLd({
 
   const hasCredential = [...degreeCredentials, ...certCredentials]
 
-  const knowsAbout = Array.from(
-    new Set(skills.map((s) => s.name).filter(Boolean)),
-  )
+  const knowsAbout = Array.from(new Set(skills.map((s) => s.name).filter(Boolean)))
 
   const knowsLanguage = languages
     .filter((l) => l.languageName)
@@ -148,30 +152,28 @@ export function buildPersonJsonLd({
   const hasOccupation = resume
     .filter((r) => r.role)
     .map((r) => {
-      const period = [isoDate(r.start), isoDate(r.end) ?? presentLabel]
-        .filter(Boolean)
-        .join(" – ")
+      const period = [isoDate(r.start), isoDate(r.end) ?? presentLabel].filter(Boolean).join(" – ")
       return {
         "@type": "Occupation",
         name: r.role,
         ...(r.company
           ? {
-              description: period
-                ? `${r.company} (${period})`
-                : r.company,
+              description: period ? `${r.company} (${period})` : r.company,
             }
           : {}),
       }
     })
 
-  const sameAs = [person?.linkedInUrl, "https://www.smiit.de"].filter(Boolean)
+  const sameAs = [person?.linkedInUrl || siteConfig.linkedInUrl, siteConfig.company.url].filter(
+    Boolean,
+  )
 
   return {
     "@context": "https://schema.org",
     "@type": "Person",
     "@id": `${SITE_URL}/#person`,
     name: person?.name || SITE_NAME,
-    jobTitle: person?.job || "Co-Founder & Software Engineer",
+    jobTitle: person?.job || siteConfig.role,
     ...(person?.description ? { description: person.description } : {}),
     url: pageUrl,
     mainEntityOfPage: pageUrl,
@@ -182,8 +184,8 @@ export function buildPersonJsonLd({
     ...(person?.nationality ? { nationality: person.nationality } : {}),
     worksFor: {
       "@type": "Organization",
-      name: "smiit GmbH",
-      url: "https://www.smiit.de",
+      name: siteConfig.company.name,
+      url: siteConfig.company.url,
     },
     ...(alumniOf.length ? { alumniOf } : {}),
     ...(hasCredential.length ? { hasCredential } : {}),
