@@ -7,14 +7,14 @@ Bilingual (DE/EN) CV website at **[grab.smiit.de](https://grab.smiit.de)**, with
 one-click download of the CV and project list as PDF.
 
 The content is maintained in a Google Sheet, so updating the CV never requires a code change:
-editing the sheet triggers a rebuild, and the site is redeployed as static HTML to GitHub Pages.
+after editing the sheet, a manual deploy rebuilds the site as static HTML on GitHub Pages.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-  Sheet[(Google Sheet)] -- "edit → Apps Script<br/>repository_dispatch" --> GH[GitHub Actions]
-  GH -- "CSV export at build time" --> Sheet
+  Dev([Push / Run workflow]) --> GH[GitHub Actions]
+  GH -- "CSV export at build time" --> Sheet[(Google Sheet)]
   GH -- "validate → test → build" --> Out[Static export]
   Out -- deploy --> Pages[GitHub Pages]
   Pages --> Browser
@@ -70,9 +70,8 @@ npm run dev            # http://localhost:3000/de/
 | `NEXT_PUBLIC_GOOGLE_SHEET_<TAB>_GID` | `gid` of each tab: `PERSONAL`, `CERTIFICATES`, `LANGUAGES`, `ACADEMICS`, `SKILLS`, `RESUME`, `PROJECTS` |
 | `NEXT_PUBLIC_CALENDLY_URL`           | Booking link used by "Talk to me" and `/meet`                                                           |
 
-Locally these live in `.env`; in GitHub they are repository secrets. Dependabot pull requests
-only receive [Dependabot secrets](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/configuring-access-to-private-registries-for-dependabot#storing-credentials-for-dependabot-to-use),
-so add the same values there for their builds to pass.
+Locally these live in `.env`; in GitHub they are repository secrets
+(**Settings → Secrets and variables → Actions**).
 
 The sheet must be shared as "Anyone with the link can view". The expected columns of each tab
 are defined in [`lib/sheet/schema.ts`](lib/sheet/schema.ts); dates use `YYYY-MM-DD`, lists
@@ -83,28 +82,15 @@ Static identity (name, domain, contact links, portrait) is configured in
 
 ## Deployment
 
-| Trigger        | Result                                                                    |
-| -------------- | ------------------------------------------------------------------------- |
-| Pull request   | CI: checks, build, E2E, Lighthouse                                        |
-| Push to `main` | CI, then deploy to GitHub Pages                                           |
-| Sheet edited   | Apps Script → `repository_dispatch` → deploy                              |
-| Manual         | "Run workflow" on the Deploy workflow, or "CV → Publish now" in the sheet |
+| Trigger                           | Result                             |
+| --------------------------------- | ---------------------------------- |
+| Pull request                      | CI: checks, build, E2E, Lighthouse |
+| Push to `main`                    | CI, then deploy to GitHub Pages    |
+| Actions → Deploy → "Run workflow" | Same, e.g. after editing the sheet |
 
-The deploy job only runs after all CI jobs passed, and it deploys exactly the artifact that was tested.
-
-### Automatic deploys from the sheet
-
-[`scripts/google-apps-script/deploy-trigger.gs`](scripts/google-apps-script/deploy-trigger.gs)
-debounces edits and dispatches one deploy once the sheet has been quiet for three minutes.
-
-1. Create a [fine-grained personal access token](https://github.com/settings/personal-access-tokens/new)
-   for this repository only, with the permission **Contents: Read and write**.
-2. In the sheet, open **Extensions → Apps Script** and paste the script.
-3. Under **Project Settings → Script properties**, add `GITHUB_TOKEN` with the token.
-4. Run `setupTriggers` once from the editor and grant the permissions.
-
-The sheet then has a **CV → Publish now** menu for immediate deploys. Renew the token before it
-expires; failed dispatches show up under **Executions** in the Apps Script editor.
+The deploy job only runs after all CI jobs passed, and it deploys exactly the artifact that was
+tested. If the sheet contains invalid data, the run fails with the affected rows and the current
+site stays online; fix the sheet and run the workflow again.
 
 ## Project structure
 
@@ -116,7 +102,7 @@ lib/sheet/            Sheet schema, parser and loader
 lib/pdf/              Client-side PDF generation
 lib/                  Formatting, SEO/JSON-LD, dictionary, brand palette
 e2e/                  Playwright tests
-scripts/              Sheet check, static server, Apps Script
+scripts/              Sheet check, static server
 site.config.ts        Name, domain and contact details
 ```
 
@@ -125,4 +111,3 @@ site.config.ts        Name, domain and contact details
 - Commits follow [Conventional Commits](https://www.conventionalcommits.org) (`feat:`, `fix:`,
   `chore:` …), enforced by a commit-msg hook.
 - A pre-commit hook lints and formats staged files.
-- Dependencies are kept current by Dependabot.
