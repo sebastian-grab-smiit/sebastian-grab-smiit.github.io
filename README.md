@@ -27,6 +27,9 @@ flowchart LR
   The build checks the header row and every cell, and fails with the exact row and column of
   each problem. A broken sheet therefore never reaches production; the last good version stays
   online.
+- **No hotlinked images.** Logos referenced in the sheet are downloaded before each build,
+  resized and served as WebP from the site itself ([`scripts/fetch-images.ts`](scripts/fetch-images.ts)).
+  Unreachable logos are reported and keep their original URL.
 - **PDFs generated client-side** with `pdf-lib`. The generators are loaded only when the
   download is requested, so they add nothing to the initial page weight.
 
@@ -51,16 +54,17 @@ npm run dev            # http://localhost:3000/de/
 
 ### Scripts
 
-| Command               | Purpose                                                  |
-| --------------------- | -------------------------------------------------------- |
-| `npm run dev`         | Development server                                       |
-| `npm run build`       | Static export to `out/`                                  |
-| `npm start`           | Serve `out/` locally, like GitHub Pages does             |
-| `npm run check`       | Typecheck, lint, format check and unit tests (as in CI)  |
-| `npm test`            | Unit tests                                               |
-| `npm run test:e2e`    | E2E and accessibility tests against `out/` (build first) |
-| `npm run check:sheet` | Validate the Google Sheet without building               |
-| `npm run format`      | Format all files with Prettier                           |
+| Command               | Purpose                                                   |
+| --------------------- | --------------------------------------------------------- |
+| `npm run dev`         | Development server                                        |
+| `npm run build`       | Static export to `out/`                                   |
+| `npm start`           | Serve `out/` locally, like GitHub Pages does              |
+| `npm run check`       | Typecheck, lint, format check and unit tests (as in CI)   |
+| `npm test`            | Unit tests                                                |
+| `npm run test:e2e`    | E2E and accessibility tests against `out/` (build first)  |
+| `npm run check:sheet` | Validate the Google Sheet without building                |
+| `npm run images`      | Download and optimize the sheet logos (runs before build) |
+| `npm run format`      | Format all files with Prettier                            |
 
 ## Configuration
 
@@ -102,7 +106,7 @@ lib/sheet/            Sheet schema, parser and loader
 lib/pdf/              Client-side PDF generation
 lib/                  Formatting, SEO/JSON-LD, dictionary, brand palette
 e2e/                  Playwright tests
-scripts/              Sheet check, static server
+scripts/              Sheet check, logo download, static server
 site.config.ts        Name, domain and contact details
 ```
 
