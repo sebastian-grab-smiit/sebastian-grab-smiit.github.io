@@ -48,10 +48,10 @@ export default function Header({ forceLang }: { forceLang?: string }) {
         <div className="flex justify-between items-center h-16 lg:h-18">
           <Link href={cvHref} className="flex items-center relative group" scroll={false}>
             <Image
-              src="/logo_black.png"
+              src="/logo_black.webp"
               alt="smiit"
-              width={140}
-              height={48}
+              width={204}
+              height={144}
               className="h-11 lg:h-12 w-auto object-contain"
               priority
             />
@@ -62,7 +62,7 @@ export default function Header({ forceLang }: { forceLang?: string }) {
               <a
                 key={item.href}
                 href={item.href}
-                className="px-3 text-sm font-medium text-black hover:text-black/70 transition-colors cursor-pointer"
+                className="px-3 text-small font-medium text-black hover:text-black/70 transition-colors cursor-pointer"
               >
                 {item.label}
               </a>
@@ -72,7 +72,7 @@ export default function Header({ forceLang }: { forceLang?: string }) {
           <div className="flex items-center gap-2 sm:gap-6">
             <Button
               asChild
-              className="hidden lg:inline-flex bg-magenta hover:bg-magenta-hover text-white rounded-md px-3 py-2 font-medium text-sm tracking-tight cursor-pointer shadow-none border-none"
+              className="hidden lg:inline-flex bg-magenta hover:bg-magenta-hover text-white rounded-md px-3 py-2 font-medium text-small tracking-tight cursor-pointer shadow-none border-none"
             >
               <a href={contactHref}>{L.contact}</a>
             </Button>

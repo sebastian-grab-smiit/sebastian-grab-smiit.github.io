@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run images",
     "build": "next build",
     "start": "node scripts/serve-static.mjs",
     "lint": "eslint .",
@@ -17,6 +18,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "check:sheet": "node --env-file-if-exists=.env --import tsx scripts/check-sheet.ts",
+    "images": "node --env-file-if-exists=.env --import tsx scripts/fetch-images.ts",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run test",
     "prepare": "simple-git-hooks"
   },
@@ -52,6 +54,7 @@
     "lint-staged": "^17.6.0",
     "postcss": "^8.5",
     "prettier": "^3.9.10",
+    "sharp": "^0.35.5",
     "simple-git-hooks": "^2.14.0",
     "tailwindcss": "^4.1.9",
     "tsx": "^4.23.15",

@@ -1,8 +1,9 @@
 // Minimal static server for the exported site in ./out (used by `npm start` and the E2E tests).
-// Mirrors GitHub Pages: directory index.html, trailing-slash redirects and 404.html.
+// Mirrors GitHub Pages: directory index.html, trailing-slash redirects, 404.html and gzip.
 import { createReadStream, existsSync, statSync } from "node:fs"
 import { createServer } from "node:http"
 import { extname, join, normalize, resolve } from "node:path"
+import { createGzip } from "node:zlib"
 
 const root = resolve(process.argv[2] ?? "out")
 const port = Number(process.env.PORT ?? 3000)
@@ -27,9 +28,19 @@ if (!existsSync(root)) {
   process.exit(1)
 }
 
-function send(res, status, file) {
-  res.writeHead(status, { "content-type": TYPES[extname(file)] ?? "application/octet-stream" })
-  createReadStream(file).pipe(res)
+const COMPRESSIBLE = new Set([".html", ".js", ".css", ".json", ".txt", ".xml", ".svg"])
+
+function send(req, res, status, file) {
+  const headers = { "content-type": TYPES[extname(file)] ?? "application/octet-stream" }
+  const gzip =
+    COMPRESSIBLE.has(extname(file)) && /\bgzip\b/.test(req.headers["accept-encoding"] ?? "")
+  if (gzip) {
+    res.writeHead(status, { ...headers, "content-encoding": "gzip", vary: "accept-encoding" })
+    createReadStream(file).pipe(createGzip()).pipe(res)
+  } else {
+    res.writeHead(status, headers)
+    createReadStream(file).pipe(res)
+  }
 }
 
 createServer((req, res) => {
@@ -47,10 +58,10 @@ createServer((req, res) => {
       return
     }
     const index = join(file, "index.html")
-    if (existsSync(index)) return send(res, 200, index)
+    if (existsSync(index)) return send(req, res, 200, index)
   } else if (existsSync(file)) {
-    return send(res, 200, file)
+    return send(req, res, 200, file)
   }
 
-  send(res, 404, join(root, "404.html"))
+  send(req, res, 404, join(root, "404.html"))
 }).listen(port, () => console.log(`Serving ${root} at http://localhost:${port}`))
