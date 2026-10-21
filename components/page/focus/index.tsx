@@ -58,16 +58,14 @@ export default function Focus({ dict, locale }: FocusProps) {
 
   const headerInner = (
     <div className="sm:text-center 3xl:text-left">
-      <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-brand mb-5">
+      <span className="inline-flex items-center gap-2 text-caption font-semibold tracking-[0.22em] uppercase text-brand mb-5">
         <span
           aria-hidden="true"
           className="inline-block h-px w-7 bg-gradient-to-r from-transparent to-brand"
         />
         {dict.focus.eyebrow}
       </span>
-      <h2 className="font-serif text-[2.2rem] sm:text-[2.6rem] md:text-[3rem] leading-tight text-ink tracking-tight">
-        {dict.sections.focus}
-      </h2>
+      <h2 className="font-serif text-h2 text-ink tracking-tight">{dict.sections.focus}</h2>
     </div>
   )
 
@@ -106,10 +104,10 @@ export default function Focus({ dict, locale }: FocusProps) {
               >
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4 md:gap-5 items-stretch">
                   <div className="flex flex-col min-w-0">
-                    <h3 className="font-serif text-[1.25rem] md:text-[1.4rem] leading-tight text-ink tracking-tight">
+                    <h3 className="font-serif text-h5 text-ink tracking-tight">
                       {dict.focus.cards[card.key].title}
                     </h3>
-                    <p className="mt-3 text-sm text-ink/70 leading-relaxed">
+                    <p className="mt-3 text-body text-ink/70">
                       {dict.focus.cards[card.key].description}
                     </p>
                   </div>
@@ -121,7 +119,7 @@ export default function Focus({ dict, locale }: FocusProps) {
 
                 <div className="mt-auto pt-4">
                   <span
-                    className="inline-flex items-center gap-1.5 text-sm font-medium transition-transform group-hover:translate-x-0.5"
+                    className="inline-flex items-center gap-1.5 text-small font-medium transition-transform group-hover:translate-x-0.5"
                     style={{ color: card.accent }}
                   >
                     {dict.focus.learnMore}

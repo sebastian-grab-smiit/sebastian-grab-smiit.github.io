@@ -82,7 +82,7 @@ export function CvDownloadButton({
       onClick={onClick}
       disabled={busy}
       aria-busy={busy}
-      className="group relative overflow-hidden flex items-center gap-2 sm:gap-2.5 bg-white hover:bg-white/85 border border-black/10 text-ink px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl font-medium text-xs sm:text-sm transition-colors duration-300 cursor-pointer disabled:cursor-progress disabled:opacity-90"
+      className="group relative overflow-hidden flex items-center gap-2 sm:gap-2.5 bg-white hover:bg-white/85 border border-black/10 text-ink px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-xl font-medium text-caption sm:text-small transition-colors duration-300 cursor-pointer disabled:cursor-progress disabled:opacity-90"
     >
       <span>{failed ? ERROR_LABEL[locale] : label}</span>
       <span role="status" className="sr-only">
@@ -92,7 +92,7 @@ export function CvDownloadButton({
         <AlertCircle aria-hidden="true" className="w-4 h-4 text-magenta" />
       ) : busy ? (
         <>
-          <span className="text-xs tabular-nums text-brand min-w-[2.5ch] text-right">
+          <span className="text-caption tabular-nums text-brand min-w-[2.5ch] text-right">
             {pctRounded}%
           </span>
           <Loader2 className="w-4 h-4 animate-spin text-brand" />
