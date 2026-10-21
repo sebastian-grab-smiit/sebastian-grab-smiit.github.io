@@ -121,7 +121,7 @@ export default function Hero({
             </h1>
 
             {person.description && (
-              <p className="mt-5 sm:mt-6 md:mt-7 text-lead text-ink/70 max-w-[52ch] sm:mx-auto 3xl:mx-0 whitespace-pre-line">
+              <p className="mt-5 sm:mt-6 md:mt-7 text-small sm:text-lead text-ink/70 max-w-[52ch] sm:mx-auto 3xl:mx-0 whitespace-pre-line">
                 {person.description}
               </p>
             )}

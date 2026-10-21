@@ -141,7 +141,9 @@ function ProfessionalItem({
         </div>
 
         {entry.description && (
-          <p className="mt-1.5 text-body text-ink/70 whitespace-pre-line">{entry.description}</p>
+          <p className="mt-1.5 text-small sm:text-body text-ink/70 whitespace-pre-line">
+            {entry.description}
+          </p>
         )}
 
         {techs.length > 0 && (
@@ -275,7 +277,9 @@ function AcademicAccordionItem({
 
               <div className="min-w-0">
                 {entry.description && (
-                  <p className="text-body text-ink/70 whitespace-pre-line">{entry.description}</p>
+                  <p className="text-small sm:text-body text-ink/70 whitespace-pre-line">
+                    {entry.description}
+                  </p>
                 )}
                 {entry.grade !== null && (
                   <p className="mt-6 text-small font-mono text-ink/65">
