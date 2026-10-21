@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import type { Certificate } from "@/lib/sheet"
 import type { Dictionary, Locale } from "@/lib/dictionary"
 import { formatMonth } from "@/lib/format"
+import { imageSize } from "@/lib/image-size"
 
 interface CertificatesProps {
   certificates: Certificate[]
@@ -26,7 +27,7 @@ export default function Certificates({ certificates, locale, dict }: Certificate
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="font-serif text-[1.7rem] sm:text-[2rem] md:text-[2.2rem] leading-tight text-ink tracking-tight mb-8 md:mb-10 text-left sm:text-center 3xl:text-left"
+          className="font-serif text-h3 text-ink tracking-tight mb-8 md:mb-10 text-left sm:text-center 3xl:text-left"
         >
           {dict.sections.certificates}
         </motion.h2>
@@ -83,14 +84,21 @@ function CertificateCard({
     >
       {c.logoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={c.logoUrl} alt={c.certificateName} className="h-16 w-auto object-contain mb-3" />
+        <img
+          src={c.logoUrl}
+          alt={c.certificateName}
+          {...imageSize(c.logoUrl)}
+          loading="lazy"
+          decoding="async"
+          className="h-16 w-auto object-contain mb-3"
+        />
       ) : (
         <div className="h-16 w-16 mb-3 rounded-md bg-black/5" aria-hidden="true" />
       )}
-      <div className="text-sm font-medium text-black leading-snug text-balance">
+      <div className="text-small font-medium text-black leading-snug text-balance">
         {c.certificateName}
       </div>
-      <div className="text-xs font-mono text-black/55 mt-1">
+      <div className="text-caption font-mono text-black/55 mt-1">
         {c.date ? formatMonth(locale, c.date, "") : ""}
       </div>
     </motion.div>

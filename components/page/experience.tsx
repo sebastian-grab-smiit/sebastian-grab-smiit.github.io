@@ -48,7 +48,7 @@ function ColumnHeading({ children }: { children: React.ReactNode }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5 }}
-      className="font-serif text-[1.7rem] sm:text-[2rem] md:text-[2.2rem] leading-tight text-ink tracking-tight mb-8 md:mb-10 sm:text-center 3xl:text-left"
+      className="font-serif text-h3 text-ink tracking-tight mb-8 md:mb-10 sm:text-center 3xl:text-left"
     >
       {children}
     </motion.h2>
@@ -112,7 +112,7 @@ function ProfessionalItem({
         className="absolute left-0 top-[7px] h-2.5 w-2.5 rounded-full bg-magenta ring-4 ring-background"
       />
 
-      <div className="hidden sm:block text-xs text-ink/55 font-mono leading-snug pt-1">
+      <div className="hidden sm:block text-caption text-ink/55 font-mono leading-snug pt-1">
         {dateRange}
       </div>
 
@@ -123,23 +123,25 @@ function ProfessionalItem({
             <img
               src={entry.logoUrl}
               alt={entry.company}
+              width={32}
+              height={32}
+              loading="lazy"
+              decoding="async"
               className="h-8 w-8 object-contain rounded-md bg-white border border-black/5 shrink-0"
             />
           )}
-          <h3 className="text-[0.95rem] sm:text-base leading-snug text-ink pt-0.5">
+          <h3 className="text-body leading-snug text-ink pt-0.5">
             <span className="font-semibold">{entry.role}</span>
             {entry.company && <span className="text-ink/55 font-normal"> – {entry.company}</span>}
           </h3>
         </div>
 
-        <div className="sm:hidden mt-1.5 text-xs text-ink/55 font-mono leading-snug">
+        <div className="sm:hidden mt-1.5 text-caption text-ink/55 font-mono leading-snug">
           {dateRange}
         </div>
 
         {entry.description && (
-          <p className="mt-1.5 text-sm text-ink/70 leading-relaxed whitespace-pre-line">
-            {entry.description}
-          </p>
+          <p className="mt-1.5 text-body text-ink/70 whitespace-pre-line">{entry.description}</p>
         )}
 
         {techs.length > 0 && (
@@ -147,7 +149,7 @@ function ProfessionalItem({
             {techs.map((t) => (
               <span
                 key={t}
-                className="px-2 py-0.5 text-[11px] rounded-md bg-black/[0.04] text-ink/70 font-medium"
+                className="px-2 py-0.5 text-caption rounded-md bg-black/[0.04] text-ink/70 font-medium"
               >
                 {t}
               </span>
@@ -234,17 +236,19 @@ function AcademicAccordionItem({
           <img
             src={entry.logoUrl}
             alt={entry.university}
+            width={36}
+            height={36}
+            loading="lazy"
+            decoding="async"
             className="hidden md:block h-9 w-9 object-contain rounded-md bg-white border border-black/5 shrink-0"
           />
         )}
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline flex-wrap gap-x-3 gap-y-0.5">
-            <h3 className="text-[0.95rem] md:text-[1.05rem] font-semibold text-ink leading-tight">
-              {entry.degree}
-            </h3>
-            <span className="text-xs font-mono text-ink/55">{dateRange}</span>
+            <h3 className="text-body font-semibold text-ink leading-tight">{entry.degree}</h3>
+            <span className="text-caption font-mono text-ink/55">{dateRange}</span>
           </div>
-          {entry.university && <p className="text-sm text-ink/65 mt-1">{entry.university}</p>}
+          {entry.university && <p className="text-small text-ink/65 mt-1">{entry.university}</p>}
         </div>
       </button>
 
@@ -271,12 +275,10 @@ function AcademicAccordionItem({
 
               <div className="min-w-0">
                 {entry.description && (
-                  <p className="text-sm text-ink/70 leading-relaxed whitespace-pre-line">
-                    {entry.description}
-                  </p>
+                  <p className="text-body text-ink/70 whitespace-pre-line">{entry.description}</p>
                 )}
                 {entry.grade !== null && (
-                  <p className="mt-6 text-sm font-mono text-ink/65">
+                  <p className="mt-6 text-small font-mono text-ink/65">
                     {dict.labels.grade}: {entry.grade.toFixed(1)}
                   </p>
                 )}

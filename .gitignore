@@ -30,3 +30,6 @@ next-env.d.ts
 /playwright-report
 /test-results
 /.lighthouseci
+
+# logos downloaded by scripts/fetch-images.ts
+/public/cv-images

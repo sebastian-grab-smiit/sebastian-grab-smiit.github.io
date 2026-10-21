@@ -53,16 +53,14 @@ export default function Skills({ skills, dict }: SkillsProps) {
           transition={{ duration: 0.5 }}
           className="sm:text-center 3xl:text-left"
         >
-          <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-brand mb-5">
+          <span className="inline-flex items-center gap-2 text-caption font-semibold tracking-[0.22em] uppercase text-brand mb-5">
             <span
               aria-hidden="true"
               className="inline-block h-px w-7 bg-gradient-to-r from-transparent to-brand"
             />
             {dict.skills.eyebrow}
           </span>
-          <h2 className="font-serif text-[2.2rem] sm:text-[2.6rem] md:text-[3rem] leading-tight text-ink tracking-tight">
-            {dict.sections.skills}
-          </h2>
+          <h2 className="font-serif text-h2 text-ink tracking-tight">{dict.sections.skills}</h2>
         </motion.div>
 
         {/* Mobile: full-bleed swipe story */}
@@ -128,21 +126,19 @@ function SkillsSwipeStory({
               aria-label={`${idx + 1} / ${total}: ${cat}`}
             >
               <div className="min-h-[300px] flex flex-col items-center text-center pt-2">
-                <div className="text-[0.7rem] font-mono uppercase tracking-[0.22em] text-ink/60 mb-3 tabular-nums">
+                <div className="text-caption font-mono uppercase tracking-[0.22em] text-ink/60 mb-3 tabular-nums">
                   {String(idx + 1).padStart(2, "0")}
                   <span aria-hidden="true" className="mx-1.5 text-ink/25">
                     /
                   </span>
                   {String(total).padStart(2, "0")}
                 </div>
-                <h3 className="font-serif text-[2rem] leading-[1.05] text-ink tracking-tight mb-5">
-                  {cat}
-                </h3>
+                <h3 className="font-serif text-h4 text-ink tracking-tight mb-5">{cat}</h3>
                 <div className="flex flex-wrap justify-center gap-2">
                   {grouped[cat].map((s) => (
                     <span
                       key={s.name}
-                      className="px-3 py-1.5 rounded-md text-sm font-medium bg-ink/[0.05] text-ink/80"
+                      className="px-3 py-1.5 rounded-md text-small font-medium bg-ink/[0.05] text-ink/80"
                     >
                       {s.name}
                     </span>
@@ -205,10 +201,7 @@ function SkillCategoryCard({
         >
           <Icon className="h-[18px] w-[18px]" style={{ color }} />
         </div>
-        <h3
-          className="text-base md:text-[1.05rem] font-semibold tracking-tight truncate"
-          style={{ color }}
-        >
+        <h3 className="text-body font-semibold tracking-tight truncate" style={{ color }}>
           {cat}
         </h3>
       </div>
@@ -216,7 +209,7 @@ function SkillCategoryCard({
         {list.map((s) => (
           <span
             key={s.name}
-            className="px-2.5 py-1 rounded-md text-xs font-medium"
+            className="px-2.5 py-1 rounded-md text-caption font-medium"
             style={{
               background: `${color}14`,
               color,

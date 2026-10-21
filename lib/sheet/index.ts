@@ -1,3 +1,4 @@
+import { localImage } from "./images"
 import { parseSheet, SheetValidationError } from "./parse"
 import { sheets, type RowOf, type SheetName } from "./schema"
 
@@ -72,8 +73,9 @@ async function loadSheet<N extends SheetName>(name: N): Promise<RowOf<(typeof sh
  *
  * Runs at build time only (static export). Any validation error aborts the build,
  * so the previously deployed version stays online until the sheet is fixed.
+ * With `localImages`, logo URLs point to the optimized local copies.
  */
-export async function fetchCv(): Promise<CvData> {
+export async function fetchCv({ localImages = true } = {}): Promise<CvData> {
   const results = await Promise.allSettled([
     loadSheet("personal"),
     loadSheet("certificates"),
@@ -96,7 +98,21 @@ export async function fetchCv(): Promise<CvData> {
     (r) => (r as PromiseFulfilledResult<unknown>).value,
   ) as [Personal[], Certificate[], LanguageSkill[], Academic[], Skill[], ResumeEntry[], Project[]]
 
-  return { personal, certificates, languages, academics, skills, resume, projects }
+  const data = { personal, certificates, languages, academics, skills, resume, projects }
+  return localImages ? withLocalLogos(data) : data
+}
+
+/** Points logo URLs to the copies downloaded by scripts/fetch-images.ts, where available. */
+function withLocalLogos(data: CvData): CvData {
+  const local = <T extends { logoUrl: string }>(rows: T[]) =>
+    rows.map((row) => ({ ...row, logoUrl: localImage(row.logoUrl) }))
+  return {
+    ...data,
+    certificates: local(data.certificates),
+    academics: local(data.academics),
+    resume: local(data.resume),
+    projects: local(data.projects),
+  }
 }
 
 export function localeToSheetLang(locale: "de" | "en"): SheetLang {

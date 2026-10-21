@@ -132,7 +132,7 @@ function FocusCinemaLayer({
 
       <div className="relative w-full px-6">
         <motion.div
-          className="text-[0.68rem] font-medium uppercase tracking-[0.22em] tabular-nums"
+          className="text-caption font-medium uppercase tracking-[0.22em] tabular-nums"
           style={{ opacity: eyebrowOpacity }}
         >
           <span style={{ color: item.accent.hex }}>{String(idx + 1).padStart(2, "0")}</span>
@@ -141,7 +141,7 @@ function FocusCinemaLayer({
         </motion.div>
 
         <motion.h3
-          className="mt-2 font-serif text-[1.95rem] sm:text-[2.4rem] leading-[1.05] tracking-tight text-ink"
+          className="mt-2 font-serif text-h3 tracking-tight text-ink"
           style={{
             scale: titleScale,
             y: titleY,
@@ -188,7 +188,7 @@ function FocusCinemaLayer({
           {item.renderPreview(isLayerRevealed)}
         </motion.div>
 
-        <p className="mt-4 text-[0.95rem] leading-relaxed text-black/85 max-w-[42ch]">
+        <p className="mt-4 text-body text-black/85 max-w-[42ch]">
           {words.map((word, i) => {
             const wStart = wordRangeStart + i * span
             const wEnd = wStart + Math.max(span * 1.6, 0.025)
@@ -263,15 +263,13 @@ function MobileFocusCinemaStatic({ items }: { items: CinemaItem[] }) {
     <ul className="border-t border-black/10">
       {items.map((item, idx) => (
         <li key={item.title} className="border-b border-black/10 py-10">
-          <div className="text-[0.68rem] font-medium uppercase tracking-[0.22em] tabular-nums">
+          <div className="text-caption font-medium uppercase tracking-[0.22em] tabular-nums">
             <span style={{ color: item.accent.hex }}>{String(idx + 1).padStart(2, "0")}</span>
             <span className="mx-2 text-black/30">/</span>
             <span className="text-black/55">{String(items.length).padStart(2, "0")}</span>
           </div>
-          <h3 className="mt-3 font-serif text-[1.95rem] leading-[1.05] tracking-tight text-ink">
-            {item.title}
-          </h3>
-          <p className="mt-4 text-[0.96rem] leading-relaxed text-black/85">{item.description}</p>
+          <h3 className="mt-3 font-serif text-h3 tracking-tight text-ink">{item.title}</h3>
+          <p className="mt-4 text-body text-black/85">{item.description}</p>
           <div className="mt-5">
             <a
               href={item.href}

@@ -37,8 +37,8 @@ export default function Footer({ forceLang }: { forceLang?: string }) {
               />
             </div>
             <div className="space-y-1 pt-1">
-              <div className="text-sm font-semibold text-black">{siteConfig.name}</div>
-              <div className="text-sm text-black/70 leading-relaxed">
+              <div className="text-small font-semibold text-black">{siteConfig.name}</div>
+              <div className="text-small text-black/70 leading-relaxed">
                 {siteConfig.role}
                 <br />
                 {siteConfig.company.name}
@@ -47,8 +47,8 @@ export default function Footer({ forceLang }: { forceLang?: string }) {
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-black">{L.contact}</h3>
-            <ul className="space-y-2 text-sm text-black/70">
+            <h3 className="text-small font-semibold text-black">{L.contact}</h3>
+            <ul className="space-y-2 text-small text-black/70">
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 flex-shrink-0" />
                 <a
@@ -77,8 +77,8 @@ export default function Footer({ forceLang }: { forceLang?: string }) {
           </div>
 
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-black">Links</h3>
-            <ul className="space-y-2 text-sm text-black/70">
+            <h3 className="text-small font-semibold text-black">Links</h3>
+            <ul className="space-y-2 text-small text-black/70">
               <li>
                 <a
                   href={siteConfig.linkedInUrl}
@@ -105,10 +105,10 @@ export default function Footer({ forceLang }: { forceLang?: string }) {
         </div>
 
         <div className="pt-4 border-t border-black/5 flex flex-col md:flex-row justify-between items-center gap-3">
-          <p className="text-xs text-black/55">
+          <p className="text-caption text-black/55">
             © {new Date().getFullYear()} {siteConfig.name} · {siteConfig.company.name}. {L.rights}
           </p>
-          <div className="flex gap-6 text-xs text-black/55">
+          <div className="flex gap-6 text-caption text-black/55">
             <a
               href={`https://www.smiit.de/${lang}/legal-notice`}
               target="_blank"

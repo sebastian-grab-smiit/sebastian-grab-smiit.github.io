@@ -108,7 +108,7 @@ export function LanguageSwitcher({ light = false }: { light?: boolean }) {
         aria-expanded={isOpen}
         aria-controls={menuId}
         aria-label={`Language: ${currentLang.label}`}
-        className={`flex items-center gap-2 px-2 py-2 text-sm font-medium transition-colors cursor-pointer bg-transparent border-none ${
+        className={`flex items-center gap-2 px-2 py-2 text-small font-medium transition-colors cursor-pointer bg-transparent border-none ${
           light ? "text-white hover:text-white/70" : "text-black hover:text-black/70"
         }`}
       >
@@ -133,7 +133,7 @@ export function LanguageSwitcher({ light = false }: { light?: boolean }) {
                 lang={lang.code}
                 aria-current={lang.code === current ? "true" : undefined}
                 onClick={() => selectLang(lang.code)}
-                className={`w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors cursor-pointer ${
+                className={`w-full flex items-center gap-3 px-3 py-2 text-small rounded-lg transition-colors cursor-pointer ${
                   lang.code === current
                     ? "bg-black/5 text-black font-medium"
                     : "text-gray-700 hover:bg-black/5"

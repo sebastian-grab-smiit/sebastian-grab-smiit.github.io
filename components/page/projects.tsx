@@ -66,16 +66,14 @@ export default function Projects({ projects, locale, dict }: ProjectsProps) {
           transition={{ duration: 0.5 }}
           className="mb-6 md:mb-8 sm:text-center 3xl:text-left"
         >
-          <span className="inline-flex items-center gap-2 text-[0.7rem] font-semibold tracking-[0.22em] uppercase text-brand mb-5">
+          <span className="inline-flex items-center gap-2 text-caption font-semibold tracking-[0.22em] uppercase text-brand mb-5">
             <span
               aria-hidden="true"
               className="inline-block h-px w-7 bg-gradient-to-r from-transparent to-brand"
             />
             {dict.projects.eyebrow}
           </span>
-          <h2 className="font-serif text-[2.2rem] sm:text-[2.6rem] md:text-[3rem] leading-tight text-ink tracking-tight">
-            {dict.sections.projects}
-          </h2>
+          <h2 className="font-serif text-h2 text-ink tracking-tight">{dict.sections.projects}</h2>
         </motion.div>
 
         {allTechs.length > 0 && (
@@ -90,7 +88,7 @@ export default function Projects({ projects, locale, dict }: ProjectsProps) {
               <button
                 type="button"
                 onClick={() => setSelectedTechs([])}
-                className="text-xs text-black/60 hover:text-black underline underline-offset-4 cursor-pointer"
+                className="text-caption text-black/60 hover:text-black underline underline-offset-4 cursor-pointer"
               >
                 {dict.labels.clearFilters}
               </button>
@@ -153,7 +151,7 @@ function ShowMoreButton({
       <button
         type="button"
         onClick={onClick}
-        className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-black/15 hover:border-black/40 text-sm font-medium text-ink hover:bg-black/[0.02] transition-colors cursor-pointer"
+        className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white border border-black/15 hover:border-black/40 text-small font-medium text-ink hover:bg-black/[0.02] transition-colors cursor-pointer"
       >
         {label}
         <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
@@ -175,7 +173,9 @@ function FilterRow({
 }) {
   return (
     <div>
-      <div className="text-xs uppercase tracking-[0.18em] font-semibold text-ink mb-3">{label}</div>
+      <div className="text-caption uppercase tracking-[0.18em] font-semibold text-ink mb-3">
+        {label}
+      </div>
       <div className="flex flex-wrap gap-2 sm:justify-center 3xl:justify-start">
         {values.map((v) => {
           const active = selected.includes(v)
@@ -185,7 +185,7 @@ function FilterRow({
               type="button"
               aria-pressed={active}
               onClick={() => onToggle(v)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-full text-caption font-medium border transition-colors cursor-pointer ${
                 active
                   ? "bg-black text-white border-black"
                   : "bg-white text-black/75 border-black/15 hover:border-black/40"
@@ -227,20 +227,24 @@ function ProjectCard({
           <img
             src={project.logoUrl}
             alt={project.customer}
+            width={40}
+            height={40}
+            loading="lazy"
+            decoding="async"
             className="h-10 w-10 object-contain rounded bg-white flex-shrink-0"
           />
         )}
         <div className="min-w-0">
-          <div className="text-xs font-mono text-black/55">
+          <div className="text-caption font-mono text-black/55">
             {formatRange(locale, project.start, project.end, presentLabel)}
           </div>
-          <h3 className="font-medium text-base text-black mt-0.5 truncate">{project.role}</h3>
-          <p className="text-sm text-brand font-medium truncate">{project.customer}</p>
+          <h3 className="font-medium text-body text-black mt-0.5 truncate">{project.role}</h3>
+          <p className="text-small text-brand font-medium truncate">{project.customer}</p>
         </div>
       </div>
 
       {points.length > 0 && (
-        <ul className="space-y-1.5 text-sm text-black/75 mb-4">
+        <ul className="space-y-1.5 text-small text-black/75 mb-4">
           {points.map((t, i) => (
             <li key={i} className="flex gap-2">
               <span className="text-magenta mt-1.5 leading-none">·</span>
@@ -256,7 +260,7 @@ function ProjectCard({
             {techs.map((t) => (
               <span
                 key={t}
-                className="px-2 py-0.5 text-[11px] rounded-full bg-magenta/10 text-magenta font-medium"
+                className="px-2 py-0.5 text-caption rounded-full bg-magenta/10 text-magenta font-medium"
               >
                 {t}
               </span>
@@ -268,7 +272,7 @@ function ProjectCard({
             {secs.map((s) => (
               <span
                 key={s}
-                className="px-2 py-0.5 text-[11px] rounded-full bg-black/5 text-black/65 font-medium"
+                className="px-2 py-0.5 text-caption rounded-full bg-black/5 text-black/65 font-medium"
               >
                 {s}
               </span>

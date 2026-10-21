@@ -3,10 +3,8 @@ name: Deploy
 on:
   push:
     branches: [main]
+  # After editing the Google Sheet: Actions → Deploy → "Run workflow".
   workflow_dispatch:
-  # Sent by the Google Apps Script in scripts/google-apps-script when the sheet changes.
-  repository_dispatch:
-    types: [sheet-updated]
 
 concurrency:
   group: pages
